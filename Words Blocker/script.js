@@ -1,31 +1,51 @@
-replaceText(document.body) 
+let marvelWords = [
+    "Iron Man",
+    "Captain America",
+    "Thor",
+    "Spider-Man",
+    "Avengers",
+    "Hulk",
+    "No Way Home",
+];
+
+let spoilerKeywords = [
+    "dies",
+    "killed",
+    "death",
+    "ending",
+    "spoiler",
+    "plot twist",
+    "reveals",
+    "appears",
+    "ends",
+    "cameo",
+    "spoilers",
+    "leak",
+    "spoiler",
+];
 
 function replaceText(element) {
     if (element.hasChildNodes()) {
-      element.childNodes.forEach(replaceText)
-    } else if (element.nodeType === Text.TEXT_NODE) { 
-        if(element.textContent.match(/marvel/gi)) { 
-
-            //Give animated rainbow colours to every word that says 'marvel'
-            /*const newElement = document.createElement('span')
-            newElement.innerHTML = element.textContent.replace(/(marvel)/gi, '<span class="rainbow">$1</span>') 
-            element.replaceWith(newElement)*/
-
-           
-           //Removes the whole pharagraph which includes the word 'marvel'
-           /*element.parentElement.remove()*/
-
-           //Covers the word 'marvel' with black (rectangle box)
-            /*const newElement = document.createElement('span')
-            newElement.innerHTML = element.textContent.replace(/(marvel)/gi, 
-            '<span style="background-color: black; color: black;">$1</span>') 
-            element.replaceWith(newElement)*/
-
-            //Covers whole pharagraph with black which includes the word 'marvel'
-            /*element.parentElement.style.color = 'black' 
-            element.parentElement.style.backgroundColor = 'black'*/
-        }
-        //Replace the word 'marvel' with '⬛⬛⬛⬛'
-        element.textContent = element.textContent.replace(/marvel/gi, '⬛⬛⬛⬛')
+        element.childNodes.forEach(replaceText);
+    } else if (element.nodeType === Text.TEXT_NODE) {
+        let text = element.textContent;
+        marvelWords.forEach((marvelWord) => {
+            if (text.match(new RegExp("\\b" + marvelWord + "\\b", "gi"))) {
+                spoilerKeywords.forEach((keyword) => {
+                    if (text.match(new RegExp("\\b" + keyword + "\\b", "gi"))) {
+                        //replace the parent element with a black box as overlay
+                        element.parentElement.style.display = "inline-block";
+                        element.parentElement.style.width = "100%";
+                        element.parentElement.style.height = "100%";
+                        element.parentElement.style.backgroundColor = "black";
+                        element.parentElement.style.color = "black";
+                        element.parentElement.style.border = "1px solid black";
+                    }
+                });
+            }
+        });
     }
 }
+// element.textContent = element.textContent.replace(/marvel/gi, "⬛⬛⬛⬛");
+
+replaceText(document.body);
