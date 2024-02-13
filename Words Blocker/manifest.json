@@ -1,7 +1,13 @@
 {
     "manifest_version": 3,
     "name": "Words Blocker",
+    "description": "Effortlessly block soilers for a cleaner movie-watching experience online.",
     "version": "0.1.0", 
+    "icons": {
+      "16": "/Images/NPZ 16.png", 
+      "48": "/Images/NPZ 48.png", 
+      "128": "/Images/NPZ 128.png"
+    },
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
