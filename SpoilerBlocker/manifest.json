@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Spoiler Blocker",
+  "version": "1.0",
+  "description": "A web extension that blocks spoilers on Reddit",
+  "content_scripts": [
+    {
+      "matches": ["https://www.reddit.com/*", "https://*.reddit.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.reddit.com/*"
+],
+  "icons": {
+    "16": "/Images/NPZ 16.png", 
+    "48": "/Images/NPZ 48.png", 
+    "128": "/Images/NPZ 128.png"
+  }
+}
