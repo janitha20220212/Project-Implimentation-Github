@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "No Spoiler Zone",
+    "version": "1.0",
+    "description": "A web extension that blocks spoilers on Reddit",
+    "permissions": [
+      "activeTab",
+      "storage",
+      "scripting"
+    ],
+    "background": {},
+    "content_scripts": [
+      {
+        "matches": ["https://www.reddit.com/*"],
+        "js": ["content.js"]
+      }
+    ], 
+    "icons": {
+      "16": "/Images/NPZ 16.png", 
+      "48": "/Images/NPZ 48.png", 
+      "128": "/Images/NPZ 128.png"
+    }
+  }
