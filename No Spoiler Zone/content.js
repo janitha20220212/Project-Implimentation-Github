@@ -23,9 +23,36 @@ function checkForSpoilers() {
           descendant.style.filter = 'blur(8px)';
         });
 
-        if (!parentBackground.querySelector('button')) {
+        if (!parentBackground.querySelector('.view-spoiler-button')) {
           const viewSpoilerButton = document.createElement('button');
           viewSpoilerButton.textContent = 'View Spoiler';
+          viewSpoilerButton.className = 'view-spoiler-button';
+
+          const upvoteButton = document.createElement('button');
+          upvoteButton.textContent = 'Upvote';
+          upvoteButton.style.backgroundColor = 'green';
+          upvoteButton.style.color = 'white';
+          upvoteButton.style.border = 'none';
+          upvoteButton.style.padding = '5px 10px';
+          upvoteButton.style.cursor = 'pointer';
+          upvoteButton.style.display = 'none';
+
+          const downvoteButton = document.createElement('button');
+          downvoteButton.textContent = 'Downvote';
+          downvoteButton.style.backgroundColor = 'red';
+          downvoteButton.style.color = 'white';
+          downvoteButton.style.border = 'none';
+          downvoteButton.style.padding = '5px 10px';
+          downvoteButton.style.cursor = 'pointer';
+          downvoteButton.style.display = 'none';
+
+          const buttonContainer = document.createElement('div');
+          buttonContainer.style.display = 'flex';
+          buttonContainer.style.justifyContent = 'space-between';
+          buttonContainer.style.marginTop = '10px';
+          buttonContainer.appendChild(upvoteButton);
+          buttonContainer.appendChild(downvoteButton);
+
           viewSpoilerButton.addEventListener('click', () => {
             descendants.forEach(descendant => {
               descendant.style.backgroundColor = "";
@@ -37,9 +64,13 @@ function checkForSpoilers() {
             parentBackground.style.color = "";
             parentBackground.style.filter = "";
             parentBackground.classList.add('spoiler-viewed');
+
+            upvoteButton.style.display = 'block';
+            downvoteButton.style.display = 'block';
           });
 
           parentBackground.appendChild(viewSpoilerButton);
+          parentBackground.appendChild(buttonContainer);
         }
       }
     }
