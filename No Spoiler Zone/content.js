@@ -4,7 +4,7 @@ const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man"
 const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
 
 function checkForSpoilers() {
-  const elements = document.querySelectorAll('[data-testid="post-title-text"], [slot="title"], [slot="text-body"]');
+  const elements = document.querySelectorAll('[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [data-post-click-location="text-body"]');
 
   elements.forEach(element => {
     const elementText = element.textContent.toLowerCase();
@@ -15,7 +15,7 @@ function checkForSpoilers() {
       const parentBackground = element.closest('post-consume-tracker, shreddit-post');
 
       if (parentBackground && !parentBackground.classList.contains('spoiler-viewed')) {
-        const descendants = parentBackground.querySelectorAll('[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"]');
+        const descendants = parentBackground.querySelectorAll('[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]');
 
         descendants.forEach(descendant => {
           descendant.style.backgroundColor = "grey";
