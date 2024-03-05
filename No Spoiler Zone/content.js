@@ -1,10 +1,10 @@
 //content.js 
 
-const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic"];
-const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony"];
+const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
+const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
 
 function checkForSpoilers() {
-  const elements = document.querySelectorAll('[data-adclicklocation="title"], [data-click-id="text"]');
+  const elements = document.querySelectorAll('[data-testid="post-title-text"], [slot="title"], [slot="text-body"]');
 
   elements.forEach(element => {
     const elementText = element.textContent.toLowerCase();
@@ -12,46 +12,39 @@ function checkForSpoilers() {
     const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase()));
 
     if (containsMarvelWord && containsSpoilerKeyword) { 
-      //element.style.backgroundColor = "black";
-      //element.style.color = "black";
+      const parentBackground = element.closest('post-consume-tracker, shreddit-post');
 
-      // Find the parent element with data-adclicklocation="background"
-      const parentBackground = element.closest('[data-adclicklocation="background"]');
+      if (parentBackground && !parentBackground.classList.contains('spoiler-viewed')) {
+        const descendants = parentBackground.querySelectorAll('[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"]');
 
-      // If found, apply the same style to it
-      if (parentBackground) {
-
-        // Check if it has a descendant with data-adclicklocation="title" or data-click-id="text" or data-adclicklocation="media"
-        const descendants = parentBackground.querySelectorAll('[data-adclicklocation="title"], [data-click-id="text"], [data-adclicklocation="media"]');
-
-        // Apply the same style to them
         descendants.forEach(descendant => {
-          descendant.style.backgroundColor = "black";
-          descendant.style.color = "black"; 
-
-          const g11 = descendant.querySelectorAll('h3, p, a, div, span');
-          g11.forEach(mediaDescendant => {
-            mediaDescendant.style.backgroundColor = "black";
-            mediaDescendant.style.color = "black"; 
-          });
-
-          if (descendant.getAttribute('role') === 'img') {
-            // Apply a blur effect to the background image
-            descendant.style.filter = 'blur(15px)';
-          }
-          const mediaDescendants = descendant.querySelectorAll('div img, iframe');
-          mediaDescendants.forEach(mediaDescendant => {
-            mediaDescendant.style.filter = "blur(15px)";
-          });
-
+          descendant.style.backgroundColor = "grey";
+          descendant.style.color = "grey"; 
+          descendant.style.filter = 'blur(8px)';
         });
+
+        if (!parentBackground.querySelector('button')) {
+          const viewSpoilerButton = document.createElement('button');
+          viewSpoilerButton.textContent = 'View Spoiler';
+          viewSpoilerButton.addEventListener('click', () => {
+            descendants.forEach(descendant => {
+              descendant.style.backgroundColor = "";
+              descendant.style.color = ""; 
+              descendant.style.filter = '';
+            });
+
+            parentBackground.style.backgroundColor = "";
+            parentBackground.style.color = "";
+            parentBackground.style.filter = "";
+            parentBackground.classList.add('spoiler-viewed');
+          });
+
+          parentBackground.appendChild(viewSpoilerButton);
+        }
       }
     }
   });
 }
 
-// Run the function when the page loads
 checkForSpoilers();
-
-// Run the function when the user scrolls the page
-window.addEventListener('scroll', checkForSpoilers);  
+window.addEventListener('scroll', checkForSpoilers);
