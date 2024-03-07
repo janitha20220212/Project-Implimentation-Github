@@ -5,7 +5,7 @@ import pandas as pd
 
 # reads the data from the provided file and stores it in a variable called data
 # the reason for sep='\t' is because the data is separated by tabs
-data = pd.read_csv('./Gemini-Model/spoiler.tsv', sep='\t')
+data = pd.read_csv('./LLM-Model/spoiler.tsv', sep='\t')
 
 # a function called preprocess_data which will preprocess the provided data by cleaning it and removing any unwanted characters
 
@@ -43,4 +43,4 @@ for i in range(len(data['text'])):
     data['text'][i] = preprocess_data(data['text'][i])
 
 # saves the preprocessed data to a new file called 'preprocessed_data.tsv'
-data.to_csv('./Gemini-Model/preprocessed_data.tsv', sep='\t', index=False)
+data.to_csv('./LLM-Model/preprocessed_data.tsv', sep='\t', index=False)
