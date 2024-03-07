@@ -5,3 +5,7 @@
 /Gemini-Model/spoiler.txt
 /Gemini-Model/spoiler.tsv
 /Gemini-Model/spoiler.csv
+
+/Gemini-Model/preprocessed_data.csv
+/Gemini-Model/preprocessed_data.txt
+/Gemini-Model/preprocessed_data.tsv
