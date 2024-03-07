@@ -62,7 +62,7 @@ Don't make any changes to Json code format, please.
 ```
 """)
 
-print(convo.last.text)
+# print(convo.last.text)
 
 # Extract the JSON code from the conversation's last text
 json_output = convo.last.text.split('```')[1].strip()
