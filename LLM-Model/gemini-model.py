@@ -38,16 +38,13 @@ generation_config = {
 
 model = genai.GenerativeModel(model_name="gemini-pro")
 
-convo = model.start_chat(history=[
-])
-
 
 df = pd.read_csv('./LLM-Model/preprocessed_data.tsv', sep='\t')
 df['label'] = [0] * len(df)
 
 json_data = df.to_json(orient='records')
 
-convo.send_message(f"""
+prompt = (f"""
 You are an expert in detection, who is good at classifying a text in to actual spoiler or not.
 Help me classify spoilers into: Spoiler(label=1), and Not a Spoiler(label=0).
 Spoilers are provided between three back ticks.
@@ -61,12 +58,13 @@ Don't make any changes to Json code format, please.
 """)
 
 # print(convo.last.text)
+response = model.generate_content(prompt)
 
 # Extract the JSON code from the conversation's last text
-json_output = convo.last.text.split('```')[1].strip()
+json_output = response.text.split('```')[1].strip()
 
 # Convert JSON code back to DataFrame
-output_df = pd.read_json(json_output)
+output_df = pd.read_json(json_output, orient='records')
 
 # Save the DataFrame to a TSV file called 'predictions.tsv'
 output_df.to_csv('./LLM-model/predictions.tsv', sep='\t', index=False)
