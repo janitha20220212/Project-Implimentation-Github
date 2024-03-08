@@ -10,12 +10,12 @@ import google.generativeai as genai
 genai.configure(api_key="AIzaSyAVXflbZLBt9XILv5om1PGgCYc5NHxDcbs")
 
 # Set up the model
-generation_config = {
-    "temperature": 0.9,
-    "top_p": 1,
-    "top_k": 1,
-    "max_output_tokens": 2048,
-}
+# generation_config = {
+#     "temperature": 0.9,
+#     "top_p": 1,
+#     "top_k": 1,
+#     "max_output_tokens": 2048,
+# }
 
 # safety_settings = [
 #     {
@@ -36,8 +36,7 @@ generation_config = {
 #     },
 # ]
 
-model = genai.GenerativeModel(model_name="gemini-pro")
-
+model = genai.GenerativeModel('gemini-pro')
 
 df = pd.read_csv('./LLM-Model/preprocessed_data.tsv', sep='\t')
 df['label'] = [0] * len(df)
@@ -60,11 +59,13 @@ Don't make any changes to Json code format, please.
 # print(convo.last.text)
 response = model.generate_content(prompt)
 
+print(response.text)
+
 # Extract the JSON code from the conversation's last text
 json_output = response.text.split('```')[1].strip()
 
 # Convert JSON code back to DataFrame
-output_df = pd.read_json(json_output, orient='records')
+output_df = pd.read_json(json_output)
 
 # Save the DataFrame to a TSV file called 'predictions.tsv'
 output_df.to_csv('./LLM-model/predictions.tsv', sep='\t', index=False)
