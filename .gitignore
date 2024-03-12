@@ -15,5 +15,6 @@
 /LLM-Model/preprocessed_data.tsv
 
 /.vscode
+/LLM-Model/__pycache__
 
 /llm-connect-db/node_modules

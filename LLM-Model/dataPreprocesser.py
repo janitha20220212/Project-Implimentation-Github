@@ -1,5 +1,5 @@
 def main():
-
+    import os
     # imports re module which provides support for regular expressions to be used in the python program
     import re
     # imports the pandas module which is used for data manipulation and analysis
@@ -10,7 +10,6 @@ def main():
     data = pd.read_csv('./LLM-Model/spoiler.tsv', sep='\t')
 
     # a function called preprocess_data which will preprocess the provided data by cleaning it and removing any unwanted characters
-
 
     def preprocess_data(text):
 
@@ -39,13 +38,13 @@ def main():
         # returns the cleaned text
         return text
 
-
     # iterates through the data and preprocesses the text in each row
     for i in range(len(data['text'])):
         data['text'][i] = preprocess_data(data['text'][i])
 
     # saves the preprocessed data to a new file called 'preprocessed_data.tsv'
     data.to_csv('./LLM-Model/preprocessed_data.tsv', sep='\t', index=False)
+
 
 if __name__ == "__main__":
     main()
