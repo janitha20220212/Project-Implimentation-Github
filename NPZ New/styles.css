@@ -1,0 +1,222 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+body {
+  width: 300px;
+  height: 300px;
+  padding: 50px;
+  padding-top: 100px;
+  padding-bottom: 65px;
+  background: linear-gradient(
+    to bottom,
+    #1d1d1d,
+    #181818
+  ); /* Dark gradient background */
+  color: white; /* Font color */
+  font-family: "Poppins", sans-serif; /* Font family */
+}
+
+.spoiler-content {
+  background-color: grey;
+  color: grey;
+  filter: blur(8px);
+  /*  */
+}
+
+.card {
+  position: absolute;
+
+  width: 300px;
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 12px;
+  gap: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  /* margin: auto; */
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  background: linear-gradient(-45deg, #000000 0%, #f13c3c 100%);
+  z-index: -10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card::after {
+  width: 300px;
+  height: 300px;
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, #ff0040 0%, #e64141 100%);
+  transform: translate3d(0, 0, 0) scale(0.95);
+  /* filter: blur(10px); */
+}
+
+.heading {
+  font-size: 20px;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.card p:not(.heading) {
+  font-size: 14px;
+}
+
+.card p:last-child {
+  color: #e81cff;
+  font-weight: 600;
+}
+
+.card:hover::after {
+  filter: blur(60px);
+  transition: ease-in-out 0.3s;
+}
+
+.card:hover::before {
+  transform: rotate(-90deg);
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  /* Add your background pattern here */
+  background: rgba(29, 31, 32, 0.904)
+    radial-gradient(rgba(255, 255, 255, 0.712) 10%, transparent 1%);
+
+  background-size: 11px 11px;
+}
+
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  width: 100px; /* Decreased size */
+  height: auto; /* Maintain aspect ratio */
+}
+
+#checkbox {
+  display: none;
+}
+
+.switch {
+  position: absolute;
+  top: 30%;
+  left: 47%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  background-color: rgb(99, 99, 99);
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(126, 126, 126);
+  box-shadow: 0px 0px 3px rgb(255, 255, 255) inset;
+}
+
+.switch svg {
+  width: 1.2em;
+}
+
+.switch svg path {
+  fill: rgb(255, 255, 255);
+}
+
+#checkbox:checked + .switch {
+  box-shadow: 0px 0px 1px rgb(218, 64, 73) inset,
+    0px 0px 2px rgb(218, 64, 73) inset, 0px 0px 10px rgb(218, 64, 73) inset,
+    0px 0px 40px rgb(218, 64, 73), 0px 0px 100px rgb(218, 64, 73),
+    0px 0px 5px rgb(218, 64, 73);
+  border: 2px solid rgb(255, 255, 255);
+  background-color: rgb(238, 135, 152);
+}
+
+#checkbox:checked + .switch svg {
+  filter: drop-shadow(0px 0px 5px rgb(218, 64, 73));
+}
+
+/*______Social Media______*/
+.social-media:before {
+  content: " ";
+  display: block;
+  width: 100%;
+  height: 2px;
+  transform: translatey(10px);
+  background: #414141;
+}
+
+.social-media a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.social-media a:last-child {
+  margin-right: 0;
+}
+
+.social-media a svg {
+  color: #ff5858;
+  transform: translatex(25px) translateY(20px);
+  width: 20px;
+  fill: currentColor;
+}
+
+.social-media {
+  position: absolute;
+  bottom: 40px;
+  left: 44%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center; /* Add this line to center the icons horizontally */
+}
+
+.social-media a {
+  margin-right: 50px; /* Increase the value to increase the space between icons */
+  text-decoration: none;
+  color: inherit;
+}
+
+/*______Settings Section______*/
+#settingsSection {
+  display: none;
+  /* Add your styles for the settings section here */
+}
+
+#spoilerCount {
+  position: absolute;
+  top: calc(10% + 10px); /* Adjust the value to position it below the switch */
+  left: 50%;
+  transform: translateX(-50%);
+
+  text-align: center;
+  color: #fff;
+  font-size: 70px;
+}
+
+p {
+  position: absolute;
+  top: calc(30% + 100px); /* Adjust the value to position it below the switch */
+  left: 50%;
+  width: 100;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
