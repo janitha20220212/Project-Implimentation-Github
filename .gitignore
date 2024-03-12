@@ -2,6 +2,10 @@
 /LLM-Model/predictions.csv
 /LLM-Model/predictions.txt
 
+/LLM-Model/train.txt
+/LLM-Model/train.csv
+/LLM-Model/train.tsv
+
 /LLM-Model/spoiler.txt
 /LLM-Model/spoiler.tsv
 /LLM-Model/spoiler.csv
@@ -9,3 +13,5 @@
 /LLM-Model/preprocessed_data.csv
 /LLM-Model/preprocessed_data.txt
 /LLM-Model/preprocessed_data.tsv
+
+/.vscode

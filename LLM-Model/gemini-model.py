@@ -10,46 +10,40 @@ import google.generativeai as genai
 genai.configure(api_key="AIzaSyAVXflbZLBt9XILv5om1PGgCYc5NHxDcbs")
 
 # Set up the model
-generation_config = {
-    "temperature": 0.9,
-    "top_p": 1,
-    "top_k": 1,
-    "max_output_tokens": 2048,
-}
+# generation_config = {
+#     "temperature": 0.9,
+#     "top_p": 1,
+#     "top_k": 1,
+#     "max_output_tokens": 2048,
+# }
 
-safety_settings = [
-    {
-        "category": "HARM_CATEGORY_HARASSMENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-    },
-    {
-        "category": "HARM_CATEGORY_HATE_SPEECH",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-    },
-    {
-        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-    },
-    {
-        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-    },
-]
+# safety_settings = [
+#     {
+#         "category": "HARM_CATEGORY_HARASSMENT",
+#         "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+#     },
+#     {
+#         "category": "HARM_CATEGORY_HATE_SPEECH",
+#         "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+#     },
+#     {
+#         "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+#         "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+#     },
+#     {
+#         "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+#         "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+#     },
+# ]
 
-model = genai.GenerativeModel(model_name="gemini-1.0-pro",
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
-
-convo = model.start_chat(history=[
-])
-
+model = genai.GenerativeModel('gemini-pro')
 
 df = pd.read_csv('./LLM-Model/preprocessed_data.tsv', sep='\t')
 df['label'] = [0] * len(df)
 
 json_data = df.to_json(orient='records')
 
-convo.send_message(f"""
+prompt = (f"""
 You are an expert in detection, who is good at classifying a text in to actual spoiler or not.
 Help me classify spoilers into: Spoiler(label=1), and Not a Spoiler(label=0).
 Spoilers are provided between three back ticks.
@@ -62,10 +56,13 @@ Don't make any changes to Json code format, please.
 ```
 """)
 
-print(convo.last.text)
+# print(convo.last.text)
+response = model.generate_content(prompt)
+
+print(response.text)
 
 # Extract the JSON code from the conversation's last text
-json_output = convo.last.text.split('```')[1].strip()
+json_output = response.text.split('```')[1].strip()
 
 # Convert JSON code back to DataFrame
 output_df = pd.read_json(json_output)
