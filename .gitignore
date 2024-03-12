@@ -15,3 +15,5 @@
 /LLM-Model/preprocessed_data.tsv
 
 /.vscode
+
+/llm-connect-db/node_modules
