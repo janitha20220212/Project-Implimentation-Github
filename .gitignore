@@ -35,3 +35,5 @@
 /llm-connect-db/preprocessed_data.csv
 /llm-connect-db/preprocessed_data.txt
 /llm-connect-db/preprocessed_data.tsv
+
+/Flask-Backend/env
