@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "MCU Image Blast",
+    "version": "1.0.0",
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions":  ["tabs", "scripting", "activeTab"]
+    ,
+    "host_permissions": [
+        "https://www.reddit.com/*"
+    ], 
+    "content_scripts": [
+        {
+            "matches": ["https://www.reddit.com/*", "https://www.reddit.com/r/learnjavascript/comments/13u66zb/what_is_the_use_of_assigning_a_function_to_a/", "https://www.reddit.com/r/learnpython/comments/13tuf27/what_is_the_use_of_the_start_def_functions/"],
+            "js": ["Content.js"]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
+}

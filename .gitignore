@@ -15,3 +15,26 @@
 /LLM-Model/preprocessed_data.tsv
 
 /.vscode
+/LLM-Model/__pycache__
+/llm-connect-db/__pycache__
+
+/llm-connect-db/node_modules
+
+/llm-connect-db/predictions.tsv
+/llm-connect-db/predictions.csv
+/llm-connect-db/predictions.txt
+
+/llm-connect-db/train.txt
+/llm-connect-db/train.csv
+/llm-connect-db/train.tsv
+
+/llm-connect-db/spoiler.txt
+/llm-connect-db/spoiler.tsv
+/llm-connect-db/spoiler.csv
+
+/llm-connect-db/preprocessed_data.csv
+/llm-connect-db/preprocessed_data.txt
+/llm-connect-db/preprocessed_data.tsv
+
+/Flask-Backend/env
+/Flask-Backend/node_modules
