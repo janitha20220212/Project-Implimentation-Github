@@ -37,3 +37,4 @@
 /llm-connect-db/preprocessed_data.tsv
 
 /Flask-Backend/env
+/Flask-Backend/node_modules

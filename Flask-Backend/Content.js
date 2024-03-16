@@ -47,26 +47,24 @@ function getData(et) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: text }),
+        body: JSON.stringify({ text: textData }),
     })
         .then((response) => response.json())
         .then((data) => {
-            label = data; // Extract label from the response
-            let post = {
-                Heading: heading.trim(),
-                TextContent: text.trim(),
-                link: link,
-                label: label,
-            };
-
-            chrome.runtime.sendMessage(post, (response) => {
-                console.log("success");
-                console.log(response);
-            });
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+            console.log(data);
+            label = data;
         });
+
+    let post = {
+        Heading: heading.trim(),
+        TextContent: text.trim(),
+        link: link,
+        label: label,
+    };
+
+    chrome.runtime.sendMessage(post, (response) => {
+        console.log(response);
+    });
 }
 
 // function executeFun(btn){

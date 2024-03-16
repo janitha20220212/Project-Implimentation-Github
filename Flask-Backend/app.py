@@ -1,8 +1,10 @@
 # reference: https://stackoverflow.com/questions/59975596/how-to-connect-javascript-to-python-script-with-flask
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Display your index page
 
@@ -43,13 +45,12 @@ def preprocess_data(text):
     return text
 
 
-@app.route("/aidetection", methods=["POST"])
+@app.route("/aidetection/", methods=["POST"])
 def aidetection():
     import re
     import os
     import google.generativeai as genai
-    # text_data = request.json.get('text', '')
-    text_data = "Sam is directed spider man 3"
+    text_data = request.json.get('text', '')
 
     preprocessed_text = preprocess_data(text_data)
 
@@ -61,8 +62,30 @@ def aidetection():
 
     model = genai.GenerativeModel('gemini-pro')
 
-    return jsonify(json_data)
+    prompt = (f"""
+    You are an expert in detection, who is good at classifying a text in to actual spoiler or not.
+    Help me classify spoilers into: Spoiler(label=1), and Not a Spoiler(label=0).
+    Spoilers are provided between three back ticks.
+    In your output, only return the Json code back as output - which is provided between three backticks.
+    Your task is to update predicted labels under 'label' in the Json code.
+    Don't make any changes to Json code format, please.
+
+    ```
+    {json_data}
+    ```
+    """)
+
+    # print(convo.last.text)
+    response = model.generate_content(prompt)
+
+    print("response")
+    print(response.text)
+
+    # Extract the JSON code from the conversation's last text
+    json_output = response.text.split('```')[1].strip()
+
+    return jsonify(json_output)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
