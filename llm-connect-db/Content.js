@@ -42,7 +42,8 @@ function getData(et) {
             .parentElement.getAttribute("content-href");
     }
 
-    fetch("http://127.0.0.1:5000/aidetection/", {
+    fetch("https://nospoilerzone.azurewebsites.net/aidetection/", {
+        // fetch("http://127.0.0.1:5000/aidetection/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
