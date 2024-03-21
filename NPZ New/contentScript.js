@@ -76,49 +76,52 @@ postLinks.forEach((postLink, index) => {
     });
 });
 
-function fetchModel(totalContent, postUniqueLink, elements) {
+async function fetchModel(totalContent, postUniqueLink, elements) {
     containsSpoiler = false;
     var post = {
         text: totalContent,
         link: postUniqueLink,
     };
-    // fetch("https://nospoilerzone.azurewebsites.net/aidetection/", {
-    fetch("http://127.0.0.1:5000/aidetection/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(post),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            containsSpoiler = data; // Extract label from the response
-            console.log("contain spoiler return" + containsSpoiler);
-
-            if (containsSpoiler == "1") {
-                console.log("Contains spoiler in if");
-                containsSpoiler = true;
-                hideSpoilerPosts(elements);
-            } else if (containsSpoiler == "0") {
-                containsSpoiler = false;
-                console.log("not spoiler in if");
-            } else if (containsSpoiler == "Text is too long.") {
-                containsSpoiler = false;
-                console.log("Text is too long");
-            } else {
-                containsSpoiler = false;
-                console.log("Error in the fetch");
+    try {
+        let response = await fetch(
+            "https://nospoilerzone.azurewebsites.net/aidetection/",
+            {
+                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(post),
             }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+        );
+        let data = await response.json();
+
+        containsSpoiler = data; // Extract label from the response
+        console.log("contain spoiler return" + containsSpoiler);
+
+        if (containsSpoiler == "1") {
+            console.log("Contains spoiler in if");
+            containsSpoiler = true;
+            hideSpoilerPosts(elements);
+        } else if (containsSpoiler == "0") {
+            containsSpoiler = false;
+            console.log("not spoiler in if");
+        } else if (containsSpoiler == "Text is too long.") {
+            containsSpoiler = false;
+            console.log("Text is too long");
+        } else {
+            containsSpoiler = false;
             console.log("Error in the fetch");
-        });
-
-    console.log("fetch method Contains spoiler: " + containsSpoiler);
-
-    return containsSpoiler;
+        }
+        console.log("fetch method Contains spoiler: " + containsSpoiler);
+        return containsSpoiler;
+    } catch (error) {
+        console.error("Error:", error);
+        console.log("Error in the fetch");
+        return false;
+    }
 }
+
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
     const elements = document.querySelectorAll(
@@ -155,76 +158,13 @@ async function checkForSpoilers() {
     console.log("Contains spoiler: " + containsSpoiler);
 
     if (containsSpoiler) {
-        spoilerCount++; // Increment counter
-        const parentBackground = element.closest(
-            "post-consume-tracker, shreddit-post"
-        );
-
-        if (
-            parentBackground &&
-            !parentBackground.classList.contains("spoiler-viewed")
-        ) {
-            const descendants = parentBackground.querySelectorAll(
-                '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
-            );
-
-            descendants.forEach((descendant) => {
-                descendant.style.backgroundColor = "grey";
-                descendant.style.color = "grey";
-                descendant.style.filter = "blur(8px)";
-            });
-
-            if (!parentBackground.querySelector(".view-spoiler-button")) {
-                const viewSpoilerButton = document.createElement("button");
-                viewSpoilerButton.textContent = "View Spoiler";
-                viewSpoilerButton.className = "view-spoiler-button";
-
-                const upvoteButton = document.createElement("button");
-                upvoteButton.textContent = "Upvote";
-                upvoteButton.style.backgroundColor = "green";
-                upvoteButton.style.color = "white";
-                upvoteButton.style.border = "none";
-                upvoteButton.style.padding = "5px 10px";
-                upvoteButton.style.cursor = "pointer";
-                upvoteButton.style.display = "none";
-
-                const downvoteButton = document.createElement("button");
-                downvoteButton.textContent = "Downvote";
-                downvoteButton.style.backgroundColor = "red";
-                downvoteButton.style.color = "white";
-                downvoteButton.style.border = "none";
-                downvoteButton.style.padding = "5px 10px";
-                downvoteButton.style.cursor = "pointer";
-                downvoteButton.style.display = "none";
-
-                viewSpoilerButton.addEventListener("click", function () {
-                    // Remove the blur and color changes
-                    descendants.forEach((descendant) => {
-                        descendant.style.backgroundColor = "";
-                        descendant.style.color = "";
-                        descendant.style.filter = "";
-                    });
-
-                    // Show the upvote and downvote buttons
-                    upvoteButton.style.display = "";
-                    downvoteButton.style.display = "";
-
-                    // Hide the view spoiler button
-                    viewSpoilerButton.style.display = "none";
-                });
-
-                // Append the buttons to the parentBackground element
-                parentBackground.appendChild(viewSpoilerButton);
-                parentBackground.appendChild(upvoteButton);
-                parentBackground.appendChild(downvoteButton);
-            }
-        }
+        hideSpoilerPosts(elements);
     }
 }
 
 function hideSpoilerPosts(elements) {
     containsSpoiler = true;
-    if (containsSpoiler) {
+    elements.forEach((element) => {
         spoilerCount++; // Increment counter
         const parentBackground = element.closest(
             "post-consume-tracker, shreddit-post"
@@ -289,7 +229,7 @@ function hideSpoilerPosts(elements) {
                 parentBackground.appendChild(downvoteButton);
             }
         }
-    }
+    });
 }
 
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
