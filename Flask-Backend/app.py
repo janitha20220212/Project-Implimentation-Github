@@ -2,15 +2,86 @@
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
+import time
+import re
+import os
+import google.generativeai as genai
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate('serviceAccountKey.json')
+firebase_admin.initialize_app(cred)
+
+
+# Create a new document in Firestore
+def create_document(text, link, label):
+    try:
+        print('Creating document...')
+        collection = 'allPosts'
+        document_data = {
+            'text': text,
+            'link': link,
+            'label': label
+        }
+        db = firestore.client()
+        doc_ref = db.collection(collection).document()
+        doc_ref.set(document_data)
+        print('Document created with ID:', doc_ref.id)
+    except Exception as e:
+        print('Error creating document:', e)
+
+
+def read_document(link):
+    try:
+        print('Reading document...')
+        collection = 'allPosts'
+        db = firestore.client()
+        query = db.collection(collection).where('link', '==', link).limit(1)
+        documents = query.get()
+        if documents:
+            document = documents[0]
+            data = document.to_dict()
+            label = data.get('label')
+            label = str(label)
+            print('Document data:', data)
+            return label
+        else:
+            print('No such document!')
+    except Exception as e:
+        print('Error reading document:', e)
+
+# Update a document in Firestore
+
+
+def update_document(link, label):
+    try:
+        print('Updating document...')
+        collection = 'allPosts'
+        db = firestore.client()
+        query = db.collection(collection).where('link', '==', link).limit(1)
+        documents = query.get()
+        if documents:
+            document = documents[0]
+            doc_ref = db.collection(collection).document(document.id)
+            doc_ref.update({'label': label})
+            print('Document updated successfully!')
+        else:
+            print('No such document!')
+    except Exception as e:
+        print('Error updating document:', e)
+
 
 app = Flask(__name__)
 CORS(app)
 
-# CORS(app, resources={r"/aidetection/*": {"origins": "*"}})
+# global variable to check if gemini is running
+geminiRunning = False
+
 
 # Display your index page
-
-
 @app.route("/")
 def index():
     return "Hello, World!"
@@ -49,20 +120,38 @@ def preprocess_data(text):
 
 @app.route("/aidetection/", methods=["POST"])
 def aidetection():
+    time.sleep(5)
+    global geminiRunning
+    while geminiRunning:
+        isGeminiRunning = "Gemini is running"
+
     print("app started")
-    import re
-    import os
-    import google.generativeai as genai
-    text_data = request.json.get('text', '')
+
+    recieved_data = request.json
+
+    text_data = recieved_data.get('text')
+    link = recieved_data.get('link')
 
     preprocessed_text = preprocess_data(text_data)
-
     print(preprocessed_text)
+
+    if (len(preprocessed_text) > 1000):
+        print("Text is too long.")
+        preprocessed_text = preprocessed_text[:1000]
 
     json_data = {
         "text": preprocessed_text,
         "label": 0
     }
+
+    read_document(link)
+
+    create_document(text_data, link, 0)
+
+    print("gemini starting")
+
+    geminiRunning = True
+
     genai.configure(api_key="AIzaSyDgm7yEAv7RCI-LC3uHqLvz30kyZzerBBM")
 
     model = genai.GenerativeModel('gemini-pro')
@@ -83,14 +172,34 @@ def aidetection():
     # print(convo.last.text)
     response = model.generate_content(prompt)
 
+    geminiRunning = False
+
     print("response")
 
-    print(response.text.split('"label": ')[1][0])
+    print(response.text)
 
-    # Extract the JSON code from the conversation's last text
-    json_output = print(response.text.split('"label": ')[1][0])
+    json_output = response.text.split('```')[1]
 
-    return jsonify(json_output)
+    print(json_output)
+
+    # Replace single quotes with double quotes to make it a valid JSON string
+    json_output = json_output.replace("'", '"')
+
+    # Parse the JSON string into a dictionary
+    json_output = json.loads(json_output)
+
+    # Extract the label
+    label = json_output['label']
+    print(label)
+
+    # Update the Firestore document with the predicted label
+    update_document(link, label)
+
+    # change label to string
+    label = str(label)
+
+    print("label updated")
+    return label
 
 
 if __name__ == "__main__":
