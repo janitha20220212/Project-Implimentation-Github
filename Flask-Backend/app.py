@@ -98,7 +98,7 @@ def preprocess_data(text):
     text = re.sub(r'[^\w\s]', '', text)
 
     # remove any singular characters from the text like 'a' or 'I'
-    text = re.sub(r'\b\w\b', '', text)
+    # text = re.sub(r'\b\w\b', '', text)
 
     # remove all HTML tags from the text
     text = re.sub(r'<.*?>', '', text)
