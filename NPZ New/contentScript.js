@@ -430,3 +430,33 @@ setInterval(removeEmptyButton, 20);
 // }
 
 // getPostText();
+
+function addLoadingScreen() {
+    const loadingScreen = document.createElement("div");
+    loadingScreen.id = "loading-screen";
+    loadingScreen.style.position = "fixed";
+    loadingScreen.style.top = "0";
+    loadingScreen.style.left = "0";
+    loadingScreen.style.width = "100%";
+    loadingScreen.style.height = "100%";
+    loadingScreen.style.backgroundColor = "rgba(0, 0, 0)";
+    loadingScreen.style.justifyContent = "center";
+    loadingScreen.style.alignItems = "center";
+    loadingScreen.style.display = "flex";
+    loadingScreen.style.zIndex =
+        "1000000000000000000000000000000000000000000000000000000000";
+    loadingScreen.innerHTML =
+        "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
+    document.body.appendChild(loadingScreen);
+}
+
+function removeLoadingScreen() {
+    const loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.remove();
+    }
+}
+
+addLoadingScreen();
+
+setTimeout(removeLoadingScreen, 120000);
