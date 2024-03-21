@@ -1,0 +1,16 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "testOneCheckForSpoilers.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^24.0.0",
+    "vitest": "^1.4.0"
+  }
+}
