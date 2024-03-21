@@ -2,296 +2,241 @@
 let spoilerCount = 0;
 
 chrome.action.onClicked.addListener(function (tab) {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    files: ["contentScript.js"]
-  });
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["contentScript.js"],
+    });
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'updateBadge') {
-    spoilerCount = request.count;
-    chrome.browserAction.setBadgeText({text: request.count.toString()});
-  } else if (request.action === 'getSpoilerCount') {
-    sendResponse({ count: spoilerCount });
-  }
-  return true; // This ensures the sendResponse callback is kept alive for asynchronous use
+    if (request.action === "updateBadge") {
+        spoilerCount = request.count;
+        chrome.browserAction.setBadgeText({ text: request.count.toString() });
+    } else if (request.action === "getSpoilerCount") {
+        sendResponse({ count: spoilerCount });
+    }
+    return true; // This ensures the sendResponse callback is kept alive for asynchronous use
 });
 
 // FLAG POST Background Script Code
 
-
-
-
-
-
 try {
-  //     // you need to manually have firebase-compat.js file in your dir
-    self.importScripts('firebase-compat.js');
-  
-    
+    //     // you need to manually have firebase-compat.js file in your dir
+    self.importScripts("firebase-compat.js");
+
     var databaseNum = [];
-  
-    console.log(databaseNum)
+
+    console.log(databaseNum);
     var count;
-  
+
     const config = {
-      apiKey: "AIzaSyAPERhSJHbCR8UBSSaUDUdixrD27s8Fd1g",
-      authDomain: "no-spoiler-zone.firebaseapp.com",
-      projectId: "no-spoiler-zone",
-      storageBucket: "no-spoiler-zone.appspot.com",
-      messagingSenderId: "354259027509",
-      appId: "1:354259027509:web:636ecdee2aeaa81409d37c"
+        apiKey: "AIzaSyAPERhSJHbCR8UBSSaUDUdixrD27s8Fd1g",
+        authDomain: "no-spoiler-zone.firebaseapp.com",
+        projectId: "no-spoiler-zone",
+        storageBucket: "no-spoiler-zone.appspot.com",
+        messagingSenderId: "354259027509",
+        appId: "1:354259027509:web:636ecdee2aeaa81409d37c",
     };
-  
+
     firebase.initializeApp(config);
-  
-    var db = firebase.firestore()
-  
-    console.log(db)
-  
+
+    var db = firebase.firestore();
+
+    console.log(db);
+
     const data = {
-      TextContent: 'bin'
+        TextContent: "bin",
     };
-  
-  
-                
-  
-      
-    // Getting the position counter 
-  function countGetter(){
-  
-    console.log("Read Count Started");
-  
-    return new Promise((resolve) => {
-          var data = db.collection('counter').doc('count');
-          data.get().then((doc) => {
-          if (!doc.exists){
-              console.log("No such document for counter");
-            }else{
-                count = doc.data().count;
-                console.log("Successfully retrieved counter: " + count )
-              }
-          })
-          setTimeout(()=>{
-            resolve(count)
-            console.log("Read Count ended")
-          }, 2500)
-        })      
-      
-        
-      }
-  
-  
-      // Getting the database index for all the content stored
-  function databaseIndexGetter(count){
-  
-          let databaseIndex = []
-          for(let i = 1; i<count; i++){
-            databaseIndex.push(i)
-          }
-          return databaseIndex;
-     
-      
-  
-    }
-    
-  
-  
-  async function readData(){
-      let count = await countGetter();
-      console.log(count)
-      let databaseNum =databaseIndexGetter(count);
-  
-      console.log(count)
-      console.log(databaseNum)
-  
-      console.log("Read Data started")
-        var list = [];
-  
+
+    // Getting the position counter
+    function countGetter() {
+        console.log("Read Count Started");
+
         return new Promise((resolve) => {
-          for (let i = 0; i< databaseNum.length; i++){
-            var data = db.collection('post').doc('details' + databaseNum[i]);
-             data.get().then((doc) => {
-                if (!doc.exists){
-                    console.log("No such document");
-                }else{
-                  let message = doc.data().TextContent;
-                  list.push(message);
+            var data = db.collection("counter").doc("count");
+            data.get().then((doc) => {
+                if (!doc.exists) {
+                    console.log("No such document for counter");
+                } else {
+                    count = doc.data().count;
+                    console.log("Successfully retrieved counter: " + count);
                 }
-            })
-          }      
-          
-          setTimeout(() => {
-          console.log("Read Data ended")
-          console.log(list)
-          resolve(list)
-          }, 2500);
-          
-          
-        
-        })}
-
-        
-  
-  
-  
-        
-    async function addPost(data){
-      // Checking if the data is already there in the database
-      isAvailable = false;
-      console.log("INSIDE Add Post")
-  
-      let dataContent = await readData();
-
-    console.log("next up is dataContent")
-  
-      console.log(dataContent)
-  
-      for (let i = 0; i<dataContent.length; i++){
-        if (dataContent[i].includes(data.TextContent) === true){
-          isAvailable = true;
-        }
-      }
-  
-    
-      
-      // Adding the data if it is not available
-      if (isAvailable === false){
-        db.collection('post').doc('details' + count).set(data).then(()=> {
-          console.log("Document added successfully!")
-  
+            });
+            setTimeout(() => {
+                resolve(count);
+                console.log("Read Count ended");
+            }, 2500);
         });
-  
-        databaseNum.push(count);
-        count++
-  
-  
-        countData = {
-          count: count
+    }
+
+    // Getting the database index for all the content stored
+    function databaseIndexGetter(count) {
+        let databaseIndex = [];
+        for (let i = 1; i < count; i++) {
+            databaseIndex.push(i);
         }
-        console.log(countData)
-        
-        db.collection('counter').doc('count').set(countData).then(()=> {
-          console.log("Counter Updated as well.")
-          
-        })
-  
-  
-      }else{
-        console.log("Document is already available");
-      }
-      
+        return databaseIndex;
     }
-   
-      
-  
-  
-  
+
+    async function readData() {
+        let count = await countGetter();
+        console.log(count);
+        let databaseNum = databaseIndexGetter(count);
+
+        console.log(count);
+        console.log(databaseNum);
+
+        console.log("Read Data started");
+        var list = [];
+
+        return new Promise((resolve) => {
+            for (let i = 0; i < databaseNum.length; i++) {
+                var data = db
+                    .collection("post")
+                    .doc("details" + databaseNum[i]);
+                data.get().then((doc) => {
+                    if (!doc.exists) {
+                        console.log("No such document");
+                    } else {
+                        let message = doc.data().TextContent;
+                        list.push(message);
+                    }
+                });
+            }
+
+            setTimeout(() => {
+                console.log("Read Data ended");
+                console.log(list);
+                resolve(list);
+            }, 2500);
+        });
+    }
+
+    async function addPost(data) {
+        // Checking if the data is already there in the database
+        isAvailable = false;
+        console.log("INSIDE Add Post");
+
+        let dataContent = await readData();
+
+        console.log("next up is dataContent");
+
+        console.log(dataContent);
+
+        for (let i = 0; i < dataContent.length; i++) {
+            if (dataContent[i].includes(data.TextContent) === true) {
+                isAvailable = true;
+            }
+        }
+
+        // Adding the data if it is not available
+        if (isAvailable === false) {
+            db.collection("post")
+                .doc("details" + count)
+                .set(data)
+                .then(() => {
+                    console.log("Document added successfully!");
+                });
+
+            databaseNum.push(count);
+            count++;
+
+            countData = {
+                count: count,
+            };
+            console.log(countData);
+
+            db.collection("counter")
+                .doc("count")
+                .set(countData)
+                .then(() => {
+                    console.log("Counter Updated as well.");
+                });
+        } else {
+            console.log("Document is already available");
+        }
+    }
+
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      console.log("Recieved Message: " + message)
-      console.log("From Content Script")
+        console.log("Recieved Message: " + message);
+        console.log("From Content Script");
 
+        try {
+            if (message.action.includes("updateBadge")) {
+                // addPost(message)
+                console.log("data contains action attribute");
+            }
+        } catch (error) {
+            addPost(message);
+        }
 
-    try {
-      if (message.action.includes("updateBadge")){
-        // addPost(message)
-        console.log("data contains action attribute")
-      }
-    } catch (error) {
-      addPost(message)
-    }
-  
-      
-
-
-
-
-      sendResponse("Got it - Background Script")
-  
-  
-  
-    })
-  } catch (e) {
+        sendResponse("Got it - Background Script");
+    });
+} catch (e) {
     console.log(e);
-  }
-  
-  let initialUrl = "";
-  let newUrl = "";
-  
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab)=>{
-      // console.log("Updated");
-      // console.log("Tab ID: ")
-      // console.log(tabId);
-  
-      // console.log("Change Info: ")
-      // console.log(changeInfo);
-  
-      // console.log("Tab: ")
-      // console.log(tab);
-      // chrome.runtime.onMessage.addListener((message, sender, sendResponse)=> {
-      //     console.log(message)
-      //     console.log(sender)
-      //     sendResponse("Hi")
-      // })
-      
-  
-          if (changeInfo.status == "loading"){
-              chrome.tabs.sendMessage(
-                  tab.id,
-                  tab.url,
-                  (Response) => {
-                      console.log(Response)
-                      newUrl = tab.url;
-                      console.log("Sent a message! - Loading")
-                  }
-              )
-          }
-      
-          
-          if(changeInfo.status == "complete"){
-          chrome.tabs.sendMessage(
-              tab.id,
-              tab.url,
-              (Response) => {
-                  console.log(Response)
-                  newUrl = tab.url;
-                  console.log("Sent a message! - completed")
-              }
-          )
-      // if (changeInfo.status == "loading"){
-      //     chrome.tabs.sendMessage(
-      //         tab.id,
-      //         tab.url,
-      //         (Response) => {
-      //             console.log(Response)
-      //             newUrl = tab.url;
-      //             console.log("Sent a message! - Loading")
-      //         }
-      //     )
-      // }
-  
-      
-      // if(changeInfo.status == "complete"){
-      // chrome.tabs.sendMessage(
-      //     tab.id,
-      //     tab.url,
-      //     (Response) => {
-      //         console.log(Response)
-      //         newUrl = tab.url;
-      //         console.log("Sent a message! - completed")
-      //     }
-      // )
-  
-      // chrome.scripting.executeScript({
-      //     target: {tabId: tabId},
-      //     files:['Content.js']
-      // });
-  
-      // console.log("Sent a message!")
-      }
-     
-  })
-  
-  
-  
+}
+
+let initialUrl = "";
+let newUrl = "";
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // console.log("Updated");
+    // console.log("Tab ID: ")
+    // console.log(tabId);
+
+    // console.log("Change Info: ")
+    // console.log(changeInfo);
+
+    // console.log("Tab: ")
+    // console.log(tab);
+    // chrome.runtime.onMessage.addListener((message, sender, sendResponse)=> {
+    //     console.log(message)
+    //     console.log(sender)
+    //     sendResponse("Hi")
+    // })
+
+    if (changeInfo.status == "loading") {
+        chrome.tabs.sendMessage(tab.id, tab.url, (Response) => {
+            console.log(Response);
+            newUrl = tab.url;
+            console.log("Sent a message! - Loading");
+        });
+    }
+
+    if (changeInfo.status == "complete") {
+        chrome.tabs.sendMessage(tab.id, tab.url, (Response) => {
+            console.log(Response);
+            newUrl = tab.url;
+            console.log("Sent a message! - completed");
+        });
+        // if (changeInfo.status == "loading"){
+        //     chrome.tabs.sendMessage(
+        //         tab.id,
+        //         tab.url,
+        //         (Response) => {
+        //             console.log(Response)
+        //             newUrl = tab.url;
+        //             console.log("Sent a message! - Loading")
+        //         }
+        //     )
+        // }
+
+        // if(changeInfo.status == "complete"){
+        // chrome.tabs.sendMessage(
+        //     tab.id,
+        //     tab.url,
+        //     (Response) => {
+        //         console.log(Response)
+        //         newUrl = tab.url;
+        //         console.log("Sent a message! - completed")
+        //     }
+        // )
+
+        // chrome.scripting.executeScript({
+        //     target: {tabId: tabId},
+        //     files:['Content.js']
+        // });
+
+        // console.log("Sent a message!")
+    }
+});

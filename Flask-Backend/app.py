@@ -6,6 +6,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+# CORS(app, resources={r"/aidetection/*": {"origins": "*"}})
+
 # Display your index page
 
 
@@ -47,6 +49,7 @@ def preprocess_data(text):
 
 @app.route("/aidetection/", methods=["POST"])
 def aidetection():
+    print("app started")
     import re
     import os
     import google.generativeai as genai
@@ -54,16 +57,18 @@ def aidetection():
 
     preprocessed_text = preprocess_data(text_data)
 
+    print(preprocessed_text)
+
     json_data = {
         "text": preprocessed_text,
         "label": 0
     }
-    genai.configure(api_key="AIzaSyAVXflbZLBt9XILv5om1PGgCYc5NHxDcbs")
+    genai.configure(api_key="AIzaSyDgm7yEAv7RCI-LC3uHqLvz30kyZzerBBM")
 
     model = genai.GenerativeModel('gemini-pro')
 
     prompt = (f"""
-    You are an expert in detection, who is good at classifying a text in to actual spoiler or not.
+    You are an expert in language patern detection, who is good at classifying a text in to actual spoiler or not.
     Help me classify spoilers into: Spoiler(label=1), and Not a Spoiler(label=0).
     Spoilers are provided between three back ticks.
     In your output, only return the Json code back as output - which is provided between three backticks.
@@ -79,10 +84,11 @@ def aidetection():
     response = model.generate_content(prompt)
 
     print("response")
-    print(response.text)
+
+    print(response.text.split('"label": ')[1][0])
 
     # Extract the JSON code from the conversation's last text
-    json_output = response.text.split('```')[1].strip()
+    json_output = print(response.text.split('"label": ')[1][0])
 
     return jsonify(json_output)
 
