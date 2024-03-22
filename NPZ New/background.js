@@ -184,8 +184,16 @@ try {
                 .then(() => {
                     console.log("Counter Updated as well.");
                 });
+
+            // sending flagpost result to the content script if it was added successfully
+                sendDatabaseResult("Post has been flagged")
+
         } else {
             console.log("Document is already available");
+
+            // sending flagpost result to the content script if it is already available
+            sendDatabaseResult("Post is already available in flagged list")
+
         }
     }
 
@@ -197,7 +205,6 @@ try {
         try {
             // If the message was not the intented one (earlier message from other functionalities)
             if (message.action.includes("updateBadge")) {
-                // addPost(message)
                 console.log("data contains action attribute");
             }
         } catch (error) {
@@ -209,4 +216,15 @@ try {
     });
 } catch (e) {
     console.log(e);
+}
+
+// SENDS THE RESULT OF THE FLAG POST TO THE CONTENT SCRIPT TO ALERT THE USER
+function sendDatabaseResult(message){
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+    var activeTab = tabs[0]
+    console.log(activeTab)
+    chrome.tabs.sendMessage(activeTab.id, {msg: message}, function(r){
+        console.log(r)
+    })
+})
 }

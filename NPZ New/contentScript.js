@@ -416,6 +416,15 @@ setInterval(flagIndividualPosts, 20);
 // Removes unwanted extra buttons that were added during the insertion  of the flag post button
 setInterval(removeEmptyButton, 20);
 
+
+// RECIEVES FLAG POST RESULT AND ALERTS THE USER
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("Recieved another Message: " + message.msg);
+    console.log("From Content Script");
+
+    alert(message.msg)
+})
+
 function addLoadingScreen() {
     const loadingScreen = document.createElement("div");
     loadingScreen.id = "loading-screen";
