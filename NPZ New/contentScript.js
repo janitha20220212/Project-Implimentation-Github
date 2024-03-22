@@ -143,6 +143,14 @@ async function checkForSpoilers() {
             ? textBodyElement.textContent.trim()
             : "";
 
+        // checks whether content-href is null or not includes with reddit.com
+        if (!hrefAttribute.includes("reddit.com")) {
+            console.log("Not approved link" + hrefAttribute);
+            continue;
+        } else {
+            console.log("approved link" + hrefAttribute);
+        }
+
         // Merge the title and text body text content
         const mergedContent = titleTextContent + " " + textBodyTextContent;
 
@@ -342,7 +350,7 @@ function getData(et) {
     };
 
     // let response = fetch("http://127.0.0.1:5000/flagpost/", {
-        let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
+    let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
