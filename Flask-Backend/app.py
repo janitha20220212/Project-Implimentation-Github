@@ -7,75 +7,19 @@ import time
 import re
 import os
 import google.generativeai as genai
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-
-# Initialize Firebase Admin SDK
-cred = credentials.Certificate('serviceAccountKey.json')
-firebase_admin.initialize_app(cred)
-
-
-# Create a new document in Firestore
-def create_document(text, link, label):
-    try:
-        print('Creating document...')
-        collection = 'allPosts'
-        document_data = {
-            'text': text,
-            'link': link,
-            'label': label
-        }
-        db = firestore.client()
-        doc_ref = db.collection(collection).document()
-        doc_ref.set(document_data)
-        print('Document created with ID:', doc_ref.id)
-    except Exception as e:
-        print('Error creating document:', e)
-
-
-def read_document(link):
-    try:
-        print('Reading document...')
-        collection = 'allPosts'
-        db = firestore.client()
-        query = db.collection(collection).where('link', '==', link).limit(1)
-        documents = query.get()
-        if documents:
-            document = documents[0]
-            data = document.to_dict()
-            label = data.get('label')
-            label = str(label)
-            print('Document data:', data)
-            return label
-        else:
-            print('No such document!')
-    except Exception as e:
-        print('Error reading document:', e)
-
-# Update a document in Firestore
-
-
-def update_document(link, label):
-    try:
-        print('Updating document...')
-        collection = 'allPosts'
-        db = firestore.client()
-        query = db.collection(collection).where('link', '==', link).limit(1)
-        documents = query.get()
-        if documents:
-            document = documents[0]
-            doc_ref = db.collection(collection).document(document.id)
-            doc_ref.update({'label': label})
-            print('Document updated successfully!')
-        else:
-            print('No such document!')
-    except Exception as e:
-        print('Error updating document:', e)
-
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 CORS(app)
+
+# mysql connection
+app.config['MYSQL_HOST'] = 'database-1.cviwo8q0ahtv.eu-north-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'Hello_Password'
+app.config['MYSQL_DB'] = 'spoiler'
+
+mysql = MySQL(app)
+
 
 # global variable to check if gemini is running
 geminiRunning = False
@@ -117,6 +61,53 @@ def preprocess_data(text):
     # returns the cleaned text
     return text
 
+# Create a new document in Firestore
+
+
+def create_document(text, link, label):
+    try:
+        cursor = mysql.connection.cursor()
+        print('Creating document...')
+        query = "INSERT INTO spoilers (text, link, label) VALUES (%s, %s, %s)"
+        cursor.execute(query, (text, link, label))
+        mysql.connection.commit()
+        print('Document created successfully!')
+    except Exception as e:
+        print('Error creating document:', e)
+        mysql.connection.rollback()
+    return False
+
+
+def read_document(link):
+    try:
+        cursor = mysql.connection.cursor()
+        print('Reading document...')
+        query = "SELECT label FROM spoilers WHERE link = %s"
+        cursor.execute(query, (link,))
+        document = cursor.fetchone()
+        if document:
+            label = document['label']
+            print("Label for the document with the provided link:", label)
+            return label
+        else:
+            print('No such document!')
+    except Exception as e:
+        print('Error reading document:', e)
+
+
+@app.route("/flagpost/", methods=["POST"])
+def flagPost():
+    recieved_data = request.json
+    heading_data = recieved_data.get('Heading')
+    text_content = recieved_data.get('TextContent')
+    link = recieved_data.get('link')
+    label = recieved_data.get('label')
+    text_data = heading_data + text_content
+
+    create_document(text_data, link, label)
+
+    return "Document created successfully!"
+
 
 @app.route("/aidetection/", methods=["POST"])
 def aidetection():
@@ -135,9 +126,9 @@ def aidetection():
     preprocessed_text = preprocess_data(text_data)
     print(preprocessed_text)
 
-    if (len(preprocessed_text) > 1000):
-        print("Text is too long.")
-        preprocessed_text = preprocessed_text[:1000]
+    # if (len(preprocessed_text) > 1000):
+    #     print("Text is too long.")
+    #     preprocessed_text = preprocessed_text[:1000]
 
     json_data = {
         "text": preprocessed_text,
@@ -145,8 +136,6 @@ def aidetection():
     }
 
     read_document(link)
-
-    create_document(text_data, link, 0)
 
     print("gemini starting")
 
@@ -193,7 +182,10 @@ def aidetection():
     print(label)
 
     # Update the Firestore document with the predicted label
-    update_document(link, label)
+    doc_being_created = True
+
+    while (doc_being_created):
+        doc_being_created = create_document(text_data, link, label)
 
     # change label to string
     label = str(label)
