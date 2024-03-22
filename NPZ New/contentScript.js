@@ -122,12 +122,27 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     }
 }
 
+/*//Arrays for KeyWord Check
+const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
+const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
+*/
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
-    const articles = document.querySelectorAll("article.w-full");
+    //const articles = document.querySelectorAll("article.w-full");
+    const articles = document.querySelectorAll('article.w-full, faceplate-tracker[data-testid="search-post"]');
 
     // Iterate over each article
-    for (const article of articles) {
+    for (const article of articles) { 
+        //Word check for the arrays
+        /*const elementText = article.textContent.toLowerCase();
+        const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
+        const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
+
+         if (containsMarvelWord && containsSpoilerKeyword) {
+        // Select the first child of the article element
+        const firstChild = article.firstElementChild; 
+        hideSpoilerPosts(firstChild);}*/
+        
         // Select the first child of the article element
         const firstChild = article.firstElementChild;
 
@@ -173,7 +188,7 @@ async function checkForSpoilers() {
         console.log("Contains spoiler: " + containsSpoiler);
 
         if (containsSpoiler) {
-            hideSpoilerPosts(article);
+            hideSpoilerPosts(firstChild);
         }
     }
 }
@@ -181,15 +196,12 @@ async function checkForSpoilers() {
 function hideSpoilerPosts(article) {
     containsSpoiler = true;
     spoilerCount++; // Increment counter
-    const parentBackground = article.closest(
-        "post-consume-tracker, shreddit-post"
-    );
 
     if (
-        parentBackground &&
-        !parentBackground.classList.contains("spoiler-viewed")
+        article &&
+        !article.classList.contains("spoiler-viewed")
     ) {
-        const descendants = parentBackground.querySelectorAll(
+        const descendants = article.querySelectorAll(
             '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
         );
 
@@ -199,7 +211,7 @@ function hideSpoilerPosts(article) {
             descendant.style.filter = "blur(8px)";
         });
 
-        if (!parentBackground.querySelector(".view-spoiler-button")) {
+        if (!article.querySelector(".view-spoiler-button")) {
             const viewSpoilerButton = document.createElement("button");
             viewSpoilerButton.textContent = "View Spoiler";
             viewSpoilerButton.className = "view-spoiler-button";
@@ -239,9 +251,12 @@ function hideSpoilerPosts(article) {
             });
 
             // Append the buttons to the parentBackground element
-            parentBackground.appendChild(viewSpoilerButton);
-            parentBackground.appendChild(upvoteButton);
-            parentBackground.appendChild(downvoteButton);
+            article.appendChild(viewSpoilerButton);
+            article.appendChild(upvoteButton);
+            article.appendChild(downvoteButton);
+            /*article.insertAdjacentElement('afterend', viewSpoilerButton);
+            article.insertAdjacentElement('afterend', upvoteButton);
+            article.insertAdjacentElement('afterend', downvoteButton);*/
         }
     }
     // elements.forEach((element) => {
