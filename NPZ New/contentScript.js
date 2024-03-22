@@ -83,16 +83,17 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         link: postUniqueLink,
     };
     try {
-        // let response = await fetch(
-        // "https://nospoilerzone.azurewebsites.net/aidetection/",
-        // {
-        let response = await fetch("http://127.0.0.1:5000/aidetection/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(post),
-        });
+        let response = await fetch(
+            "https://nospoilerzone.azurewebsites.net/aidetection/",
+            {
+                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(post),
+            }
+        );
         let data = await response.json();
 
         containsSpoiler = data; // Extract label from the response
@@ -164,8 +165,7 @@ async function checkForSpoilers() {
         console.log("Contains spoiler: " + containsSpoiler);
 
         if (containsSpoiler) {
-            hideSpoilerPosts(article
-                );
+            hideSpoilerPosts(article);
         }
     }
 }
