@@ -1,32 +1,30 @@
 {
-  "manifest_version": 3,
-  "name": "Reddit Spoiler Blocker",
-  "version": "1.0",
-  "description": "Blocks movie spoilers on Reddit.",
-  "permissions": ["activeTab", "storage", "tabs", "scripting"],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "npzlogo.png",
-      "48": "npzlogo.png",
-      "128": "npzlogo.png"
-    }
-  },
-  "icons": {
-    "16": "npzlogo.png",
-    "48": "npzlogo.png",
-    "128": "npzlogo.png"
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://www.reddit.com/*"],
-      "js": ["contentScript.js"]
-    }
-  ],
-  "host_permissions": [
-    "https://www.reddit.com/*"
-  ]
+    "manifest_version": 3,
+    "name": "Reddit Spoiler Blocker",
+    "version": "1.0",
+    "description": "Blocks movie spoilers on Reddit.",
+    "permissions": ["activeTab", "storage", "tabs", "scripting"],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "npzlogo.png",
+            "48": "npzlogo.png",
+            "128": "npzlogo.png"
+        }
+    },
+    "icons": {
+        "16": "npzlogo.png",
+        "48": "npzlogo.png",
+        "128": "npzlogo.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.reddit.com/*", "https://twitter.com/*"],
+            "js": ["contentScript.js"]
+        }
+    ],
+    "host_permissions": ["https://www.reddit.com/*"]
 }
