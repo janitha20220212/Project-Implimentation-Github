@@ -279,13 +279,15 @@ chrome.runtime.sendMessage({ action: "updateBadge", count: spoilerCount });
 //     console.log(postLinks);
 // });
 
-// Flagging Post feature
+// fLAGGING POST FEATURE
 
-// Adds flag post button in the home page
+// ADDS FLAG POST BUTTON TO POSTS IN THE HOME PAGE
 function flagHomePosts() {
-    let posts = document.getElementsByTagName("a");
-    let post = document.getElementsByTagName("span");
 
+    // Getting the posts based on the a tag
+    let posts = document.getElementsByTagName("a");
+
+    // Looping through the posts and adding a button at end of the post
     for (let i = 0; i < posts.length; i++) {
         if (posts[i].slot.includes("full-post-link")) {
             posts[i].slot = "full-post";
@@ -300,6 +302,7 @@ function flagHomePosts() {
     //
 }
 
+// EVENT HANDLER WHEN A USER CLICKS ON A FLAG POST BUTTON
 function getData(et) {
     console.log("Get data is running");
     let button = et.target;
@@ -307,10 +310,13 @@ function getData(et) {
     let heading;
     let link;
     try {
+        // Getting the content if it is part of the homepage
         text = text = button.parentElement.children[5].textContent.trim();
         heading = button.parentElement.children[3].textContent.trim();
         link = button.parentElement.children[3].href;
     } catch (error) {
+
+        // Getting the Content if it was an individual post
         console.log("There was an error for heading button access");
         text = document
             .getElementsByTagName("h1")[0]
@@ -321,22 +327,26 @@ function getData(et) {
             .parentElement.getAttribute("content-href");
     }
 
+
+    // setting the heading, text and link of the post into an object
     let post = {
         Heading: heading.trim(),
         TextContent: text.trim(),
         link: link,
     };
 
+
+
+    // Sending the post details to the background script for storing in a database
     chrome.runtime.sendMessage(post, (response) => {
         console.log(response);
     });
 }
 
-// function executeFun(btn){
-//     getData(btn)
-// }
 
 let idList = [];
+
+// ADDS EVENT HANDLERS TO THE FLAG POST BUTTONS
 function addClickEvent() {
     let btns = document.getElementsByClassName("flag");
 
@@ -348,26 +358,17 @@ function addClickEvent() {
     }
 }
 
-// function addClicker(){
-//     let btns = document.getElementsByClassName("flag")
-
-//     for (let i = 0; i< btns.length; i++){
-//         if (!idList.includes(btns[i].id) && btns[i].id.includes(i)){
-//             idList.push(i);
-//             btns[i].addEventListener("click", () => executeFun(btns[i]))
-//         }
-
-//     }
-// }
-
-// Adds flag post button to individual posts when clicked on them
+// ADDING FLAG POST BUTTON TO INDIVIDUAL POSTS WHEN CLICKED
 
 // to make sure only one button is added to the page
 let executed = false;
 
 function flagIndividualPosts() {
+
+    // Getting the post using the span tag
     let post = document.getElementsByTagName("span");
 
+    // looping through the post and 
     for (let i = 0; i < post.length; i++) {
         if (post[i].innerText.includes("Sort")) {
             post[i].innerText = "sort by: ";
@@ -381,7 +382,7 @@ function flagIndividualPosts() {
     }
 }
 
-// Removing the empty button on top of the flag post button
+// REMOVES THE EMPTY BUTTON ON TOP OF THE FLAG POST BUTTON
 function removeEmptyButton() {
     let button4 = document.getElementsByTagName("button");
 
@@ -394,42 +395,15 @@ function removeEmptyButton() {
 
 // dynamically adds Flag Post button
 setInterval(flagHomePosts, 2000);
-// setInterval(checkForSpoilers, 2000);
+
+// adds click events to the flag post buttons
 setInterval(addClickEvent, 20);
-// setInterval(addClicker, 200);
+
+// adds flag post button to individual posts
 setInterval(flagIndividualPosts, 20);
+
+// Removes unwanted extra buttons that were added during the insertion  of the flag post button
 setInterval(removeEmptyButton, 20);
-
-// Get post text
-
-// let list = [];
-
-// function getPostText(){
-//   const elementsText = document.querySelectorAll('[slot="text-body"]');
-//   const elementsHeading = document.querySelectorAll('[slot="text-body"]');
-
-//   elementsText.forEach(element => {
-//       const elementText = element.textContent;
-
-//       if (!list.includes(elementText.trim())){
-//           list.push(elementText);
-//       }
-
-//   })
-
-//   elementsText.forEach(element => {
-//       const elementText = element.textContent;
-
-//       if (!list.includes(elementText.trim())){
-//           list.push(elementText.trim());
-//       }
-
-//   })
-
-//   list.forEach((text1)=> {console.log(text1)})
-// }
-
-// getPostText();
 
 function addLoadingScreen() {
     const loadingScreen = document.createElement("div");
