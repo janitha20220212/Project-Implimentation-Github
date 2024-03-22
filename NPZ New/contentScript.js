@@ -76,24 +76,23 @@ postLinks.forEach((postLink, index) => {
     });
 });
 
-async function fetchModel(totalContent, postUniqueLink, elements) {
+async function fetchModel(totalContent, postUniqueLink, article) {
     containsSpoiler = false;
     var post = {
         text: totalContent,
         link: postUniqueLink,
     };
     try {
-        let response = await fetch(
-            "https://nospoilerzone.azurewebsites.net/aidetection/",
-            {
-                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(post),
-            }
-        );
+        // let response = await fetch(
+        // "https://nospoilerzone.azurewebsites.net/aidetection/",
+        // {
+        let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
+        });
         let data = await response.json();
 
         containsSpoiler = data; // Extract label from the response
@@ -102,7 +101,7 @@ async function fetchModel(totalContent, postUniqueLink, elements) {
         if (containsSpoiler == "1") {
             console.log("Contains spoiler in if");
             containsSpoiler = true;
-            hideSpoilerPosts(elements);
+            hideSpoilerPosts(article);
         } else if (containsSpoiler == "0") {
             containsSpoiler = false;
             console.log("not spoiler in if");
@@ -124,112 +123,121 @@ async function fetchModel(totalContent, postUniqueLink, elements) {
 
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
-    const elements = document.querySelectorAll(
-        '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [data-post-click-location="text-body"]'
-    );
+    const articles = document.querySelectorAll("article.w-full");
 
-    let postUniqueLink = Array.from(
-        document.querySelectorAll('a[data-testid="post-title"]')
-    ).map((a) => a.href);
+    // Iterate over each article
+    for (const article of articles) {
+        // Select the first child of the article element
+        const firstChild = article.firstElementChild;
 
-    console.log(document.querySelectorAll('[data-testid="post-title-text"]'));
+        const hrefAttribute = firstChild.getAttribute("content-href");
+        const titleElement = article.querySelector('[slot="title"]');
+        const textBodyElement = article.querySelector('[slot="text-body"]');
 
-    console.log(document.querySelectorAll('[slot="text-body"]'));
+        // Extract text content from elements with slot="title" and slot="text-body"
+        const titleTextContent = titleElement
+            ? titleElement.textContent.trim()
+            : "";
+        const textBodyTextContent = textBodyElement
+            ? textBodyElement.textContent.trim()
+            : "";
 
-    console.log(
-        document.querySelectorAll('[data-post-click-location="text-body"]')
-    );
+        // Merge the title and text body text content
+        const mergedContent = titleTextContent + " " + textBodyTextContent;
 
-    let totalContent = "";
+        console.log("Merged Content:", mergedContent);
+        console.log("Href Attribute:", hrefAttribute);
 
-    elements.forEach((element) => {
-        totalContent += element.textContent;
-    });
+        let totalContent = "";
+        totalContent = mergedContent;
+        let postUniqueLink = "no-link";
+        postUniqueLink = hrefAttribute;
 
-    console.log("Total Content: " + totalContent);
-    let containsSpoiler = false;
+        containsSpoiler = await fetchModel(
+            totalContent,
+            postUniqueLink,
+            article
+        );
 
-    console.log("fetch started" + containsSpoiler);
+        console.log("fetch finished" + containsSpoiler);
 
-    containsSpoiler = await fetchModel(totalContent, postUniqueLink, elements);
+        console.log("Contains spoiler: " + containsSpoiler);
 
-    console.log("fetch finished" + containsSpoiler);
-
-    console.log("Contains spoiler: " + containsSpoiler);
-
-    if (containsSpoiler) {
-        hideSpoilerPosts(elements);
+        if (containsSpoiler) {
+            hideSpoilerPosts(article
+                );
+        }
     }
 }
 
-function hideSpoilerPosts(elements) {
+function hideSpoilerPosts(article) {
     containsSpoiler = true;
-    elements.forEach((element) => {
-        spoilerCount++; // Increment counter
-        const parentBackground = element.closest(
-            "post-consume-tracker, shreddit-post"
+    spoilerCount++; // Increment counter
+    const parentBackground = article.closest(
+        "post-consume-tracker, shreddit-post"
+    );
+
+    if (
+        parentBackground &&
+        !parentBackground.classList.contains("spoiler-viewed")
+    ) {
+        const descendants = parentBackground.querySelectorAll(
+            '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
         );
 
-        if (
-            parentBackground &&
-            !parentBackground.classList.contains("spoiler-viewed")
-        ) {
-            const descendants = parentBackground.querySelectorAll(
-                '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
-            );
+        descendants.forEach((descendant) => {
+            descendant.style.backgroundColor = "grey";
+            descendant.style.color = "grey";
+            descendant.style.filter = "blur(8px)";
+        });
 
-            descendants.forEach((descendant) => {
-                descendant.style.backgroundColor = "grey";
-                descendant.style.color = "grey";
-                descendant.style.filter = "blur(8px)";
-            });
+        if (!parentBackground.querySelector(".view-spoiler-button")) {
+            const viewSpoilerButton = document.createElement("button");
+            viewSpoilerButton.textContent = "View Spoiler";
+            viewSpoilerButton.className = "view-spoiler-button";
 
-            if (!parentBackground.querySelector(".view-spoiler-button")) {
-                const viewSpoilerButton = document.createElement("button");
-                viewSpoilerButton.textContent = "View Spoiler";
-                viewSpoilerButton.className = "view-spoiler-button";
+            const upvoteButton = document.createElement("button");
+            upvoteButton.textContent = "Upvote";
+            upvoteButton.style.backgroundColor = "green";
+            upvoteButton.style.color = "white";
+            upvoteButton.style.border = "none";
+            upvoteButton.style.padding = "5px 10px";
+            upvoteButton.style.cursor = "pointer";
+            upvoteButton.style.display = "none";
 
-                const upvoteButton = document.createElement("button");
-                upvoteButton.textContent = "Upvote";
-                upvoteButton.style.backgroundColor = "green";
-                upvoteButton.style.color = "white";
-                upvoteButton.style.border = "none";
-                upvoteButton.style.padding = "5px 10px";
-                upvoteButton.style.cursor = "pointer";
-                upvoteButton.style.display = "none";
+            const downvoteButton = document.createElement("button");
+            downvoteButton.textContent = "Downvote";
+            downvoteButton.style.backgroundColor = "red";
+            downvoteButton.style.color = "white";
+            downvoteButton.style.border = "none";
+            downvoteButton.style.padding = "5px 10px";
+            downvoteButton.style.cursor = "pointer";
+            downvoteButton.style.display = "none";
 
-                const downvoteButton = document.createElement("button");
-                downvoteButton.textContent = "Downvote";
-                downvoteButton.style.backgroundColor = "red";
-                downvoteButton.style.color = "white";
-                downvoteButton.style.border = "none";
-                downvoteButton.style.padding = "5px 10px";
-                downvoteButton.style.cursor = "pointer";
-                downvoteButton.style.display = "none";
-
-                viewSpoilerButton.addEventListener("click", function () {
-                    // Remove the blur and color changes
-                    descendants.forEach((descendant) => {
-                        descendant.style.backgroundColor = "";
-                        descendant.style.color = "";
-                        descendant.style.filter = "";
-                    });
-
-                    // Show the upvote and downvote buttons
-                    upvoteButton.style.display = "";
-                    downvoteButton.style.display = "";
-
-                    // Hide the view spoiler button
-                    viewSpoilerButton.style.display = "none";
+            viewSpoilerButton.addEventListener("click", function () {
+                // Remove the blur and color changes
+                descendants.forEach((descendant) => {
+                    descendant.style.backgroundColor = "";
+                    descendant.style.color = "";
+                    descendant.style.filter = "";
                 });
 
-                // Append the buttons to the parentBackground element
-                parentBackground.appendChild(viewSpoilerButton);
-                parentBackground.appendChild(upvoteButton);
-                parentBackground.appendChild(downvoteButton);
-            }
+                // Show the upvote and downvote buttons
+                upvoteButton.style.display = "";
+                downvoteButton.style.display = "";
+
+                // Hide the view spoiler button
+                viewSpoilerButton.style.display = "none";
+            });
+
+            // Append the buttons to the parentBackground element
+            parentBackground.appendChild(viewSpoilerButton);
+            parentBackground.appendChild(upvoteButton);
+            parentBackground.appendChild(downvoteButton);
         }
-    });
+    }
+    // elements.forEach((element) => {
+    // });
 }
 
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
@@ -283,7 +291,6 @@ chrome.runtime.sendMessage({ action: "updateBadge", count: spoilerCount });
 
 // ADDS FLAG POST BUTTON TO POSTS IN THE HOME PAGE
 function flagHomePosts() {
-
     // Getting the posts based on the a tag
     let posts = document.getElementsByTagName("a");
 
@@ -315,7 +322,6 @@ function getData(et) {
         heading = button.parentElement.children[3].textContent.trim();
         link = button.parentElement.children[3].href;
     } catch (error) {
-
         // Getting the Content if it was an individual post
         console.log("There was an error for heading button access");
         text = document
@@ -327,7 +333,6 @@ function getData(et) {
             .parentElement.getAttribute("content-href");
     }
 
-
     // setting the heading, text and link of the post into an object
     let post = {
         Heading: heading.trim(),
@@ -335,14 +340,11 @@ function getData(et) {
         link: link,
     };
 
-
-
     // Sending the post details to the background script for storing in a database
     chrome.runtime.sendMessage(post, (response) => {
         console.log(response);
     });
 }
-
 
 let idList = [];
 
@@ -364,11 +366,10 @@ function addClickEvent() {
 let executed = false;
 
 function flagIndividualPosts() {
-
     // Getting the post using the span tag
     let post = document.getElementsByTagName("span");
 
-    // looping through the post and 
+    // looping through the post and
     for (let i = 0; i < post.length; i++) {
         if (post[i].innerText.includes("Sort")) {
             post[i].innerText = "sort by: ";
@@ -431,6 +432,6 @@ function removeLoadingScreen() {
     }
 }
 
-addLoadingScreen();
+// addLoadingScreen();
 
-setTimeout(removeLoadingScreen, 120000);
+// setTimeout(removeLoadingScreen, 120000);
