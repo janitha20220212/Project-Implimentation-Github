@@ -338,7 +338,17 @@ function getData(et) {
         Heading: heading.trim(),
         TextContent: text.trim(),
         link: link,
+        label: 1,
     };
+
+    // let response = fetch("http://127.0.0.1:5000/flagpost/", {
+    let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(post),
+    });
 
     // Sending the post details to the background script for storing in a database
     chrome.runtime.sendMessage(post, (response) => {
