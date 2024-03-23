@@ -6,6 +6,8 @@ chrome.storage.local.get("blockSpoilers", function (data) {
     blockSpoilers = data.blockSpoilers;
 });
 
+let uniquePosts = [];
+
 let postLinks = Array.from(
     document.querySelectorAll('a[data-testid="post-title"]')
 ).map((a) => a.href);
@@ -78,22 +80,29 @@ postLinks.forEach((postLink, index) => {
 
 async function fetchModel(totalContent, postUniqueLink, article) {
     containsSpoiler = false;
+    totalContent = totalContent;
+    console.log("fetched Total Content: ", totalContent);
+    totalContent = totalContent
+        .replace(/[\r\n]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    console.log("cleared Total Content: ", xtotalContent);
     var post = {
         text: totalContent,
         link: postUniqueLink,
     };
+
     try {
-        let response = await fetch(
-            "https://nospoilerzone.azurewebsites.net/aidetection/",
-            {
-                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(post),
-            }
-        );
+        // let response = await fetch(
+        //     "https://nospoilerzone.azurewebsites.net/aidetection/",
+        //     {
+        let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
+        });
         let data = await response.json();
 
         containsSpoiler = data; // Extract label from the response
@@ -116,7 +125,7 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         console.log("fetch method Contains spoiler: " + containsSpoiler);
         return containsSpoiler;
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error:" + error);
         console.log("Error in the fetch");
         return false;
     }
@@ -124,56 +133,138 @@ async function fetchModel(totalContent, postUniqueLink, article) {
 
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
-    const articles = document.querySelectorAll("article.w-full");
 
-    // Iterate over each article
-    for (const article of articles) {
-        // Select the first child of the article element
-        const firstChild = article.firstElementChild;
+    var currentURL = window.location.href;
+    // console.log("currentURL" + currentURL);
 
-        const hrefAttribute = firstChild.getAttribute("content-href");
-        const titleElement = article.querySelector('[slot="title"]');
-        const textBodyElement = article.querySelector('[slot="text-body"]');
+    if (currentURL.includes("reddit.com")) {
+        // console.log("Reddit page");
+        const articles = document.querySelectorAll("article.w-full");
 
-        // Extract text content from elements with slot="title" and slot="text-body"
-        const titleTextContent = titleElement
-            ? titleElement.textContent.trim()
-            : "";
-        const textBodyTextContent = textBodyElement
-            ? textBodyElement.textContent.trim()
-            : "";
+        // Iterate over each article
+        for (const article of articles) {
+            // Select the first child of the article element
+            const firstChild = article.firstElementChild;
 
-        // checks whether content-href is null or not includes with reddit.com
-        if (!hrefAttribute.includes("reddit.com")) {
-            console.log("Not approved link" + hrefAttribute);
-            continue;
-        } else {
-            console.log("approved link" + hrefAttribute);
+            const hrefAttribute = firstChild.getAttribute("content-href");
+            const titleElement = article.querySelector('[slot="title"]');
+            const textBodyElement = article.querySelector('[slot="text-body"]');
+
+            // Extract text content from elements with slot="title" and slot="text-body"
+            const titleTextContent = titleElement
+                ? titleElement.textContent.trim()
+                : "";
+            const textBodyTextContent = textBodyElement
+                ? textBodyElement.textContent.trim()
+                : "";
+
+            // checks whether content-href is null or not includes with reddit.com
+            if (!hrefAttribute.includes("reddit.com")) {
+                console.log("Not approved link" + hrefAttribute);
+                continue;
+            } else {
+                console.log("approved link" + hrefAttribute);
+            }
+
+            // Merge the title and text body text content
+            const mergedContent = titleTextContent + " " + textBodyTextContent;
+
+            console.log("Merged Content:", mergedContent);
+            console.log("Href Attribute:", hrefAttribute);
+
+            let totalContent = "";
+            totalContent = mergedContent;
+            let postUniqueLink = "no-link";
+            postUniqueLink = hrefAttribute;
+
+            containsSpoiler = await fetchModel(
+                totalContent,
+                postUniqueLink,
+                article
+            );
+
+            console.log("fetch finished" + containsSpoiler);
+
+            console.log("Contains spoiler: " + containsSpoiler);
+
+            if (containsSpoiler) {
+                hideSpoilerPosts(article);
+            }
         }
+    } else if (currentURL.includes("twitter.com")) {
+        // console.log("Twitter page");
 
-        // Merge the title and text body text content
-        const mergedContent = titleTextContent + " " + textBodyTextContent;
+        const loadingScreen = document.createElement("div");
+        loadingScreen.id = "loading-screen";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.backgroundColor = "rgba(0, 0, 0)";
+        loadingScreen.style.justifyContent = "center";
+        loadingScreen.style.alignItems = "center";
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.zIndex =
+            "1000000000000000000000000000000000000000000000000000000000";
+        loadingScreen.innerHTML =
+            "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
+        const articles = document.querySelectorAll("article");
 
-        console.log("Merged Content:", mergedContent);
-        console.log("Href Attribute:", hrefAttribute);
+        for (const article of articles) {
+            if (article.querySelector(".already-checked")) {
+                console.log("Already checked");
+                continue;
+            } else {
+                article.classList.add("already-checked");
+            }
 
-        let totalContent = "";
-        totalContent = mergedContent;
-        let postUniqueLink = "no-link";
-        postUniqueLink = hrefAttribute;
+            try {
+                const tweetTextElement = article.querySelector(
+                    '[data-testid="tweetText"]'
+                );
+                const totalContent = tweetTextElement
+                    ? tweetTextElement.textContent.trim()
+                    : "";
 
-        containsSpoiler = await fetchModel(
-            totalContent,
-            postUniqueLink,
-            article
-        );
+                const linkelement = article.querySelector(
+                    ".css-175oi2r.r-18u37iz.r-1q142lx > a:first-child"
+                );
 
-        console.log("fetch finished" + containsSpoiler);
+                let postUniqueLink = "no-link";
+                postUniqueLink = linkelement.getAttribute("href");
 
-        console.log("Contains spoiler: " + containsSpoiler);
+                // add "twitter.com" to the postUniqueLink
+                postUniqueLink = "https://twitter.com" + postUniqueLink;
 
-        if (containsSpoiler) {
-            hideSpoilerPosts(article);
+                if (uniquePosts.includes(postUniqueLink)) {
+                    console.log("Already checked " + postUniqueLink);
+                    continue;
+                } else {
+                    uniquePosts.push(postUniqueLink);
+                }
+
+                console.log("Total Content: ", totalContent);
+                console.log("Post Unique Link: ", postUniqueLink);
+
+                containsSpoiler = await fetchModel(
+                    totalContent,
+                    postUniqueLink,
+                    article
+                );
+
+                console.log("fetch finished" + containsSpoiler);
+
+                console.log("Contains spoiler: " + containsSpoiler);
+
+                if (containsSpoiler) {
+                    hideSpoilerPosts(article);
+                }
+                // article.removeChild("#loadingScreen");
+            } catch (error) {
+                console.log("Error in the twitter page");
+                // article.removeChild("#loadingScreen");
+            }
         }
     }
 }
@@ -181,71 +272,52 @@ async function checkForSpoilers() {
 function hideSpoilerPosts(article) {
     containsSpoiler = true;
     spoilerCount++; // Increment counter
-    const parentBackground = article.closest(
-        "post-consume-tracker, shreddit-post"
-    );
+    article.style.backgroundColor = "grey";
+    article.style.color = "grey";
+    article.style.filter = "blur(8px)";
+    article.style.zIndex = "1000";
 
-    if (
-        parentBackground &&
-        !parentBackground.classList.contains("spoiler-viewed")
-    ) {
-        const descendants = parentBackground.querySelectorAll(
-            '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
-        );
+    if (article.querySelector(".view-spoiler-button")) {
+        const viewSpoilerButton = document.createElement("button");
+        viewSpoilerButton.textContent = "View Spoiler";
+        viewSpoilerButton.className = "view-spoiler-button";
+        const upvoteButton = document.createElement("button");
+        upvoteButton.textContent = "Upvote";
+        upvoteButton.style.backgroundColor = "green";
+        upvoteButton.style.color = "white";
+        upvoteButton.style.border = "none";
+        upvoteButton.style.padding = "5px 10px";
+        upvoteButton.style.cursor = "pointer";
+        upvoteButton.style.display = "none";
+        upvoteButton.style.zIndex = "9000000000";
+        const downvoteButton = document.createElement("button");
+        downvoteButton.textContent = "Downvote";
+        downvoteButton.style.backgroundColor = "red";
+        downvoteButton.style.color = "white";
+        downvoteButton.style.border = "none";
+        downvoteButton.style.padding = "5px 10px";
+        downvoteButton.style.cursor = "pointer";
+        downvoteButton.style.display = "none";
+        downvoteButton.style.zIndex = "9000000000";
 
-        descendants.forEach((descendant) => {
-            descendant.style.backgroundColor = "grey";
-            descendant.style.color = "grey";
-            descendant.style.filter = "blur(8px)";
+        viewSpoilerButton.addEventListener("click", function () {
+            // Remove the blur and color changes
+
+            article.style.backgroundColor = "";
+            article.style.color = "";
+            article.style.filter = "";
+
+            // Show the upvote and downvote buttons
+            upvoteButton.style.display = "";
+            downvoteButton.style.display = "";
+            // Hide the view spoiler button
+            viewSpoilerButton.style.display = "none";
         });
-
-        if (!parentBackground.querySelector(".view-spoiler-button")) {
-            const viewSpoilerButton = document.createElement("button");
-            viewSpoilerButton.textContent = "View Spoiler";
-            viewSpoilerButton.className = "view-spoiler-button";
-
-            const upvoteButton = document.createElement("button");
-            upvoteButton.textContent = "Upvote";
-            upvoteButton.style.backgroundColor = "green";
-            upvoteButton.style.color = "white";
-            upvoteButton.style.border = "none";
-            upvoteButton.style.padding = "5px 10px";
-            upvoteButton.style.cursor = "pointer";
-            upvoteButton.style.display = "none";
-
-            const downvoteButton = document.createElement("button");
-            downvoteButton.textContent = "Downvote";
-            downvoteButton.style.backgroundColor = "red";
-            downvoteButton.style.color = "white";
-            downvoteButton.style.border = "none";
-            downvoteButton.style.padding = "5px 10px";
-            downvoteButton.style.cursor = "pointer";
-            downvoteButton.style.display = "none";
-
-            viewSpoilerButton.addEventListener("click", function () {
-                // Remove the blur and color changes
-                descendants.forEach((descendant) => {
-                    descendant.style.backgroundColor = "";
-                    descendant.style.color = "";
-                    descendant.style.filter = "";
-                });
-
-                // Show the upvote and downvote buttons
-                upvoteButton.style.display = "";
-                downvoteButton.style.display = "";
-
-                // Hide the view spoiler button
-                viewSpoilerButton.style.display = "none";
-            });
-
-            // Append the buttons to the parentBackground element
-            parentBackground.appendChild(viewSpoilerButton);
-            parentBackground.appendChild(upvoteButton);
-            parentBackground.appendChild(downvoteButton);
-        }
+        // Append the buttons to the
+        article.appendChild(viewSpoilerButton);
+        article.appendChild(upvoteButton);
+        article.appendChild(downvoteButton);
     }
-    // elements.forEach((element) => {
-    // });
 }
 
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
@@ -349,8 +421,8 @@ function getData(et) {
         label: 1,
     };
 
-    // let response = fetch("http://127.0.0.1:5000/flagpost/", {
-    let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
+    let response = fetch("http://127.0.0.1:5000/flagpost/", {
+        // let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -424,14 +496,13 @@ setInterval(flagIndividualPosts, 20);
 // Removes unwanted extra buttons that were added during the insertion  of the flag post button
 setInterval(removeEmptyButton, 20);
 
-
 // RECIEVES FLAG POST RESULT AND ALERTS THE USER
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("Recieved another Message: " + message.msg);
     console.log("From Content Script");
 
-    alert(message.msg)
-})
+    alert(message.msg);
+});
 
 function addLoadingScreen() {
     const loadingScreen = document.createElement("div");
@@ -459,6 +530,6 @@ function removeLoadingScreen() {
     }
 }
 
-// addLoadingScreen();
+addLoadingScreen();
 
-// setTimeout(removeLoadingScreen, 120000);
+setTimeout(removeLoadingScreen, 5000);
