@@ -128,6 +128,26 @@ def flagPost():
 
     return "Document created successfully!"
 
+@app.route("/vote/", methods=["POST"])
+def vote():
+    recieved_data = request.json
+    link = recieved_data.get('link')
+    upvotes = recieved_data.get('upvotes')
+    downvotes = recieved_data.get('downvotes')
+
+    try:
+        cursor = mysql.connection.cursor()
+        print('Updating votes...')
+        query = "UPDATE spoilers SET upvotes = %s, downvotes = %s WHERE link = %s"
+        cursor.execute(query, (upvotes, downvotes, link))
+        mysql.connection.commit()
+        print('Votes updated successfully!')
+        return "Votes updated successfully!"
+    except Exception as e:
+        print('Error updating votes:', e)
+        return "Error updating votes"
+    
+    
 
 @app.route("/aidetection/", methods=["POST"])
 def aidetection():
@@ -227,6 +247,15 @@ def aidetection():
     # change label to string
     label = str(label)
     print("label updated")
+
+    # Check if the sum of upvotes and downvotes is greater than or equal to 10
+    if (int(recieved_data.get('upvotes')) + int(recieved_data.get('downvotes'))) >= 10:
+        # Check if upvotes is greater than downvotes
+        if int(recieved_data.get('upvotes')) > int(recieved_data.get('downvotes')):
+            label = '0'
+        else:
+            label = '1'
+
     return label
 
 
