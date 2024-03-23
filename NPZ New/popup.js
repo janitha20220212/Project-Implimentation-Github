@@ -86,17 +86,44 @@ const spoilerCount = document.getElementById("spoilerCount");
 
 // Function to update the spoiler count
 function updateSpoilerCount(count) {
-  spoilerCount.textContent = count;
+    spoilerCount.textContent = count;
 }
 
 // Example usage: Call the updateSpoilerCount function with the desired count
 updateSpoilerCount(500); // Replace 5 with the actual count of detected spoilers
 
 document.addEventListener("DOMContentLoaded", function () {
-  chrome.runtime.sendMessage(
-    { action: "getSpoilerCount" },
-    function (response) {
-      document.getElementById("spoilerCount").textContent = response.count;
-    }
-  );
+    chrome.runtime.sendMessage(
+        { action: "getSpoilerCount" },
+        function (response) {
+            document.getElementById("spoilerCount").textContent =
+                response.count;
+        }
+    );
 });
+
+// document.addEventListener("click", async function () {
+//     try {
+//         let response = await fetch(
+//             "https://nospoilerzone.azurewebsites.net/turnonoffgemini/",
+//             {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 // body: JSON.stringify(post),
+//             }
+//         );
+
+//         let data = await response.text(); // Changed this line
+
+//         console.log(data);
+//         if (data == "True") {
+//             console.log("extension is running");
+//         } else {
+//             console.log("extension is not running");
+//         }
+//     } catch (error) {
+//         console.error("Error:" + error);
+//     }
+// });
