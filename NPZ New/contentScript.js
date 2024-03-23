@@ -139,28 +139,15 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     }
 }
 
-/*//Arrays for KeyWord Check
+//Arrays for KeyWord Check
 const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
 const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
-*/
+
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
 
     var currentURL = window.location.href;
-    // console.log("currentURL" + currentURL);
-    //const articles = document.querySelectorAll("article.w-full");
 
-    // Iterate over each article
-
-    //Word check for the arrays
-    /*const elementText = article.textContent.toLowerCase();
-    const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
-    const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
-    
-    if (containsMarvelWord && containsSpoilerKeyword) {
-        // Select the first child of the article element
-        const firstChild = article.firstElementChild; 
-        hideSpoilerPosts(firstChild);}*/
 
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
@@ -169,14 +156,23 @@ async function checkForSpoilers() {
         );
 
         // Iterate over each article
-        for (const article of articles) {
+        for (const article of articles) { 
+
+            const elementText = article.textContent.toLowerCase();
+            const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
+            const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
+
+            if (containsMarvelWord && containsSpoilerKeyword) {
             // Select the first child of the article element
+            const firstChild = article.firstElementChild; 
+            hideSpoilerPosts(firstChild);}
+           /* // Select the first child of the article element
             const firstChild = article.firstElementChild;
 
             const hrefAttribute = firstChild.getAttribute("content-href");
 
             // Select the first child of the article element
-            firstChild = article.firstElementChild;
+            //firstChild = article.firstElementChild;
 
             const titleElement = article.querySelector('[slot="title"]');
             const textBodyElement = article.querySelector('[slot="text-body"]');
@@ -220,11 +216,11 @@ async function checkForSpoilers() {
 
             if (containsSpoiler) {
                 hideSpoilerPosts(firstChild);
-            }
+            }*/
         }
     } else if (currentURL.includes("twitter.com")) {
         // console.log("Twitter page");
-
+        /*
         const loadingScreen = document.createElement("div");
         loadingScreen.className = "loading-screen";
         loadingScreen.style.position = "fixed";
@@ -240,7 +236,7 @@ async function checkForSpoilers() {
             "1000000000000000000000000000000000000000000000000000000000";
         loadingScreen.innerHTML =
             "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
-        const articles = document.querySelectorAll("article");
+        */const articles = document.querySelectorAll("article");
 
         for (const article of articles) {
             // if (article.querySelector(".already-checked")) {
@@ -249,8 +245,16 @@ async function checkForSpoilers() {
             // } else {
             //     article.classList.add("already-checked");
             // }
+            const elementText = article.textContent.toLowerCase();
+            const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
+            const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
 
-            try {
+            if (containsMarvelWord && containsSpoilerKeyword) {
+            // Select the first child of the article element
+            //const firstChild = article.firstElementChild; 
+            hideSpoilerPosts(article);}
+
+            /*try {
                 const tweetTextElement = article.querySelector(
                     '[data-testid="tweetText"]'
                 );
@@ -298,7 +302,7 @@ async function checkForSpoilers() {
             } catch (error) {
                 console.log("Error in the twitter page");
                 // article.removeChild("#loadingScreen");
-            }
+            }*/
         }
     }
 }
@@ -309,10 +313,16 @@ function hideSpoilerPosts(article) {
 
     if (article && !article.classList.contains("spoiler-viewed")) {
         const descendants = article.querySelectorAll(
-            '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
+            '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"], [data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"]'
         );
 
         if (!article.querySelector(".view-spoiler-button")) {
+            descendants.forEach((descendant) => {
+                descendant.style.backgroundColor = "grey";
+                descendant.style.color = "grey";
+                descendant.style.filter = "blur(8px)";
+            });
+
             const viewSpoilerButton = document.createElement("button");
             viewSpoilerButton.textContent = "View Spoiler";
             viewSpoilerButton.className = "view-spoiler-button";
@@ -341,6 +351,7 @@ function hideSpoilerPosts(article) {
                     descendant.style.backgroundColor = "";
                     descendant.style.color = "";
                     descendant.style.filter = "";
+                    descendant.classList.add("spoiler-viewed");
                 });
 
                 // Show the upvote and downvote buttons
@@ -372,11 +383,11 @@ function hideSpoilerPosts(article) {
 
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
 
-chrome.storage.local.get("blockSpoilers", function (data) {
-    if (data.blockSpoilers) {
-        checkForSpoilers();
-    }
-});
+// chrome.storage.local.get("blockSpoilers", function (data) {
+//     if (data.blockSpoilers) {
+//         checkForSpoilers();
+//     }
+// });
 
 // Create a MutationObserver instance
 const observer = new MutationObserver(checkForSpoilers);
@@ -390,22 +401,22 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     }
 });
 
-window.addEventListener("scroll", function () {
-    const viewSpoilerButton = document.querySelector(".view-spoiler-button");
-    if (viewSpoilerButton) {
-        viewSpoilerButton.style.display = "block";
-    }
-});
+// window.addEventListener("scroll", function () {
+//     const viewSpoilerButton = document.querySelector(".view-spoiler-button");
+//     if (viewSpoilerButton) {
+//         viewSpoilerButton.style.display = "block";
+//     }
+// });
 
-window.addEventListener("scroll", function () {
-    const upvoteButton = document.querySelector(".upvote-button");
-    const downvoteButton = document.querySelector(".downvote-button");
+// window.addEventListener("scroll", function () {
+//     const upvoteButton = document.querySelector(".upvote-button");
+//     const downvoteButton = document.querySelector(".downvote-button");
 
-    if (upvoteButton && downvoteButton) {
-        upvoteButton.style.display = "none";
-        downvoteButton.style.display = "none";
-    }
-});
+//     if (upvoteButton && downvoteButton) {
+//         upvoteButton.style.display = "none";
+//         downvoteButton.style.display = "none";
+//     }
+// });
 
 // Send the spoiler count to the background script
 chrome.runtime.sendMessage({ action: "updateBadge", count: spoilerCount });

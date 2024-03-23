@@ -139,20 +139,6 @@ async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
 
     var currentURL = window.location.href;
-    // console.log("currentURL" + currentURL);
-    //const articles = document.querySelectorAll("article.w-full");
-
-    // Iterate over each article
-
-    //Word check for the arrays
-    /*const elementText = article.textContent.toLowerCase();
-    const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
-    const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
-    
-    if (containsMarvelWord && containsSpoilerKeyword) {
-        // Select the first child of the article element
-        const firstChild = article.firstElementChild; 
-        hideSpoilerPosts(firstChild);}*/
 
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
