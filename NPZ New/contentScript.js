@@ -147,18 +147,15 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         console.log("contain spoiler return" + containsSpoiler);
 
         if (containsSpoiler == "1") {
-            console.log("Contains spoiler in if");
+            console.log("Contains spoiler in if" + text);
             containsSpoiler = true;
             hideSpoilerPosts(article);
         } else if (containsSpoiler == "0") {
             containsSpoiler = false;
-            console.log("not spoiler in if");
-        } else if (containsSpoiler == "Text is too long.") {
-            containsSpoiler = false;
-            console.log("Text is too long");
+            console.log("not spoiler in if" + text);
         } else {
             containsSpoiler = false;
-            console.log("Error in the fetch");
+            console.log("Error in the fetch" + text);
         }
         console.log("fetch method Contains spoiler: " + containsSpoiler);
         // article.removeChild(loadingScreen);
@@ -185,7 +182,7 @@ async function checkForSpoilers() {
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
         const articles = document.querySelectorAll(
-            'article.w-full, post-consume-tracker'
+            "article.w-full, faceplate-tracker"
         );
 
         // Iterate over each article
@@ -357,36 +354,39 @@ function hideSpoilerPosts(article) {
 
     if (article && !article.classList.contains("spoiler-viewed")) {
         const descendantsReddit = article.querySelectorAll(
-            '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
-        ); 
+            '[slot="title"], [data-testid="post-title-text"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
+        );
         const descendantsTwitter = article.querySelectorAll(
             '[data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"], [data-testid="card.layoutLargemedia"], [alt="image"]'
-        ); 
+        );
 
-            const viewSpoilerButton = document.createElement("button");
-            viewSpoilerButton.textContent = "View Spoiler";
-            viewSpoilerButton.className = "view-spoiler-button";
+        const viewSpoilerButton = document.createElement("button");
+        viewSpoilerButton.textContent = "View Spoiler";
+        viewSpoilerButton.className = "view-spoiler-button";
 
-            const upvoteButton = document.createElement("button");
-            upvoteButton.textContent = "Upvote";
-            upvoteButton.style.backgroundColor = "green";
-            upvoteButton.style.color = "white";
-            upvoteButton.style.border = "none";
-            upvoteButton.style.padding = "5px 10px";
-            upvoteButton.style.cursor = "pointer";
-            upvoteButton.style.display = "none";
+        const upvoteButton = document.createElement("button");
+        upvoteButton.textContent = "Upvote";
+        upvoteButton.style.backgroundColor = "green";
+        upvoteButton.style.color = "white";
+        upvoteButton.style.border = "none";
+        upvoteButton.style.padding = "5px 10px";
+        upvoteButton.style.cursor = "pointer";
+        upvoteButton.style.display = "none";
 
-            const downvoteButton = document.createElement("button");
-            downvoteButton.textContent = "Downvote";
-            downvoteButton.style.backgroundColor = "red";
-            downvoteButton.style.color = "white";
-            downvoteButton.style.border = "none";
-            downvoteButton.style.padding = "5px 10px";
-            downvoteButton.style.cursor = "pointer";
-            downvoteButton.style.display = "none";
+        const downvoteButton = document.createElement("button");
+        downvoteButton.textContent = "Downvote";
+        downvoteButton.style.backgroundColor = "red";
+        downvoteButton.style.color = "white";
+        downvoteButton.style.border = "none";
+        downvoteButton.style.padding = "5px 10px";
+        downvoteButton.style.cursor = "pointer";
+        downvoteButton.style.display = "none";
 
         //Bluring for Reddit
-        if (descendantsReddit.length > 0 && !article.querySelector(".view-spoiler-button")) {
+        if (
+            descendantsReddit.length > 0 &&
+            !article.querySelector(".view-spoiler-button")
+        ) {
             descendantsReddit.forEach((descendant) => {
                 descendant.style.backgroundColor = "grey";
                 descendant.style.color = "grey";
@@ -411,13 +411,16 @@ function hideSpoilerPosts(article) {
             });
 
             // Append the buttons to the parentBackground element
-            article.appendChild(viewSpoilerButton);
-            article.appendChild(upvoteButton);
-            article.appendChild(downvoteButton);
-
+            const parentElement = descendantsReddit[0].parentElement; // Get the correct parent element
+            parentElement.appendChild(viewSpoilerButton); // Append buttons to the correct parent
+            parentElement.appendChild(upvoteButton);
+            parentElement.appendChild(downvoteButton);
         }
-        //Bluring for Twitter 
-        if (descendantsTwitter.length > 0 && !article.querySelector(".view-spoiler-button")) {
+        //Bluring for Twitter
+        if (
+            descendantsTwitter.length > 0 &&
+            !article.querySelector(".view-spoiler-button")
+        ) {
             descendantsTwitter.forEach((descendant) => {
                 descendant.style.backgroundColor = "grey";
                 descendant.style.color = "grey";
@@ -441,14 +444,13 @@ function hideSpoilerPosts(article) {
                 viewSpoilerButton.style.display = "none";
             });
 
-            const parentElement = descendantsTwitter[0].parentElement.parentElement; // Get the correct parent element
+            const parentElement =
+                descendantsTwitter[0].parentElement.parentElement; // Get the correct parent element
             const siblingCount = parentElement.children.length;
             const targetSibling = parentElement.children[siblingCount - 2];
             targetSibling.appendChild(viewSpoilerButton); // Append buttons to the correct parent
             targetSibling.appendChild(upvoteButton);
             targetSibling.appendChild(downvoteButton);
-            
-
         }
     }
 }
