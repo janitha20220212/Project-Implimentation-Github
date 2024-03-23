@@ -152,7 +152,7 @@ async function checkForSpoilers() {
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
         const articles = document.querySelectorAll(
-            'article.w-full, post-consume-tracker'
+            'article.w-full, faceplate-tracker'
         );
 
         // Iterate over each article
@@ -324,7 +324,7 @@ function hideSpoilerPosts(article) {
 
     if (article && !article.classList.contains("spoiler-viewed")) {
         const descendantsReddit = article.querySelectorAll(
-            '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
+            '[slot="title"], [data-testid="post-title-text"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
         ); 
         const descendantsTwitter = article.querySelectorAll(
             '[data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"], [data-testid="card.layoutLargemedia"], [alt="image"]'
@@ -378,9 +378,10 @@ function hideSpoilerPosts(article) {
             });
 
             // Append the buttons to the parentBackground element
-            article.appendChild(viewSpoilerButton);
-            article.appendChild(upvoteButton);
-            article.appendChild(downvoteButton);
+            const parentElement = descendantsReddit[0].parentElement; // Get the correct parent element
+            parentElement.appendChild(viewSpoilerButton); // Append buttons to the correct parent
+            parentElement.appendChild(upvoteButton);
+            parentElement.appendChild(downvoteButton);
 
         }
         //Bluring for Twitter 
