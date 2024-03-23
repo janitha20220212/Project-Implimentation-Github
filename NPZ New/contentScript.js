@@ -140,15 +140,14 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     }
 }
 
-//Arrays for KeyWord Check
-const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
-const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
+// //Arrays for KeyWord Check
+// const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
+// const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
 
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
 
     var currentURL = window.location.href;
-
 
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
@@ -157,17 +156,22 @@ async function checkForSpoilers() {
         );
 
         // Iterate over each article
-        for (const article of articles) { 
+        for (const article of articles) {
+            if (article.classList.contains("already-checked")) {
+                console.log("Already checked");
+                continue;
+            } else {
+                article.classList.add("already-checked");
+            }
+            // const elementText = article.textContent.toLowerCase();
+            // const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
+            // const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase()));
 
-            const elementText = article.textContent.toLowerCase();
-            const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
-            const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
-
-            if (containsMarvelWord && containsSpoilerKeyword) {
+            // if (containsMarvelWord && containsSpoilerKeyword) {
             // Select the first child of the article element
-            const firstChild = article.firstElementChild; 
-            hideSpoilerPosts(firstChild);}
-           /* // Select the first child of the article element
+            // const firstChild = article.firstElementChild;
+            // hideSpoilerPosts(firstChild);}
+            // Select the first child of the article element
             const firstChild = article.firstElementChild;
 
             const hrefAttribute = firstChild.getAttribute("content-href");
@@ -217,11 +221,12 @@ async function checkForSpoilers() {
 
             if (containsSpoiler) {
                 hideSpoilerPosts(firstChild);
-            }*/
+                article.classList.add("contains-spoiler");
+            }
         }
     } else if (currentURL.includes("twitter.com")) {
         // console.log("Twitter page");
-        /*
+
         const loadingScreen = document.createElement("div");
         loadingScreen.className = "loading-screen";
         loadingScreen.style.position = "fixed";
@@ -237,25 +242,29 @@ async function checkForSpoilers() {
             "1000000000000000000000000000000000000000000000000000000000";
         loadingScreen.innerHTML =
             "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
-        */const articles = document.querySelectorAll("article");
+        const articles = document.querySelectorAll("article");
 
         for (const article of articles) {
-            // if (article.querySelector(".already-checked")) {
-            //     console.log("Already checked");
-            //     continue;
-            // } else {
-            //     article.classList.add("already-checked");
-            // }
-            const elementText = article.textContent.toLowerCase();
-            const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
-            const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
+            if (article.classList.contains("already-checked")) {
+                console.log("Already checked");
+                continue;
+            } else {
+                article.classList.add("already-checked");
+            }
+            // const elementText = article.textContent.toLowerCase();
+            // const containsMarvelWord = marvelWords.some((word) =>
+            //     elementText.includes(word.toLowerCase())
+            // );
+            // const containsSpoilerKeyword = spoilerKeywords.some((word) =>
+            //     elementText.includes(word.toLowerCase())
+            // );
 
-            if (containsMarvelWord && containsSpoilerKeyword) {
+            // if (containsMarvelWord && containsSpoilerKeyword) {
             // Select the first child of the article element
-            //const firstChild = article.firstElementChild; 
-            hideSpoilerPosts(article);}
+            //const firstChild = article.firstElementChild;
+            // hideSpoilerPosts(article);}
 
-            /*try {
+            try {
                 const tweetTextElement = article.querySelector(
                     '[data-testid="tweetText"]'
                 );
@@ -298,12 +307,13 @@ async function checkForSpoilers() {
 
                 if (containsSpoiler) {
                     hideSpoilerPosts(article);
+                    article.classList.add("contains-spoiler");
                 }
                 // article.removeChild("#loadingScreen");
             } catch (error) {
                 console.log("Error in the twitter page");
                 // article.removeChild("#loadingScreen");
-            }*/
+            }
         }
     }
 }
@@ -313,9 +323,22 @@ function hideSpoilerPosts(article) {
     spoilerCount++; // Increment counter
 
     if (article && !article.classList.contains("spoiler-viewed")) {
-        const descendants = article.querySelectorAll(
-            '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"], [data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"]'
+        const tweetTextElement = article.querySelector(
+            '[data-testid="tweetText"]'
         );
+
+        let descendants = [];
+        if (tweetTextElement) {
+            console.log("Twitter page detected in hidespoiler");
+            //select the first child of the article element
+            descendants = article.querySelectorAll('[data-testid="tweetText"]');
+            console.log(descendants);
+        } else {
+            console.log("Reddit page detected in hidespoiler");
+            descendants = article.querySelectorAll(
+                '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"], [data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"]'
+            );
+        }
 
         if (!article.querySelector(".view-spoiler-button")) {
             descendants.forEach((descendant) => {
@@ -327,6 +350,7 @@ function hideSpoilerPosts(article) {
             const viewSpoilerButton = document.createElement("button");
             viewSpoilerButton.textContent = "View Spoiler";
             viewSpoilerButton.className = "view-spoiler-button";
+            // viewSpoilerButton.style.zIndex = "10000000000000";
 
             const upvoteButton = document.createElement("button");
             upvoteButton.textContent = "Upvote";
