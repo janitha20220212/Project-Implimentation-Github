@@ -1,0 +1,32 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// bootstrap grid
+@import "bootstrap/dist/css/bootstrap-grid";
+
+// AOS styles
+@import "aos/dist/aos";
+
+// Swiper styles
+@import "swiper/swiper-bundle";
+
+// baguettebox styles
+@import "baguettebox.js/dist/baguetteBox.min";
+
+// pickmeup (datepicker) styles
+@import "blocks/pickmeup";
+
+// custom-select styles
+@import "blocks/select";
+
+// sweet alert 2 styles
+@import "libs/sweetalert";

@@ -1,0 +1,123 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// blog section
+
+.blog {
+    &_header {
+        margin-bottom: 20px;
+    }
+
+    &_recent {
+        &-post {
+            margin-bottom: 30px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            &_wrapper {
+                height: 100%;
+
+                &:hover {
+                    .thumbnail {
+                        transform: scale(1.1);
+                    }
+                }
+
+                .media {
+                    aspect-ratio: 37 / 33;
+                    overflow: hidden;
+                    margin-bottom: 15px;
+
+                    .thumbnail {
+                        transition: all .5s ease-in-out;
+                    }
+                }
+
+                .main {
+                    flex-grow: 1;
+
+                    .title {
+                        font-size: 24px;
+                        line-height: 1.5;
+                        text-transform: uppercase;
+                        font-family: $accentFont;
+                        font-weight: 500;
+                        color: #fff;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .blog {
+        &_header {
+            margin-bottom: 30px;
+            &-subtitle {
+                left: -5%;
+                top: 80%;
+            }
+        }
+
+        &_recent {
+            margin: 0 -15px;
+
+            &-post {
+                padding: 0 15px;
+                margin-bottom: 40px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .blog {
+        &_header {
+            &-subtitle {
+                left: -3%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .blog {
+        &_header {
+            margin-bottom: 50px;
+        }
+        &_recent {
+            &-post {
+                margin-bottom: 0;
+
+                .media {
+                    margin-bottom: 35px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1699.98px) {
+    .blog {
+        &_header {
+            &-subtitle {
+                left: -13%;
+            }
+        }
+    }
+}

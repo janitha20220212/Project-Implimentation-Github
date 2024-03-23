@@ -1,14 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 body {
+  overflow: hidden;
+}
+
+
+body {
+  
     /* width: 100%; */
-    display: flex;
+  display: flex;
   justify-content: center; /* Horizontally center */
   align-items: center; /* Vertically center */
   overflow-y: hidden;
   overflow-x: hidden;
   width: 450px;
-  height: 85vh;
+  height: 450px;
   /* padding: 50px; */
   /* padding-top: 100px; */
   /* padding-bottom: 65px; */
@@ -66,12 +72,12 @@ body {
   }
 }
 
-body {
+/* body {
   max-width: 37.5rem;
   margin: 0 auto;
   padding: 0 1.25rem;
   font-family: 'Lato', sans-serif;
-}
+} */
 
 * {
   box-sizing: border-box;
@@ -103,9 +109,9 @@ ol, li {
 }
 
 .carousel {
-  margin-top: 60px;
+  margin-top: 100px;
   width: 100%;/* Adjust width as needed */
-  height: 100%; /* Adjust height as needed */
+  height: 300px; /* Adjust height as needed */
   position: relative;
   padding-top: 100%;
   filter: drop-shadow(0 0 10px #0003);
@@ -113,6 +119,12 @@ ol, li {
 }
 
 .carousel__viewport {
+
+  /* padding-bottom: 100px; */
+  /* margin-top: 160px; */
+  /* max-height: 600px; */
+  align-self: center;
+  /* margin: 10%; */
   position: absolute;
   top: 0;
   right: 0;
@@ -186,9 +198,9 @@ ol, li {
 }
 
 .carousel__navigation {
-  margin-top: 20px;
-  padding-top: 30px;
-  padding-bottom: 20px;
+  /* margin-top: 20px; */
+  /* padding-top: 60px; */
+  /* padding-bottom: 20px; */
   
   position: relative;
   right: 0;
@@ -207,7 +219,7 @@ ol, li {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
-  background-color: #333;
+  background-color: #ff5858;
   background-clip: content-box;
   border: 0.25rem solid transparent;
   border-radius: 50%;
@@ -219,48 +231,63 @@ ol, li {
 .carousel::after,
 .carousel__prev,
 .carousel__next {
-  margin: 20px;
-  margin-top: 50px;
+  /* margin: 20px; */
+  /* margin-top: 150px; */
   position: absolute;
    /* top: 70%; */
-  /* right: 20px; */
+  right: 20px;
   background-color: transparent;
+
   top: 0;
-  margin-top: 37.5%;
+  margin-top: 50%;
   width: 4rem;
-  height: 4rem;
+  height: 30rem;
   transform: translateY(-50%);
-  border-radius: 50%;
+  /* border-radius: 50%; */
   font-size: 0;
   outline: 0;
+  z-index: 10;
 }
 
 .carousel::before,
 .carousel__prev {
   left: -1rem;
   margin-top: 240px
+  /* display: hidden; */
+  
+  /* position: relative; */
 }
+
+
 
 .carousel::after,
 .carousel__next {
   margin-top: 240px;
-
   right: -1rem;
+  /* display: hidden; */
 }
 
 .carousel::before,
 .carousel::after {
   content: '';
+  transform: translatey(-100%, -100%);
+  /* margin-top: 100px; */
   z-index: 1;
-  background-color: #333;
+  background-color: transparent ;
   background-size: 1.5rem 1.5rem;
   background-repeat: no-repeat;
   background-position: center center;
   color: #fff;
   font-size: 2.5rem;
-  line-height: 4rem;
+  /* line-height: 4rem; */
   text-align: center;
   pointer-events: none;
+}
+
+#carousel__prev:hover, #carousel__next:hover {
+  
+  background-color: #ff5858;
+ 
 }
 
 .carousel::before {
@@ -303,7 +330,7 @@ ol, li {
 }
 
 .container {
-
+position: relative;
   display: flex;
   justify-content: center; /* Horizontally center */
   align-items: center;
@@ -342,7 +369,7 @@ ol, li {
 }
 .switch {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 70px;
@@ -408,7 +435,7 @@ ol, li {
 
 .social-media {
   position: absolute;
-  bottom: 40px;
+  bottom: 90px;
   left: 44%;
   transform: translateX(-50%);
   display: flex;
@@ -428,19 +455,20 @@ ol, li {
 }
 
 #spoilerCount {
+
   position: absolute;
-  top: calc(10% + 10px); /* Adjust the value to position it below the switch */
+  top: calc(10% + 20px); /* Adjust the value to position it below the switch */
   left: 50%;
   transform: translateX(-50%);
 
   text-align: center;
   color: #fff;
-  font-size: 70px;
+  font-size: 60px;
 }
 
 p {
   position: absolute;
-  top: calc(30% + 170px); /* Adjust the value to position it below the switch */
+  top: calc(30% + 150px); /* Adjust the value to position it below the switch */
   left: 50%;
   width: 100;
   transform: translateX(-50%);
@@ -462,21 +490,25 @@ p {
 a{color:inherit;text-decoration:none} */
 
 
-.login-wrap{
+
+.login-wrap {
+  max-height: 100px;
   overflow-y: hidden;
-  max-height: 100vh;
+  max-height: 50%;
   /* height: 70%; */
-	width:100%;
-	margin:auto;
-	max-width:525px;
-	min-height:570px;
-	position:relative;
-	background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
-	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 570px;
+  position: relative;
+  background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+  background-size: cover; /* Adjust the background size to cover the container */
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
 }
+
 .login-html{
 	width:100%;
-	/* height:100%; */
+	height:100%;
 	position:absolute;
 	padding:50px 70px 50px 70px;
 	background:rgba(48, 48, 48, 0.9);
@@ -618,6 +650,7 @@ a{color:inherit;text-decoration:none} */
 
 
 button {
+  margin-top: 310px;
   appearance: none;
   background: transparent;
   border: 0;
@@ -680,4 +713,131 @@ button:active > svg > path {
   background-color: #333;
   border-radius: 10px;
   z-index: 11;
+}
+
+
+
+ul {
+  list-style: none; 
+  margin: 0px;
+  padding: 0px; 
+}
+
+.tareas {
+  width: 300px;
+  height: 400px; /* Added 'px' unit */
+  position: absolute;
+  top: 10%;
+  left: 0px;
+  right: 0px;
+  margin: 0px auto;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+.tarea-item label {
+  background: #202020;
+  height: 69px;
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #ff5858;
+  color: white;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: capitalize; 
+  letter-spacing: 1px;
+  position: relative;
+  padding: 5px 5px 5px 70px;
+  box-sizing: border-box;
+}
+
+.tarea-item label h2 span {
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.tarea-item label:before {
+  content: "";
+  width: 19px;
+  height: 19px;
+  border: 1px solid #ff5858;
+  display: block;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  border-radius: 100%; 
+  z-index: 99999;
+}
+
+.tarea-item label:after {
+  content: "";
+  width: 60px;
+  height: 68px;
+  background: #414141;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+#tarea-1:checked + label,
+#tarea-2:checked + label,
+#tarea-3:checked + label,
+#tarea-4:checked + label,
+#tarea-5:checked + label {
+  color: #ffffff;
+  background: #ff5858;
+  border-bottom: 2px solid #ff5858;
+}
+
+#tarea-1:checked + label h2 span,
+#tarea-2:checked + label h2 span,
+#tarea-3:checked + label h2 span,
+#tarea-4:checked + label h2 span,
+#tarea-5:checked + label h2 span {
+  color: #ffffff;   
+}
+
+#tarea-1:checked + label:before,
+#tarea-2:checked + label:before,
+#tarea-3:checked + label:before,
+#tarea-4:checked + label:before,
+#tarea-5:checked + label:before {
+  background-color: #ff5858;
+  border: 2px solid white;
+}
+
+.tarea-item:first-child label {
+  border-right: 8px solid #ff5858;
+}
+
+.tarea-item:nth-child(2) label {
+  border-right: 8px solid #ff5858;
+}
+
+.tarea-item:nth-child(3) label {
+  border-right: 8px solid #ff5858;
+}
+
+.tarea-item:nth-child(4) label {
+  border-right: 8px solid #ff5858;
+}
+
+.tarea-item:last-child label {
+  border-right: 8px solid #ff5858;
+}
+
+
+.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  color: white;
+  font-size: 25px;
+  margin-bottom: 20px;
 }
