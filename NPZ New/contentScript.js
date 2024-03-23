@@ -152,7 +152,7 @@ async function checkForSpoilers() {
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
         const articles = document.querySelectorAll(
-            'article.w-full, faceplate-tracker[data-testid="search-post"]'
+            'article.w-full, post-consume-tracker'
         );
 
         // Iterate over each article
@@ -323,34 +323,16 @@ function hideSpoilerPosts(article) {
     spoilerCount++; // Increment counter
 
     if (article && !article.classList.contains("spoiler-viewed")) {
-        const tweetTextElement = article.querySelector(
-            '[data-testid="tweetText"]'
-        );
-
-        let descendants = [];
-        if (tweetTextElement) {
-            console.log("Twitter page detected in hidespoiler");
-            //select the first child of the article element
-            descendants = article.querySelectorAll('[data-testid="tweetText"]');
-            console.log(descendants);
-        } else {
-            console.log("Reddit page detected in hidespoiler");
-            descendants = article.querySelectorAll(
-                '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"], [data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"]'
-            );
-        }
-
-        if (!article.querySelector(".view-spoiler-button")) {
-            descendants.forEach((descendant) => {
-                descendant.style.backgroundColor = "grey";
-                descendant.style.color = "grey";
-                descendant.style.filter = "blur(8px)";
-            });
+        const descendantsReddit = article.querySelectorAll(
+            '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
+        ); 
+        const descendantsTwitter = article.querySelectorAll(
+            '[data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"], [data-testid="card.layoutLargemedia"], [alt="image"]'
+        ); 
 
             const viewSpoilerButton = document.createElement("button");
             viewSpoilerButton.textContent = "View Spoiler";
             viewSpoilerButton.className = "view-spoiler-button";
-            // viewSpoilerButton.style.zIndex = "10000000000000";
 
             const upvoteButton = document.createElement("button");
             upvoteButton.textContent = "Upvote";
@@ -370,9 +352,17 @@ function hideSpoilerPosts(article) {
             downvoteButton.style.cursor = "pointer";
             downvoteButton.style.display = "none";
 
+        //Bluring for Reddit
+        if (descendantsReddit.length > 0 && !article.querySelector(".view-spoiler-button")) {
+            descendantsReddit.forEach((descendant) => {
+                descendant.style.backgroundColor = "grey";
+                descendant.style.color = "grey";
+                descendant.style.filter = "blur(8px)";
+            });
+
             viewSpoilerButton.addEventListener("click", function () {
                 // Remove the blur and color changes
-                descendants.forEach((descendant) => {
+                descendantsReddit.forEach((descendant) => {
                     descendant.style.backgroundColor = "";
                     descendant.style.color = "";
                     descendant.style.filter = "";
@@ -391,9 +381,41 @@ function hideSpoilerPosts(article) {
             article.appendChild(viewSpoilerButton);
             article.appendChild(upvoteButton);
             article.appendChild(downvoteButton);
-            /*article.insertAdjacentElement('afterend', viewSpoilerButton);
-            article.insertAdjacentElement('afterend', upvoteButton);
-            article.insertAdjacentElement('afterend', downvoteButton);*/
+
+        }
+        //Bluring for Twitter 
+        if (descendantsTwitter.length > 0 && !article.querySelector(".view-spoiler-button")) {
+            descendantsTwitter.forEach((descendant) => {
+                descendant.style.backgroundColor = "grey";
+                descendant.style.color = "grey";
+                descendant.style.filter = "blur(8px)";
+            });
+
+            viewSpoilerButton.addEventListener("click", function () {
+                // Remove the blur and color changes
+                descendantsTwitter.forEach((descendant) => {
+                    descendant.style.backgroundColor = "";
+                    //descendant.style.color = "";
+                    descendant.style.filter = "";
+                    descendant.classList.add("spoiler-viewed");
+                });
+
+                // Show the upvote and downvote buttons
+                upvoteButton.style.display = "";
+                downvoteButton.style.display = "";
+
+                // Hide the view spoiler button
+                viewSpoilerButton.style.display = "none";
+            });
+
+            const parentElement = descendantsTwitter[0].parentElement.parentElement; // Get the correct parent element
+            const siblingCount = parentElement.children.length;
+            const targetSibling = parentElement.children[siblingCount - 2];
+            targetSibling.appendChild(viewSpoilerButton); // Append buttons to the correct parent
+            targetSibling.appendChild(upvoteButton);
+            targetSibling.appendChild(downvoteButton);
+            
+
         }
     }
 }
