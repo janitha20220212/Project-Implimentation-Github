@@ -86,6 +86,9 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         .replace(/[\r\n]+/g, " ")
         .replace(/\s+/g, " ")
         .trim();
+
+    // article.appendChild(loadingScreen);
+
     console.log("cleared Total Content: ", totalContent);
     var post = {
         text: totalContent,
@@ -103,6 +106,7 @@ async function fetchModel(totalContent, postUniqueLink, article) {
             },
             body: JSON.stringify(post),
         });
+
         let data = await response.json();
 
         containsSpoiler = data; // Extract label from the response
@@ -123,10 +127,14 @@ async function fetchModel(totalContent, postUniqueLink, article) {
             console.log("Error in the fetch");
         }
         console.log("fetch method Contains spoiler: " + containsSpoiler);
+        // article.removeChild(loadingScreen);
+
         return containsSpoiler;
     } catch (error) {
         console.error("Error:" + error);
         console.log("Error in the fetch");
+        // article.removeChild(loadingScreen);
+
         return false;
     }
 }
@@ -218,7 +226,7 @@ async function checkForSpoilers() {
         // console.log("Twitter page");
 
         const loadingScreen = document.createElement("div");
-        loadingScreen.id = "loading-screen";
+        loadingScreen.className = "loading-screen";
         loadingScreen.style.position = "fixed";
         loadingScreen.style.top = "0";
         loadingScreen.style.left = "0";
@@ -270,10 +278,13 @@ async function checkForSpoilers() {
                 console.log("Total Content: ", totalContent);
                 console.log("Post Unique Link: ", postUniqueLink);
 
+                // addPostLoading(article, loadingScreen);
+
                 containsSpoiler = await fetchModel(
                     totalContent,
                     postUniqueLink,
                     article
+                    // loadingScreen
                 );
 
                 console.log("fetch finished" + containsSpoiler);
@@ -350,6 +361,14 @@ function hideSpoilerPosts(article) {
         }
     }
 }
+
+// function addPostLoading(article, loadingScreen) {
+//     article.appendChild(loadingScreen);
+//     // wait for 10 seconds and remove the loading screen
+//     setTimeout(() => {
+//         article.loadingScreen.style.display = "none";
+//     }, 2000);
+// }
 
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
 
@@ -561,6 +580,6 @@ function removeLoadingScreen() {
     }
 }
 
-addLoadingScreen();
+// addLoadingScreen();
 
-setTimeout(removeLoadingScreen, 5000);
+// setTimeout(removeLoadingScreen, 5000);
