@@ -1,6 +1,7 @@
 # reference: https://stackoverflow.com/questions/59975596/how-to-connect-javascript-to-python-script-with-flask
 
 from flask import Flask, jsonify, request
+from flask import render_template
 from flask_cors import CORS
 import json
 import time
@@ -29,7 +30,12 @@ list_data = []
 # Display your index page
 @app.route("/")
 def index():
-    return "Hello, World!"
+    return render_template("index.html")
+
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
 
 
 def preprocess_data(text):
