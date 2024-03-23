@@ -865,30 +865,42 @@ img {
 }
 
 .team_header {
+    margin-top: 100px;
     margin-bottom: 20px
 }
 
 .team_list-item {
+    margin-top: 100px;
+
+    
     margin-bottom: 60px
 }
 
 .team_list-item:last-of-type {
+    margin-top: 100px;
+
     margin-bottom: 0
 }
 
 .team_list-item_wrapper .media {
-    max-height: 450px;
+    margin-top: 100px;
+
+    max-height: 200px;
     margin-bottom: 20px;
     overflow: hidden
 }
 
 .team_list-item_wrapper .info {
+    margin-top: 100px;
+
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1
 }
 
 .team_list-item_wrapper .info .speciality {
+    margin-top: 100px;
+
     text-transform: uppercase;
     font-family: Oswald,sans-serif;
     font-weight: 500;
@@ -897,6 +909,8 @@ img {
 }
 
 .team_list-item_wrapper .info .name {
+    margin-top: 100px;
+
     margin-bottom: 5px
 }
 
@@ -935,7 +949,17 @@ img {
 
 .gallery_list {
     padding: 0 1.25rem
+    
 }
+
+.gallery_list-item {
+    height: 100px   ;
+    padding: 100px; /* Adjust this value as needed */
+  }
+  
+  .gallery_list-item_img {
+    max-height: 100px; /* Adjust this value as needed */
+  }
 
 .gallery_list-item {
     overflow: hidden;
