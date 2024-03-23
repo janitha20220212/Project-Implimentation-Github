@@ -86,9 +86,6 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         .replace(/[\r\n]+/g, " ")
         .replace(/\s+/g, " ")
         .trim();
-
-    // article.appendChild(loadingScreen);
-
     console.log("cleared Total Content: ", totalContent);
     var post = {
         text: totalContent,
@@ -96,18 +93,16 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     };
 
     try {
-        let response = await fetch(
-            "https://nospoilerzone.azurewebsites.net/aidetection/",
-            {
-                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(post),
-            }
-        );
-
+        // let response = await fetch(
+        //     "https://nospoilerzone.azurewebsites.net/aidetection/",
+        //     {
+        let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
+        });
         let data = await response.json();
 
         containsSpoiler = data; // Extract label from the response
@@ -128,14 +123,10 @@ async function fetchModel(totalContent, postUniqueLink, article) {
             console.log("Error in the fetch");
         }
         console.log("fetch method Contains spoiler: " + containsSpoiler);
-        // article.removeChild(loadingScreen);
-
         return containsSpoiler;
     } catch (error) {
         console.error("Error:" + error);
         console.log("Error in the fetch");
-        // article.removeChild(loadingScreen);
-
         return false;
     }
 }
@@ -149,12 +140,13 @@ async function checkForSpoilers() {
 
     var currentURL = window.location.href;
 
-
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
         const articles = document.querySelectorAll(
             'article.w-full, faceplate-tracker[data-testid="search-post"]'
-        );
+        ); 
+        
+
 
         // Iterate over each article
         for (const article of articles) { 
@@ -167,13 +159,13 @@ async function checkForSpoilers() {
             // Select the first child of the article element
             const firstChild = article.firstElementChild; 
             hideSpoilerPosts(firstChild);}
-           /* // Select the first child of the article element
-            const firstChild = article.firstElementChild;
+            // Select the first child of the article element
+            /*const firstChild = article.firstElementChild;
 
             const hrefAttribute = firstChild.getAttribute("content-href");
 
             // Select the first child of the article element
-            //firstChild = article.firstElementChild;
+            firstChild = article.firstElementChild;
 
             const titleElement = article.querySelector('[slot="title"]');
             const textBodyElement = article.querySelector('[slot="text-body"]');
@@ -213,17 +205,17 @@ async function checkForSpoilers() {
 
             console.log("fetch finished" + containsSpoiler);
 
-            console.log("Contains spoiler: " + containsSpoiler);
+            console.log("Contains spoiler: " + containsSpoiler);*/
 
-            if (containsSpoiler) {
+            /*if (containsSpoiler) {
                 hideSpoilerPosts(firstChild);
             }*/
         }
     } else if (currentURL.includes("twitter.com")) {
-        // console.log("Twitter page");
-        /*
+        // console.log("Twitter page"); 
+        /*const articles = document.querySelectorAll('article[role="article"]');
         const loadingScreen = document.createElement("div");
-        loadingScreen.className = "loading-screen";
+        loadingScreen.id = "loading-screen";
         loadingScreen.style.position = "fixed";
         loadingScreen.style.top = "0";
         loadingScreen.style.left = "0";
@@ -237,7 +229,7 @@ async function checkForSpoilers() {
             "1000000000000000000000000000000000000000000000000000000000";
         loadingScreen.innerHTML =
             "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
-        */const articles = document.querySelectorAll("article");
+        */const articles = document.querySelectorAll('article');
 
         for (const article of articles) {
             // if (article.querySelector(".already-checked")) {
@@ -245,7 +237,8 @@ async function checkForSpoilers() {
             //     continue;
             // } else {
             //     article.classList.add("already-checked");
-            // }
+            // } 
+
             const elementText = article.textContent.toLowerCase();
             const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
             const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
@@ -283,13 +276,10 @@ async function checkForSpoilers() {
                 console.log("Total Content: ", totalContent);
                 console.log("Post Unique Link: ", postUniqueLink);
 
-                // addPostLoading(article, loadingScreen);
-
                 containsSpoiler = await fetchModel(
                     totalContent,
                     postUniqueLink,
                     article
-                    // loadingScreen
                 );
 
                 console.log("fetch finished" + containsSpoiler);
@@ -315,7 +305,8 @@ function hideSpoilerPosts(article) {
     if (article && !article.classList.contains("spoiler-viewed")) {
         const descendants = article.querySelectorAll(
             '[data-testid="post-title-text"], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"], [data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"]'
-        );
+        ); 
+
 
         if (!article.querySelector(".view-spoiler-button")) {
             descendants.forEach((descendant) => {
@@ -351,7 +342,7 @@ function hideSpoilerPosts(article) {
                 descendants.forEach((descendant) => {
                     descendant.style.backgroundColor = "";
                     descendant.style.color = "";
-                    descendant.style.filter = "";
+                    descendant.style.filter = ""; 
                     descendant.classList.add("spoiler-viewed");
                 });
 
@@ -364,9 +355,16 @@ function hideSpoilerPosts(article) {
             });
 
             // Append the buttons to the parentBackground element
+            // Get the index to insert the buttons
+            //const halfIndex = Math.ceil(article.children.length / 2);
+
+            // Insert the buttons after the first half of the article's children
             article.appendChild(viewSpoilerButton);
             article.appendChild(upvoteButton);
             article.appendChild(downvoteButton);
+            /*article.insertBefore(viewSpoilerButton, article.children[halfIndex]);
+            article.insertBefore(upvoteButton, article.children[halfIndex + 1]);
+            article.insertBefore(downvoteButton, article.children[halfIndex + 2]);*/
             /*article.insertAdjacentElement('afterend', viewSpoilerButton);
             article.insertAdjacentElement('afterend', upvoteButton);
             article.insertAdjacentElement('afterend', downvoteButton);*/
@@ -374,21 +372,13 @@ function hideSpoilerPosts(article) {
     }
 }
 
-// function addPostLoading(article, loadingScreen) {
-//     article.appendChild(loadingScreen);
-//     // wait for 10 seconds and remove the loading screen
-//     setTimeout(() => {
-//         article.loadingScreen.style.display = "none";
-//     }, 2000);
-// }
-
 console.log(`Detected ${spoilerCount} spoilers.`); // Log the total number of spoilers detected
 
-// chrome.storage.local.get("blockSpoilers", function (data) {
-//     if (data.blockSpoilers) {
-//         checkForSpoilers();
-//     }
-// });
+/*chrome.storage.local.get("blockSpoilers", function (data) {
+    if (data.blockSpoilers) {
+        checkForSpoilers();
+    }
+});*/
 
 // Create a MutationObserver instance
 const observer = new MutationObserver(checkForSpoilers);
@@ -402,22 +392,22 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     }
 });
 
-// window.addEventListener("scroll", function () {
-//     const viewSpoilerButton = document.querySelector(".view-spoiler-button");
-//     if (viewSpoilerButton) {
-//         viewSpoilerButton.style.display = "block";
-//     }
-// });
+/*window.addEventListener("scroll", function () {
+    const viewSpoilerButton = document.querySelector(".view-spoiler-button");
+    if (viewSpoilerButton) {
+        viewSpoilerButton.style.display = "block";
+    }
+});
 
-// window.addEventListener("scroll", function () {
-//     const upvoteButton = document.querySelector(".upvote-button");
-//     const downvoteButton = document.querySelector(".downvote-button");
+window.addEventListener("scroll", function () {
+    const upvoteButton = document.querySelector(".upvote-button");
+    const downvoteButton = document.querySelector(".downvote-button");
 
-//     if (upvoteButton && downvoteButton) {
-//         upvoteButton.style.display = "none";
-//         downvoteButton.style.display = "none";
-//     }
-// });
+    if (upvoteButton && downvoteButton) {
+        upvoteButton.style.display = "none";
+        downvoteButton.style.display = "none";
+    }
+});*/
 
 // Send the spoiler count to the background script
 chrome.runtime.sendMessage({ action: "updateBadge", count: spoilerCount });
@@ -483,8 +473,8 @@ function getData(et) {
         label: 1,
     };
 
-    // let response = fetch("http://127.0.0.1:5000/flagpost/", {
-    let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
+    let response = fetch("http://127.0.0.1:5000/flagpost/", {
+        // let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -592,6 +582,6 @@ function removeLoadingScreen() {
     }
 }
 
-// addLoadingScreen();
+addLoadingScreen();
 
-// setTimeout(removeLoadingScreen, 5000);
+setTimeout(removeLoadingScreen, 5000);
