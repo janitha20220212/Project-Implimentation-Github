@@ -23,6 +23,7 @@ mysql = MySQL(app)
 
 # global variable to check if gemini is running
 geminiRunning = False
+list_data = []
 
 
 # Display your index page
@@ -74,8 +75,22 @@ def create_document(text, link, label):
         print('Document created successfully!')
     except Exception as e:
         print('Error creating document:', e)
-        mysql.connection.rollback()
+        # if 'Duplicate entry' in str(e):
+        # If the document already exists, return the label associated with the link
+        # label = read_document(link)
     return False
+
+
+def update_document(link, label):
+    try:
+        cursor = mysql.connection.cursor()
+        print('Updating document...')
+        query = "UPDATE spoilers SET label = %s WHERE link = %s"
+        cursor.execute(query, (label, link))
+        mysql.connection.commit()
+        print('Document updated successfully!')
+    except Exception as e:
+        print('Error updating document:', e)
 
 
 def read_document(link):
@@ -85,13 +100,12 @@ def read_document(link):
         query = "SELECT label FROM spoilers WHERE link = %s"
         cursor.execute(query, (link,))
         document = cursor.fetchone()
-        if document:
-            label = document['label']
-            print("Label for the document with the provided link:", label)
-            return label
-        else:
-            print('No such document!')
+        label = document['label']
+        print("Label for the document with the provided link:", label)
+        return label
+
     except Exception as e:
+        print('No such document!')
         print('Error reading document:', e)
 
 
@@ -111,20 +125,42 @@ def flagPost():
 
 @app.route("/aidetection/", methods=["POST"])
 def aidetection():
-    time.sleep(5)
     global geminiRunning
     while geminiRunning:
         isGeminiRunning = "Gemini is running"
 
-    print("app started")
+    # print("app started")
 
     recieved_data = request.json
+    print("recieved data: " + str(recieved_data))
 
     text_data = recieved_data.get('text')
     link = recieved_data.get('link')
 
+    runGemini = False
+
+    try:
+        cursor = mysql.connection.cursor()
+        print('Reading document...')
+        query = "SELECT label FROM spoilers WHERE link = %s"
+        cursor.execute(query, (link,))
+        document = cursor.fetchone()
+        label = document['label']
+        print("Label for the document with the provided link:", label)
+        return label
+
+    except Exception as e:
+        print('No such document!')
+        print('Error reading document:', e)
+
+    # wait for 5 seconds to get the document created in the database
+    # time.sleep(5)
+
+    # create_document(text_data, link, 0)
+    # time.sleep(5)
+
     preprocessed_text = preprocess_data(text_data)
-    print(preprocessed_text)
+    # print(preprocessed_text)
 
     # if (len(preprocessed_text) > 1000):
     #     print("Text is too long.")
@@ -135,16 +171,12 @@ def aidetection():
         "label": 0
     }
 
-    read_document(link)
+    # print(json_data)
 
     print("gemini starting")
-
     geminiRunning = True
-
     genai.configure(api_key="AIzaSyDgm7yEAv7RCI-LC3uHqLvz30kyZzerBBM")
-
     model = genai.GenerativeModel('gemini-pro')
-
     prompt = (f"""
     You are an expert in language patern detection, who is good at classifying a text in to actual spoiler or not.
     Help me classify spoilers into: Spoiler(label=1), and Not a Spoiler(label=0).
@@ -157,19 +189,18 @@ def aidetection():
     {json_data}
     ```
     """)
-
     # print(convo.last.text)
     response = model.generate_content(prompt)
 
+    # wait for 5 seconds
+    # time.sleep(5)
+
+    # print(response)
     geminiRunning = False
 
-    print("response")
-
-    print(response.text)
+    # print(response.text)
 
     json_output = response.text.split('```')[1]
-
-    print(json_output)
 
     # Replace single quotes with double quotes to make it a valid JSON string
     json_output = json_output.replace("'", '"')
@@ -179,17 +210,16 @@ def aidetection():
 
     # Extract the label
     label = json_output['label']
-    print(label)
 
+    print("predicted label: " + str(label) + "\ncontent" + text_data)
     # Update the Firestore document with the predicted label
-    doc_being_created = True
 
-    while (doc_being_created):
+    if (label == 1 or label == 0):
         doc_being_created = create_document(text_data, link, label)
+        # time.sleep(10)
 
     # change label to string
     label = str(label)
-
     print("label updated")
     return label
 
