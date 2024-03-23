@@ -1,0 +1,232 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// footer component
+
+.footer {
+    padding: 80px 0 0;
+    &_logo  {
+        margin-bottom: 40px;
+    }
+
+    &_contacts {
+
+        &-tel {
+            color: #fff;
+            margin-bottom: 10px;
+            width: fit-content;
+
+            &:hover {
+                color: $red;
+            }
+
+            .icon {
+                display: none;
+            }
+
+            .link {
+                text-transform: uppercase;
+                font-size: 18px;
+                line-height: 1.5;
+                font-family: $accentFont;
+                font-weight: 500;
+            }
+        }
+
+        &-address {
+            margin-bottom: 10px;
+        }
+
+        &-mail {
+            position: relative;
+
+            &:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 1px;
+                background: $gray;
+                bottom: 0;
+                left: 0;
+                transition: width .5s ease-in-out;
+            }
+
+            &:hover, &:focus {
+                &:after {
+                    width: 100%;
+                }
+            }
+        }
+
+        &-socials {
+            margin: 30px 0 40px;
+            max-height: 22px;
+
+            .list-item {
+                margin-right: 15px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                .link {
+                    color: #fff;
+                    font-size: 22px;
+
+                    &:hover, &:focus {
+                        color: $red;
+                    }
+                }
+            }
+        }
+    }
+
+    &_newsletter {
+        &-text {
+            margin: 15px 0 25px;
+        }
+
+        &-form {
+            max-width: 100%;
+
+            .field {
+                margin-bottom: 10px;
+
+                &:hover, &:focus {
+                    border-color: #fff;
+                }
+            }
+
+            .field, .btn {
+                width: 100%;
+            }
+        }
+    }
+
+    &_copyright {
+        background: $blackhighlight;
+        margin: 80px -20px 0;
+        text-align: center;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .footer {
+        &_newsletter {
+            &-form {
+                .field {
+                    margin-bottom: 0;
+                    border-right: none;
+                    max-width: 368px;
+                }
+
+                .btn {
+                    width: unset;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .footer {
+        padding: 100px 0 0;
+        &_logo {
+            width: 100%;
+        }
+
+        &_contacts {
+            margin-right: 40px;
+            margin-top: -20px;
+            &-socials {
+                margin-bottom: 0;
+            }
+        }
+
+        &_newsletter {
+            max-width: 410px;
+            margin-bottom: 0;
+            margin-top: -80px;
+        }
+
+        &_copyright {
+            margin: 100px -30px 0;
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .footer {
+        padding: 110px 0;
+        &_logo {
+            width: 25%;
+            margin-bottom: 0;
+        }
+        &_newsletter, &_contacts {
+            margin-top: -5px;
+        }
+        &_contacts {
+            &-tel {
+                margin-bottom: 20px;
+                .link {
+                    font-size: 28px;
+                }
+                .icon {
+                    max-width: 40px;
+                    max-height: 40px;
+                    font-size: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;
+                    transition: all .3s ease-in-out;
+                }
+            }
+            &-socials {
+                margin-bottom: 25px;
+            }
+        }
+        &_copyright {
+           text-align: left;
+            margin: 0;
+            align-items: flex-start;
+            justify-content: flex-start;
+            background: none;
+            height: auto;
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .footer {
+
+        &_contacts {
+            margin-right: 0;
+
+            &-copyright {
+                text-align: left;
+            }
+        }
+
+        &_newsletter {
+            max-width: 471px;
+        }
+
+    }
+}

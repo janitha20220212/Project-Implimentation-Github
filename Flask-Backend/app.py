@@ -30,7 +30,7 @@ list_data = []
 # Display your index page
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("about.html")
 
 
 @app.route("/privacy")

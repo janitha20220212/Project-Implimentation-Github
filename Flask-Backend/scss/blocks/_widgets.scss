@@ -1,0 +1,279 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// widgets component
+
+.post {
+    &_aside {
+        &-block {
+            margin-bottom: 40px;
+
+            &_header {
+                margin-bottom: 15px;
+            }
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            &--search {
+                .form {
+                    width: 100%;
+                    position: relative;
+
+                    .field {
+                        flex-grow: 1;
+                        padding: 14px 50px 14px 18px;
+                        font-size: 14px;
+                        color: #fff;
+
+                        &:hover, &:focus {
+                            border-color: #fff;
+                        }
+
+                        &::placeholder {
+                            font-family: $accentFont;
+                            font-weight: 500;
+                            font-size: 14px;
+                            line-height: 22px;
+                            text-transform: uppercase;
+                        }
+                    }
+
+                    .btn {
+                        position: absolute;
+                        font-size: 24px;
+                        max-height: 24px;
+                        right: 18px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        transition: color .3s ease-in-out;
+                        &:hover {
+                            color: #fff;
+                        }
+                    }
+                }
+
+            }
+
+            &--recent {
+                .list {
+                    &-item {
+                        margin-bottom: 15px;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+
+                        .media {
+                            min-width: 80px;
+                            min-height: 80px;
+                            margin-right: 5px;
+                        }
+
+                        .main {
+                            .title {
+                                margin-bottom: 5px;
+                                max-height: 60px;
+                                overflow: hidden;
+                                transition: color .3s ease-in-out;
+                                max-width: 230px;
+
+                                &:hover {
+                                    color: $red;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &--categories {
+                .list {
+                    &-item {
+                        margin-bottom: 10px;
+
+                        .link {
+                            color: #fff;
+                            text-transform: uppercase;
+                            font-weight: 500;
+                            font-size: 18px;
+                            line-height: 28px;
+                            font-family: $accentFont;
+
+                            &:hover, &:focus {
+                                color: $red;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &--tags {
+                .tags {
+                    &_tag {
+                        margin: 0 5px 5px 0;
+                    }
+                }
+            }
+
+            &--promo {
+                background: url("../img/placeholder.jpg") no-repeat center / cover;
+                position: relative;
+                padding: 15px 0;
+                height: 440px;
+                overflow: hidden;
+
+                .ticker {
+                    overflow: hidden;
+                    text-align: center;
+                }
+
+
+                .overlay {
+                    z-index: 1;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    background: radial-gradient(61.88% 707.11% at 50.14% 50%, rgba(32, 32, 32, 0) 0%, #202020 100%);
+                }
+
+                .content {
+                    height: 100%;
+                    position: relative;
+                    z-index: 10;
+
+                    .main {
+                        padding: 0 20px;
+                        margin-top: -10px;
+
+                        &_header {
+                            max-width: 230px;
+                            margin-bottom: 0;
+                        }
+
+                        &_text {
+                            margin: 10px 0 30px;
+                            max-width: 275px;
+                        }
+                    }
+
+                    .ticker {
+                        max-height: 26px;
+                        font-family: $accentFont;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .post {
+        &_aside {
+            min-width: 345px;
+
+            &-block {
+
+                &_header {
+                    margin-bottom: 30px;
+                }
+
+
+                &--recent {
+                    .list {
+                        &-item {
+                            .media {
+                                min-width: 100px;
+                                min-height: 100px;
+                                margin-right: 15px;
+                            }
+                        }
+                    }
+                }
+
+
+                &--tags {
+
+                    .tags {
+                        &_tag {
+                            margin: 0 15px 15px 0;
+                        }
+                    }
+                }
+
+                &--promo {
+                    max-height: unset;
+
+                    .content {
+
+                        .main {
+                            padding: 0 35px;
+
+                            &_text {
+                                margin: 10px 0 30px;
+                                max-width: unset;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@media screen and (min-width: 991.98px) {
+    .post {
+        &_aside {
+            margin-left: 30px;
+            max-width: 345px;
+            &-block {
+                margin-bottom: 70px;
+
+                &--recent {
+                    .list {
+                        &-item {
+                            margin-bottom: 30px;
+
+                            .media {
+                                margin-right: 30px;
+                            }
+
+                            .main {
+                                .title {
+                                    margin-bottom: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .post {
+        &_aside {
+            margin-left: 50px;
+        }
+    }
+}
