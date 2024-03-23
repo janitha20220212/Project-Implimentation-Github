@@ -86,7 +86,7 @@ async function fetchModel(totalContent, postUniqueLink, article) {
         .replace(/[\r\n]+/g, " ")
         .replace(/\s+/g, " ")
         .trim();
-    console.log("cleared Total Content: ", xtotalContent);
+    console.log("cleared Total Content: ", totalContent);
     var post = {
         text: totalContent,
         link: postUniqueLink,
@@ -235,12 +235,12 @@ async function checkForSpoilers() {
         const articles = document.querySelectorAll("article");
 
         for (const article of articles) {
-            if (article.querySelector(".already-checked")) {
-                console.log("Already checked");
-                continue;
-            } else {
-                article.classList.add("already-checked");
-            }
+            // if (article.querySelector(".already-checked")) {
+            //     console.log("Already checked");
+            //     continue;
+            // } else {
+            //     article.classList.add("already-checked");
+            // }
 
             try {
                 const tweetTextElement = article.querySelector(
@@ -260,12 +260,12 @@ async function checkForSpoilers() {
                 // add "twitter.com" to the postUniqueLink
                 postUniqueLink = "https://twitter.com" + postUniqueLink;
 
-                if (uniquePosts.includes(postUniqueLink)) {
-                    console.log("Already checked " + postUniqueLink);
-                    continue;
-                } else {
-                    uniquePosts.push(postUniqueLink);
-                }
+                // if (uniquePosts.includes(postUniqueLink)) {
+                //     console.log("Already checked " + postUniqueLink);
+                //     continue;
+                // } else {
+                //     uniquePosts.push(postUniqueLink);
+                // }
 
                 console.log("Total Content: ", totalContent);
                 console.log("Post Unique Link: ", postUniqueLink);
