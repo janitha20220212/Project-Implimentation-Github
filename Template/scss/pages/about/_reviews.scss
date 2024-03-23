@@ -1,0 +1,92 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// reviews section
+
+.reviews {
+    &_header {
+        margin-bottom: 20px;
+    }
+    &_slider {
+        margin-bottom: 40px;
+        &-slide {
+            &_wrapper {
+                height: 100%;
+                .icon {
+                    color: #fff;
+                }
+                .main {
+                    flex-grow: 1;
+                    &_review {
+                        margin: 20px 0;
+                    }
+                    &_author {
+                        text-transform: uppercase;
+                        font-family: $accentFont;
+                        font-weight: 500;
+                        font-size: 22px;
+                        line-height: 1.7;
+                    }
+                }
+            }
+        }
+    }
+    &_controls {
+        flex-grow: 1;
+        &-control {
+            transition: color .5s ease-in-out;
+            font-size: 20px;
+            cursor: pointer;
+            &--prev {
+                margin-right: 30px;
+            }
+            &:hover, &:focus {
+                color: $red;
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .reviews {
+        &_header {
+            margin-bottom: 30px;
+            max-width: 400px;
+            order: 1;
+        }
+        &_slider {
+            order: 3;
+            flex-grow: 1;
+            margin-bottom: 0;
+            &-slide {
+                height: auto;
+                &_wrapper {
+                    .icon {
+                        margin-right: 30px;
+                    }
+                    .main {
+                        &_review {
+                            margin: 0 0 10px;
+                        }
+                    }
+                }
+            }
+        }
+        &_controls {
+            flex-grow: unset;
+            order: 2;
+            margin-top: -25px;
+        }
+    }
+}

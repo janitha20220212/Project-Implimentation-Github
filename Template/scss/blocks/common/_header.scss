@@ -1,0 +1,254 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// header component
+
+.header {
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    z-index: 10000;
+    background: $black;
+    will-change: transform;
+    transition: transform .5s ease-in-out;
+
+    &--pinned {
+        transform: translateY(0%);
+    }
+
+    &--unpinned {
+        transform: translateY(-100%);
+    }
+
+    .container-fluid {
+        padding: 0;
+    }
+
+    &_logo {
+        order: 1;
+        transition: margin-left .3s ease-in-out;
+    }
+
+    &_trigger {
+        cursor: pointer;
+        width: 24px;
+        height: 16px;
+        order: 2;
+        transition: margin-right .3s ease-in-out;
+
+        .line {
+            height: 2px;
+            width: 100%;
+            background: #fff;
+            display: block;
+            transition: all .3s ease-in-out;
+        }
+
+        &.active {
+            transition: all .3s ease-in-out;
+            transition-delay: .3s;
+            transform: rotate(45deg);
+
+            .line {
+                background: $red;
+
+                &:nth-child(2) {
+                    width: 0;
+                }
+
+                &:nth-child(1),
+                &:nth-child(3) {
+                    transition-delay: .1s;
+                }
+
+                &:nth-child(1) {
+                    transform: translateY(7px);
+                }
+
+                &:nth-child(3) {
+                    transform: translateY(-7px) rotate(90deg);
+                }
+            }
+        }
+    }
+
+    &_nav {
+        position: relative;
+        left: 0;
+        right: 0;
+        min-width: 100vw;
+        flex-grow: 1;
+        order: 3;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .5s ease-in-out, padding-top .6s ease-in;
+
+        &.active {
+            max-height: 100vh;
+            overflow-y: scroll;
+            padding-top: 15px;
+        }
+
+        &-list {
+            text-align: center;
+
+            .nav-item, .dropdown-toggle {
+                &.active {
+                    background: $red;
+                }
+            }
+
+            &_item {
+                font-family: $accentFont;
+                font-weight: 500;
+                font-size: 16px;
+                text-transform: uppercase;
+                color: #fff;
+
+                &:not(&.dropdown),
+                &.dropdown .list-item {
+                    padding: 20px 0;
+                }
+
+
+                .nav-link {
+                    &.dropdown-toggle {
+                        padding: 20px 0;
+                        display: block;
+                        width: 100%;
+                        transition: background-color .3s ease-in-out;
+                    }
+                }
+
+                .dropdown-menu {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height .5s ease-in-out;
+
+                    &.active {
+                        max-height: 500px;
+                    }
+                }
+
+            }
+        }
+    }
+
+    &_btn {
+        display: none;
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 991.98px) {
+    .header {
+        padding: 30px 0;
+
+        .container-fluid {
+            padding: 0 1.25rem;
+        }
+
+        &_btn {
+            display: block;
+            order: 3;
+            margin-left: 70px;
+        }
+
+        &_nav {
+            max-height: unset;
+            min-width: unset;
+            overflow: visible;
+
+            &-list {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin: 0 -30px 0 0;
+
+                &.dropdown {
+                    position: relative;
+                }
+
+                .nav-item, .dropdown-toggle {
+                    position: relative;
+                    cursor: pointer;
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 10px;
+                        background: transparent;
+                        top: -42px;
+                        left: 0;
+                        transition: background-color .3s ease-in-out;
+                    }
+
+                    &.active, &:hover {
+                        background: transparent;
+
+                        &:before {
+                            background: $red;
+                        }
+                    }
+                }
+
+                &_item {
+                    margin-right: 30px;
+                    &:not(&.dropdown),
+                    &.dropdown .list-item {
+                        padding: 0;
+                    }
+
+                    &.dropdown {
+                        width: min-content;
+                        margin-right: 30px;
+                    }
+                }
+
+                .nav-link {
+                    &.dropdown-toggle {
+                        padding: 0;
+                        width: unset;
+                    }
+                }
+
+                .dropdown-menu {
+                    position: absolute;
+                    opacity: 0;
+                    max-height: unset;
+                    text-align: left;
+                    visibility: hidden;
+                    padding-top: 15px;
+                    transition: opacity .3s ease;
+                    .nav-item {
+                        padding: 15px;
+                        transition: background-color .3s ease-in-out;
+                        background: $blackhighlight;
+                        &:hover, &.active {
+                            background: $red;
+                            &:before {
+                                display: none;
+                            }
+                        }
+                    }
+                    &.active {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,141 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// services content
+
+.feed {
+    &_header {
+        margin-bottom: 30px;
+    }
+
+    &_posts {
+        &-post {
+            margin-bottom: 50px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            &:hover {
+                .post-img {
+                    transform: scale(1.1);
+                }
+            }
+
+            &_wrapper {
+                height: 100%;
+
+                .media {
+                    margin-bottom: 20px;
+                    aspect-ratio: 37 / 33;
+                    overflow: hidden;
+
+                    .post-img {
+                        transition: all .5s ease-in-out;
+                    }
+                }
+
+                .main {
+                    .title {
+                        margin-bottom: 5px;
+                        font-size: 24px;
+                        line-height: 36px;
+                    }
+
+                    .info {
+                        margin-bottom: 5px;
+
+                        &_date {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .preview {
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+    }
+
+    &_pagination {
+        margin-top: 40px;
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .feed {
+        &_header {
+            margin-bottom: 100px;
+
+            &-subtitle {
+                top: -31%;
+                left: 14%;
+            }
+        }
+
+        &_posts {
+            margin: 0 -15px;
+
+            &-post {
+                padding: 0 15px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .feed {
+        &_header {
+            margin-bottom: 110px;
+
+            &-subtitle {
+                left: 8%;
+            }
+        }
+
+        &_posts {
+            &-post {
+                margin-bottom: 70px;
+
+                &[data-order="7"],
+                &[data-order="8"] {
+                    margin-bottom: 0;
+                }
+
+                &_wrapper {
+                    .media {
+                        margin-bottom: 35px;
+
+                        .title {
+                            margin-bottom: 10px;
+                        }
+
+                        .info {
+                            margin-bottom: 10px;
+
+                            &_date {
+                                margin-right: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &_pagination {
+            margin-top: 70px;
+        }
+    }
+}

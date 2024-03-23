@@ -1,0 +1,96 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+@import "../base/variables";
+
+.custom-select {
+    &-container {
+        position: relative;
+        &.is-disabled {
+            opacity: .3;
+        }
+        &.is-open {
+            .custom-select-panel {
+                max-height: 10.7em;
+                overflow-y: auto;
+                margin-top: 10px;
+                border: 2px solid #fff;
+            }
+        }
+        select {
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+    &-opener {
+        display: block;
+        cursor: pointer;
+        width: 100%;
+        color: #fff;
+        padding: 11px 18px;
+        margin-bottom: 15px;
+        border-left: 1px solid $darkgray;
+        border-bottom: 1px solid $darkgray;
+        border-right: none;
+        border-top: none;
+        transition: all .3s ease-in-out;
+        &:hover, &:focus {
+            border-color: #fff;
+        }
+    }
+    &-panel {
+        max-height: 0;
+        transition: max-height .5s ease-out, margin-top .5s ease-in-out;
+        overflow: hidden;
+        background-color: #e9e9e9;
+        position: absolute;
+        top: 100%;
+        z-index: 1;
+        width: 100%;
+
+        /* ===== Scrollbar CSS ===== */
+
+        /* Firefox */
+            scrollbar-width: auto;
+            scrollbar-color: #fff $black;
+
+        /* Chrome, Edge, and Safari */
+        &::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: $black;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #fff;
+            border-radius: 0;
+            border: 0 solid #fff;
+        }
+    }
+    &-option {
+        padding: 11px 18px;
+        background: $black;
+        cursor: pointer;
+        transition: all .3s ease-in-out;
+        &.is-selected {
+            background: $red;
+            color: #fff;
+        }
+        &.has-focus {
+            color: #fff;
+        }
+    }
+}

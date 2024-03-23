@@ -1,0 +1,228 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// article section
+
+.post {
+    &_main {
+        &-article {
+            &_img {
+                margin-bottom: 20px;
+                aspect-ratio: 11 / 9;
+                overflow: hidden;
+                max-height: 630px;
+            }
+
+            &_header {
+                .title {
+                    margin-bottom: 10px;
+                }
+                .info {
+                    margin-bottom: 5px;
+
+                    .link {
+                        text-transform: none;
+                    }
+
+                    &_posted {
+                        margin-bottom: 5px;
+                    }
+
+                    &_comments {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+            &_content {
+                .quote {
+                    quotes: none;
+                    margin: 30px 0;
+                    display: inline-block;
+                    text-transform: uppercase;
+                    color: #fff;
+                    font-family: $accentFont;
+                    font-weight: 500;
+                    font-size: 24px;
+                    line-height: 36px;
+
+                    .quotes-icon {
+                        margin-right: 10px;
+                    }
+                }
+
+                .list {
+                    margin: 20px 0;
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+
+                    &-item {
+                        margin-bottom: 5px;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+
+                        .marker {
+                            color: #fff;
+                            width: 16px;
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .tags {
+                    margin-top: 40px;
+
+                    .list-item {
+                        margin-right: 15px;
+
+                        &:last-of-type {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .post {
+        &_main {
+            &-article {
+                &_header {
+                    .info {
+                        margin: 0 0 10px;
+
+                        &_posted {
+                            margin-bottom: 0;
+                        }
+
+                        &_posted, &_comments {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                &_content {
+                    .quote {
+                        .quotes-icon {
+                            margin-right: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .post {
+        &_main {
+            &-article {
+                &_img {
+                    margin-bottom: 35px;
+                }
+
+                &_content {
+
+                    .list {
+                        margin: 35px 0;
+                        width: calc(50% - 5px);
+
+                        &-item {
+
+                            .marker {
+                                width: unset;
+                                margin-right: 0;
+
+                                &.icon {
+                                    margin-right: 10px;
+                                }
+
+                                &.number {
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .post {
+        &_main {
+            &-article {
+
+                &_content {
+
+                    .list {
+                        width: unset;
+
+                        &-item {
+                            margin-bottom: 10px;
+
+                            .marker {
+                                width: 16px;
+
+                                &.icon, &.number {
+                                    margin-right: 10px;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .post {
+        &_main {
+            &-article {
+
+                &_content {
+
+                    .list {
+                        width: calc(50% - 15px);
+
+                        &-item {
+
+                            .marker {
+                                width: unset;
+                                margin-right: 0;
+
+                                &.icon {
+                                    margin-right: 10px;
+                                }
+
+                                &.number {
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

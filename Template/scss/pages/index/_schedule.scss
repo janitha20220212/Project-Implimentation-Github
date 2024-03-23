@@ -1,0 +1,155 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// schedule section
+
+.schedule {
+    color: #fff;
+    background: url("../img/placeholder.jpg") no-repeat center / cover;
+    position: relative;
+
+    .overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: radial-gradient(50% 571.32% at 50% 50%, rgba(32, 32, 32, 0) 0%, $black 100%);
+    }
+
+    &_container {
+        position: relative;
+        z-index: 10;
+    }
+
+    &_content {
+        &-header {
+            margin-bottom: 10px;
+        }
+
+        &-text {
+            margin-bottom: 40px;
+        }
+    }
+
+    &_hours {
+        margin-top: 40px;
+
+        &-header {
+            margin-bottom: 10px;
+        }
+
+        &-list {
+            &_group {
+                .list-item {
+                    display: block;
+                    margin-bottom: 10px;
+
+                    .weekday {
+                        font-family: $accentFont;
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 1.7;
+                        text-transform: uppercase;
+                        margin-right: 10px;
+                    }
+                }
+
+                &:last-of-type {
+                    .list-item:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &_btn {
+        margin-top: 40px;
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .schedule {
+        &_content {
+            &-header {
+                max-width: 410px;
+            }
+
+            &-text {
+                max-width: 570px;
+            }
+        }
+
+        &_hours {
+
+            &-list {
+                &_group {
+                    &:first-of-type {
+                        margin-right: 50px;
+                    }
+
+                    .list-item {
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .schedule {
+        &_wrapper {
+            width: 100%;
+        }
+
+        &_content {
+            &-text {
+                margin-bottom: 0;
+                max-width: 500px;
+            }
+        }
+
+        &_hours {
+            margin-top: 0;
+            &-header {
+                max-width: 300px;
+            }
+        }
+
+        &_btn {
+            margin-top: 50px;
+        }
+    }
+}
+
+@media screen and (min-width: 1399.98px) {
+    .schedule {
+
+        &_content {
+            padding-right: 30px;
+            &-text {
+                max-width: unset;
+            }
+        }
+
+        &_btn {
+            margin-top: 25px;
+        }
+    }
+}

@@ -12,7 +12,6 @@
 //   });
 // });
 
-
 // document.querySelector('.switch').addEventListener('click', function() {
 //   let container = document.querySelector('.container');
 //   container.style.background = 'rgba(29, 31, 32, 0.904) radial-gradient(rgba(255, 0, 0, 0.712) 10%, transparent 1%)';
@@ -52,8 +51,6 @@
 //   document.body.classList.toggle('light-mode', !this.checked);
 // });
 
-
-
 // chrome.runtime.onMessage.addListener(
 //   function(request, sender, sendResponse) {
 //     if (request.spoilerCount) {
@@ -83,23 +80,23 @@
 
 // // Rest of your code...
 
-
 // popup.js or options.js
- // Get the span element by its id
- const spoilerCount = document.getElementById("spoilerCount");
+// Get the span element by its id
+const spoilerCount = document.getElementById("spoilerCount");
 
- // Function to update the spoiler count
- function updateSpoilerCount(count) {
-   spoilerCount.textContent = count;
- }
+// Function to update the spoiler count
+function updateSpoilerCount(count) {
+  spoilerCount.textContent = count;
+}
 
- // Example usage: Call the updateSpoilerCount function with the desired count
- updateSpoilerCount(500); // Replace 5 with the actual count of detected spoilers
+// Example usage: Call the updateSpoilerCount function with the desired count
+updateSpoilerCount(500); // Replace 5 with the actual count of detected spoilers
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
-  chrome.runtime.sendMessage({ action: 'getSpoilerCount' }, function(response) {
-    document.getElementById('spoilerCount').textContent = response.count;
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  chrome.runtime.sendMessage(
+    { action: "getSpoilerCount" },
+    function (response) {
+      document.getElementById("spoilerCount").textContent = response.count;
+    }
+  );
 });
