@@ -123,6 +123,7 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     // article.appendChild(loadingScreen);
 
     console.log("cleared Total Content: ", totalContent);
+    text = totalContent;
     var post = {
         text: totalContent,
         link: postUniqueLink,
