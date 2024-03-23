@@ -96,16 +96,17 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     };
 
     try {
-        // let response = await fetch(
-        //     "https://nospoilerzone.azurewebsites.net/aidetection/",
-        //     {
-        let response = await fetch("http://127.0.0.1:5000/aidetection/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(post),
-        });
+        let response = await fetch(
+            "https://nospoilerzone.azurewebsites.net/aidetection/",
+            {
+                // let response = await fetch("http://127.0.0.1:5000/aidetection/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(post),
+            }
+        );
 
         let data = await response.json();
 
@@ -171,7 +172,7 @@ async function checkForSpoilers() {
         // Iterate over each article
         for (const article of articles) {
             // Select the first child of the article element
-            const firstChild = article.firstElementChild;
+            let firstChild = article.firstElementChild;
 
             const hrefAttribute = firstChild.getAttribute("content-href");
 
@@ -471,8 +472,8 @@ function getData(et) {
         label: 1,
     };
 
-    let response = fetch("http://127.0.0.1:5000/flagpost/", {
-        // let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
+    // let response = fetch("http://127.0.0.1:5000/flagpost/", {
+    let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
