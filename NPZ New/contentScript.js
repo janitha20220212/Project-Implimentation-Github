@@ -24,19 +24,42 @@ postLinks.forEach((postLink, index) => {
     const votes = {};
 
     // Create the upvote and downvote buttons
-    const upvoteButton = document.createElement("button");
-    upvoteButton.textContent = "Upvote";
-    upvoteButton.className = `upvote-button-${index}`; // Assign a unique class
+    upvoteButtons.forEach((upvoteButton, index) => {
+        const downvoteButton = downvoteButtons[index];
 
-    const downvoteButton = document.createElement("button");
-    downvoteButton.textContent = "Downvote";
-    downvoteButton.className = `downvote-button-${index}`; // Assign a unique class
+        // Add event listeners to track upvotes and downvotes
+        upvoteButton.addEventListener("click", function () {
+            if (!votes[postLink]) {
+                votes[postLink] = { upvotes: 0, downvotes: 0 };
+            }
+            votes[postLink].upvotes++;
 
-    // ...
-    // Function to log the vote counts
-    function logVoteCounts() {
-        console.log(votes);
-    }
+            // Send the updated votes object to the Flask app
+            fetch('/upvote', {
+                method: 'POST',
+                body: JSON.stringify({ postLink: postLink, votes: votes }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            logVoteCounts();
+        });
+
+        downvoteButton.addEventListener("click", function () {
+            if (!votes[postLink]) {
+                votes[postLink] = { upvotes: 0, downvotes: 0 };
+            }
+            votes[postLink].downvotes++;
+
+            // Send the updated votes object to the Flask app
+            fetch('/downvote', {
+                method: 'POST',
+                body: JSON.stringify({ postLink: postLink, votes: votes }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            logVoteCounts();
+        });
+    });
 
     // Add event listeners to track upvotes and downvotes
     postLinks.forEach((postLink, index) => {
@@ -58,10 +81,15 @@ postLinks.forEach((postLink, index) => {
                     votes[postLink] = { upvotes: 0, downvotes: 0 };
                 }
                 votes[postLink].upvotes++;
+
+                // Send the updated votes object to the Flask app
+                fetch('/upvote', {
+                    method: 'POST',
+                    body: JSON.stringify({ postLink: postLink, votes: votes }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
                 logVoteCounts();
-                // Send the updated votes object to the database
-                // replace 'yourDatabaseFunction' with your actual function to send data to the database
-                yourDatabaseFunction(votes);
             });
 
             downvoteButton.addEventListener("click", function () {
@@ -69,10 +97,15 @@ postLinks.forEach((postLink, index) => {
                     votes[postLink] = { upvotes: 0, downvotes: 0 };
                 }
                 votes[postLink].downvotes++;
+
+                // Send the updated votes object to the Flask app
+                fetch('/downvote', {
+                    method: 'POST',
+                    body: JSON.stringify({ postLink: postLink, votes: votes }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
                 logVoteCounts();
-                // Send the updated votes object to the database
-                // replace 'yourDatabaseFunction' with your actual function to send data to the database
-                yourDatabaseFunction(votes);
             });
         }
     });
