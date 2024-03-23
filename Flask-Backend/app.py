@@ -1,6 +1,6 @@
 # reference: https://stackoverflow.com/questions/59975596/how-to-connect-javascript-to-python-script-with-flask
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 from flask import render_template
 from flask_cors import CORS
 import json
@@ -142,10 +142,32 @@ def vote():
         cursor.execute(query, (upvotes, downvotes, link))
         mysql.connection.commit()
         print('Votes updated successfully!')
-        return "Votes updated successfully!"
+
+        # Get the current upvotes and downvotes for the post
+        query = "SELECT upvotes, downvotes FROM spoilers WHERE link = %s"
+        cursor.execute(query, (link,))
+        document = cursor.fetchone()
+        upvotes = document['upvotes']
+        downvotes = document['downvotes']
+
+        # Determine if the post is a spoiler or not
+        if (int(upvotes) + int(downvotes)) >= 10:
+            # Check if upvotes is greater than downvotes
+            if int(upvotes) > int(downvotes):
+                label = '0'
+            else:
+                label = '1'
+
+            # Update the label in the database
+            query = "UPDATE spoilers SET label = %s WHERE link = %s"
+            cursor.execute(query, (label, link))
+            mysql.connection.commit()
+
     except Exception as e:
         print('Error updating votes:', e)
         return "Error updating votes"
+
+    return "Votes updated successfully!"
     
     
 
@@ -162,6 +184,8 @@ def aidetection():
 
     text_data = recieved_data.get('text')
     link = recieved_data.get('link')
+    upvotes = recieved_data.get('upvote')
+    downvotes = recieved_data.get('downvote')
 
     runGemini = False
 
@@ -194,7 +218,10 @@ def aidetection():
 
     json_data = {
         "text": preprocessed_text,
-        "label": 0
+        "label": 0,
+        "Link" : Link,
+        "upvote" : upvotes,
+        "downvote" : downvotes
     }
 
     # print(json_data)
@@ -237,6 +264,11 @@ def aidetection():
     # Extract the label
     label = json_output['label']
 
+    # Create the response object
+    response = make_response(json.dumps(json_output))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Content-Type'] = 'application/json'
+
     print("predicted label: " + str(label) + "\ncontent" + text_data)
     # Update the Firestore document with the predicted label
 
@@ -248,15 +280,6 @@ def aidetection():
     label = str(label)
     print("label updated")
 
-    # Check if the sum of upvotes and downvotes is greater than or equal to 10
-    if (int(recieved_data.get('upvotes')) + int(recieved_data.get('downvotes'))) >= 10:
-        # Check if upvotes is greater than downvotes
-        if int(recieved_data.get('upvotes')) > int(recieved_data.get('downvotes')):
-            label = '0'
-        else:
-            label = '1'
-
-    return label
 
 
 if __name__ == "__main__":
