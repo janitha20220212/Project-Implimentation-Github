@@ -131,15 +131,34 @@ async function fetchModel(totalContent, postUniqueLink, article) {
     }
 }
 
+/*//Arrays for KeyWord Check
+const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
+const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
+*/
 async function checkForSpoilers() {
     spoilerCount = 0; // Reset the counter
 
     var currentURL = window.location.href;
     // console.log("currentURL" + currentURL);
+    //const articles = document.querySelectorAll("article.w-full");
+
+    // Iterate over each article
+
+    //Word check for the arrays
+    /*const elementText = article.textContent.toLowerCase();
+    const containsMarvelWord = marvelWords.some(word => elementText.includes(word.toLowerCase()));
+    const containsSpoilerKeyword = spoilerKeywords.some(word => elementText.includes(word.toLowerCase())); 
+    
+    if (containsMarvelWord && containsSpoilerKeyword) {
+        // Select the first child of the article element
+        const firstChild = article.firstElementChild; 
+        hideSpoilerPosts(firstChild);}*/
 
     if (currentURL.includes("reddit.com")) {
         // console.log("Reddit page");
-        const articles = document.querySelectorAll("article.w-full");
+        const articles = document.querySelectorAll(
+            'article.w-full, faceplate-tracker[data-testid="search-post"]'
+        );
 
         // Iterate over each article
         for (const article of articles) {
@@ -147,6 +166,10 @@ async function checkForSpoilers() {
             const firstChild = article.firstElementChild;
 
             const hrefAttribute = firstChild.getAttribute("content-href");
+
+            // Select the first child of the article element
+            firstChild = article.firstElementChild;
+
             const titleElement = article.querySelector('[slot="title"]');
             const textBodyElement = article.querySelector('[slot="text-body"]');
 
@@ -188,7 +211,7 @@ async function checkForSpoilers() {
             console.log("Contains spoiler: " + containsSpoiler);
 
             if (containsSpoiler) {
-                hideSpoilerPosts(article);
+                hideSpoilerPosts(firstChild);
             }
         }
     } else if (currentURL.includes("twitter.com")) {
@@ -272,51 +295,59 @@ async function checkForSpoilers() {
 function hideSpoilerPosts(article) {
     containsSpoiler = true;
     spoilerCount++; // Increment counter
-    article.style.backgroundColor = "grey";
-    article.style.color = "grey";
-    article.style.filter = "blur(8px)";
-    article.style.zIndex = "1000";
 
-    if (article.querySelector(".view-spoiler-button")) {
-        const viewSpoilerButton = document.createElement("button");
-        viewSpoilerButton.textContent = "View Spoiler";
-        viewSpoilerButton.className = "view-spoiler-button";
-        const upvoteButton = document.createElement("button");
-        upvoteButton.textContent = "Upvote";
-        upvoteButton.style.backgroundColor = "green";
-        upvoteButton.style.color = "white";
-        upvoteButton.style.border = "none";
-        upvoteButton.style.padding = "5px 10px";
-        upvoteButton.style.cursor = "pointer";
-        upvoteButton.style.display = "none";
-        upvoteButton.style.zIndex = "9000000000";
-        const downvoteButton = document.createElement("button");
-        downvoteButton.textContent = "Downvote";
-        downvoteButton.style.backgroundColor = "red";
-        downvoteButton.style.color = "white";
-        downvoteButton.style.border = "none";
-        downvoteButton.style.padding = "5px 10px";
-        downvoteButton.style.cursor = "pointer";
-        downvoteButton.style.display = "none";
-        downvoteButton.style.zIndex = "9000000000";
+    if (article && !article.classList.contains("spoiler-viewed")) {
+        const descendants = article.querySelectorAll(
+            '[data-testid="post-title-text" ], [slot="title"], [slot="text-body"], [slot="post-media-container"], [data-testid="search_post_thumbnail"]'
+        );
 
-        viewSpoilerButton.addEventListener("click", function () {
-            // Remove the blur and color changes
+        if (!article.querySelector(".view-spoiler-button")) {
+            const viewSpoilerButton = document.createElement("button");
+            viewSpoilerButton.textContent = "View Spoiler";
+            viewSpoilerButton.className = "view-spoiler-button";
 
-            article.style.backgroundColor = "";
-            article.style.color = "";
-            article.style.filter = "";
+            const upvoteButton = document.createElement("button");
+            upvoteButton.textContent = "Upvote";
+            upvoteButton.style.backgroundColor = "green";
+            upvoteButton.style.color = "white";
+            upvoteButton.style.border = "none";
+            upvoteButton.style.padding = "5px 10px";
+            upvoteButton.style.cursor = "pointer";
+            upvoteButton.style.display = "none";
 
-            // Show the upvote and downvote buttons
-            upvoteButton.style.display = "";
-            downvoteButton.style.display = "";
-            // Hide the view spoiler button
-            viewSpoilerButton.style.display = "none";
-        });
-        // Append the buttons to the
-        article.appendChild(viewSpoilerButton);
-        article.appendChild(upvoteButton);
-        article.appendChild(downvoteButton);
+            const downvoteButton = document.createElement("button");
+            downvoteButton.textContent = "Downvote";
+            downvoteButton.style.backgroundColor = "red";
+            downvoteButton.style.color = "white";
+            downvoteButton.style.border = "none";
+            downvoteButton.style.padding = "5px 10px";
+            downvoteButton.style.cursor = "pointer";
+            downvoteButton.style.display = "none";
+
+            viewSpoilerButton.addEventListener("click", function () {
+                // Remove the blur and color changes
+                descendants.forEach((descendant) => {
+                    descendant.style.backgroundColor = "";
+                    descendant.style.color = "";
+                    descendant.style.filter = "";
+                });
+
+                // Show the upvote and downvote buttons
+                upvoteButton.style.display = "";
+                downvoteButton.style.display = "";
+
+                // Hide the view spoiler button
+                viewSpoilerButton.style.display = "none";
+            });
+
+            // Append the buttons to the parentBackground element
+            article.appendChild(viewSpoilerButton);
+            article.appendChild(upvoteButton);
+            article.appendChild(downvoteButton);
+            /*article.insertAdjacentElement('afterend', viewSpoilerButton);
+            article.insertAdjacentElement('afterend', upvoteButton);
+            article.insertAdjacentElement('afterend', downvoteButton);*/
+        }
     }
 }
 
