@@ -79,6 +79,75 @@
 // });
 
 // // Rest of your code...
+let isSwitchOn;
+
+isSwitchOn = true
+
+// RECIEVES FLAG POST RESULT AND ALERTS THE USER
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("Recieved another Message: " + message);
+    console.log("From Content Script");
+
+    if (message == false|| message == true){
+        isSwitchOn = message
+    
+        }
+});
+
+
+
+
+
+// console.log(Boolean(window.localStorage.getItem('switchStatus')))
+
+if (window.localStorage.getItem('switchStatus') != undefined){
+    isSwitchOn = window.localStorage.getItem('switchStatus')
+}
+
+console.log("isSwitchOn " + isSwitchOn)
+console.log(typeof isSwitchOn)
+
+if (isSwitchOn === "false" || isSwitchOn == false){
+    document.getElementById('checkbox').checked = false
+    console.log("not checked")
+    isSwitchOn = false
+
+}else{
+    document.getElementById('checkbox').checked = true
+    console.log("not checked")
+    isSwitchOn = true
+}
+
+
+counter = 0
+
+
+document.getElementById("button").addEventListener('click', ()=>{
+    if (counter == 0){
+        console.log("aew")
+    isSwitchOn = !isSwitchOn
+    localStorage.setItem("switchStatus", isSwitchOn)
+    console.log(isSwitchOn)
+    
+
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {type:isSwitchOn}, function(response){
+        // updateSpoilerCount(response)
+        });
+    });
+
+
+
+    counter++
+    }else{
+        counter--
+    }
+    
+   
+})
+
+
+
 
 // popup.js or options.js
 // Get the span element by its id

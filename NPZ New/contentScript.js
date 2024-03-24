@@ -111,6 +111,44 @@ postLinks.forEach((postLink, index) => {
     });
 });
 
+let isSwitchOn = true
+// window.localStorage.setItem('switchStatus', isSwitchOn)
+// console.log("inital switch status: ")
+// // console.log(window.localStorage.getItem('switchStatus'))
+// chrome.runtime.sendMessage(isSwitchOn, (response) => {
+//     console.log(response);
+// });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
+   
+
+    if(request.type==false || request.type == true){
+        console.log("GOT THE SWITCH RESPONSE: " + request.type)
+        
+        if (request.type == true){
+            observer.observe(document, { childList: true, subtree: true });
+        
+        }else{
+            observer.disconnect()
+            let loading = document.getElementsByClassName('loading-screen')
+            for( const loader of loading){
+                loader.style.display = "none"
+            }
+        }
+
+        chrome.runtime.sendMessage(request.type, (response) => {
+            console.log(response);
+        });
+
+        
+    }
+
+
+    
+
+    
+    return true;
+})
 async function fetchModel(totalContent, postUniqueLink, article) {
     containsSpoiler = false;
     totalContent = totalContent;
@@ -286,7 +324,7 @@ async function checkForSpoilers() {
 
         let loadingScreen;
         loadingScreen = document.createElement("div");
-        loadingScreen.id = "loading-screen";
+        loadingScreen.className = "loading-screen";
         loadingScreen.style.position = "fixed";
         loadingScreen.style.top = "0";
         loadingScreen.style.left = "0";
