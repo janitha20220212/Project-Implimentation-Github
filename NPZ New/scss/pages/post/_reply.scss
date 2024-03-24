@@ -1,0 +1,88 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// reply section
+
+.post {
+    &_main {
+        &-reply {
+            &_text {
+                margin: 10px 0 35px;
+            }
+
+            &_form {
+                .field {
+                    &[data-type="message"] {
+                        min-height: 180px;
+                    }
+                }
+
+                .field, .field-wrapper {
+                    width: 100%;
+                }
+
+                .btn {
+                    margin-top: 30px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .post {
+        &_main {
+            &-reply {
+                &_form {
+                    .btn {
+                        width: unset;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .post {
+        &_main {
+            &-reply {
+
+                &_form {
+
+                    .field {
+                        &[data-type="message"] {
+                            margin-bottom: 30px;
+                        }
+                        &-wrapper {
+                            .field {
+                                margin-right: 30px;
+                                margin-bottom: 0;
+                                &:last-of-type {
+                                    margin-right: 0;
+                                }
+                            }
+
+                        }
+                    }
+
+                    .btn {
+                        margin-top: 50px;
+                    }
+                }
+            }
+        }
+    }
+}

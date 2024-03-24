@@ -1,0 +1,140 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// page 404
+
+.error {
+    min-height: 100vh;
+    min-width: 100vw;
+    &_message {
+        margin-top: 40px;
+
+        &-text {
+            margin: 10px 0 30px;
+            text-align: center;
+            max-width: 470px;
+        }
+    }
+
+    &_code {
+        clip-path: url(#svgPath);
+        background: url("../img/placeholder.jpg") no-repeat fixed center / cover;
+        min-width: 221px;
+        min-height: 122px;
+        margin: 0 auto;
+
+        &-code {
+            &--sm, &--md, &--lg {
+                display: none;
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .error {
+        &_code {
+            clip-path: url(#svgPath--sm);
+            min-width: 327px;
+            min-height: 177px;
+
+            &-code {
+                display: none;
+
+                &--sm {
+                    display: unset;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .error {
+
+        &_code {
+            clip-path: url(#svgPath--md);
+            min-width: 670px;
+            min-height: 361px;
+
+            &-code {
+                &--sm {
+                    display: none;
+                }
+
+                &--md {
+                    display: unset;
+                }
+            }
+
+        }
+
+        &_message {
+            margin-top: 80px;
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .error {
+        padding-top: 0;
+
+        &_message {
+            margin-top: 0;
+            &-text {
+                margin: 20px 0 50px;
+                text-align: left;
+            }
+        }
+
+        &_code {
+            clip-path: url(#svgPath--lg);
+            min-width: 467px;
+            min-height: 252px;
+
+            &-code {
+                &--md {
+                    display: none;
+                }
+
+                &--lg {
+                    display: unset;
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (min-width: 1399.98px) {
+    .error {
+
+        &_code {
+            clip-path: url(#svgPath--md);
+            min-width: 670px;
+            min-height: 361px;
+
+            &-code {
+                &--lg {
+                    display: none;
+                }
+
+                &--md {
+                    display: unset;
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,158 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// services section
+
+.services {
+    &_header {
+        margin-bottom: 20px;
+    }
+
+    &_btn {
+        order: 3;
+        margin-top: 40px;
+    }
+
+    &_list {
+        &-item {
+            text-align: center;
+            margin-bottom: 20px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            &_wrapper {
+                height: 100%;
+                background: $blackhighlight;
+                padding: 30px 20px;
+                border: 2px solid transparent;
+                transition: all .3s ease-in-out;
+
+                &:hover {
+                    border-color: $red;
+                }
+
+                .main {
+                    flex-grow: 1;
+                    height: 100%;
+
+                    .title {
+                        margin: 10px 0 15px;
+                    }
+
+                    .description {
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .services {
+
+        &_list {
+            margin: 0 -15px;
+
+            &-item {
+                padding: 0 15px;
+                margin-bottom: 30px;
+
+                &[data-order="5"] {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .services {
+        &_header {
+            margin-bottom: 0;
+        }
+        &_btn {
+            order: unset;
+            margin-top: 0;
+            margin-bottom: 50px;
+        }
+        &_list {
+            &-item {
+                text-align: left;
+
+                &_wrapper {
+                    padding: 30px 30px 20px;
+
+                    .icon {
+                        margin-right: 15px;
+                    }
+
+                    .main {
+
+                        .title {
+                            margin: 0;
+                        }
+
+                        .description {
+                            margin: 10px 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .services {
+        &_list {
+            &-item {
+                &[data-order="4"] {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1399.98px) {
+    .services {
+        &_list {
+            &-item {
+                height: fit-content;
+                &_wrapper {
+                    height: auto;
+                    .main {
+                        .description {
+                            max-width: 255px;
+                        }
+                    }
+                }
+                &[data-order="1"],
+                &[data-order="3"] {
+                    margin-top: 50px;
+                }
+                &[data-order="2"],
+                &[data-order="4"] {
+                    margin-bottom: 0;
+                }
+                &[data-order="5"] {
+                    margin-top: -50px;
+                }
+            }
+        }
+    }
+}

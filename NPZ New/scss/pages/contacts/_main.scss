@@ -1,0 +1,189 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// contacts content
+
+.contacts {
+    &_header {
+        margin-bottom: 40px;
+    }
+    &_main {
+        &-data {
+            margin-bottom: 40px;
+            &_item {
+                margin-bottom: 15px;
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+                .title {
+                    margin-bottom: 10px;
+                }
+                .link--underline {
+                    text-transform: none;
+                    width: fit-content;
+                    &:after {
+                        background: $gray;
+                    }
+                }
+            }
+        }
+        &-form {
+
+            &_label {
+                color: #fff;
+                text-transform: uppercase;
+                font-size: 18px;
+                line-height: 1.7;
+                font-weight: 500;
+                font-family: $accentFont;
+                margin-bottom: 10px;
+                display: block;
+            }
+            .field {
+                width: 100%;
+                color: #fff;
+                &[data-type="message"] {
+                    min-height: 180px;
+                    margin-bottom: 0;
+                }
+            }
+            .btn {
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+.map {
+    #map {
+        min-height: 350px;
+        filter: grayscale(1);
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .contacts {
+        &_main {
+            &-form {
+                .btn {
+                    max-width: fit-content;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .contacts {
+        &_header {
+            &-subtitle {
+                top: -90%;
+                left: 14%;
+            }
+        }
+        &_main {
+            &-form {
+                .form-block {
+                    width: calc(50% - 15px);
+                    margin-bottom: 30px;
+                    &:last-of-type {
+                        width: 100%;
+                        margin-bottom: 0;
+                    }
+                }
+                &_label {
+                    margin-bottom: 20px;
+                }
+            }
+            &-data {
+                &_item {
+                    &--tel {
+                        .data {
+                            margin-right: 20px;
+                            &:last-of-type {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .map {
+        #map {
+            min-height: 700px;
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .contacts {
+        &_header {
+            margin-bottom: 110px;
+            &-subtitle {
+                left: 10%;
+            }
+        }
+        &_main {
+            &-data {
+                &_item {
+                    margin-bottom: 30px;
+                }
+            }
+            &-form {
+                .btn {
+                    margin-top: 50px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .contacts {
+        &_header {
+            &-subtitle {
+                left: 9%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1399.98px) {
+    .contacts {
+        &_header {
+            &-subtitle {
+                left: 7%;
+            }
+        }
+    }
+}
+
+// hide the google maps footer
+
+a[href^="http://maps.google.com/maps"] {
+    display: none !important
+}
+
+a[href^="https://maps.google.com/maps"] {
+    display: none !important
+}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display: none;
+}
+
+.gmnoprint div {
+    background: none !important;
+}

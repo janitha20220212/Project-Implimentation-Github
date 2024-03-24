@@ -1,0 +1,338 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+html {
+    &.fixed {
+        overflow-y: hidden;
+    }
+}
+
+body {
+    color: $gray;
+    background: $black;
+    font-size: 16px;
+    line-height: 1.7;
+    font-family: $bodyFont;
+    &.swal2-shown {
+        padding: 0;
+    }
+    &.fullscreen {
+        min-height: 100vh;
+        min-width: 100vw;
+    }
+}
+
+main {
+    transition: padding-top .3s ease-in-out;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $accentFont;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+h1 {
+    font-size: 40px;
+    line-height: 1.3;
+}
+
+h2 {
+    font-size: 32px;
+    line-height: 1.5;
+}
+
+h3 {
+    font-size: 28px;
+    line-height: 1.5;
+}
+
+h4 {
+    font-size: 22px;
+    line-height: 1.7;
+}
+
+h5 {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+h6 {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+a, button, input, textarea {
+    transition: all .3s ease-in-out;
+}
+
+img {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+}
+
+.section {
+    padding: 80px 0;
+
+    &--nopb {
+        padding: 80px 0 0;
+    }
+
+    &--nopt {
+        padding: 0 0 80px;
+    }
+
+    &_header {
+        position: relative;
+
+        &-subtitle {
+            text-transform: uppercase;
+            font-family: $accentFont;
+            font-weight: 600;
+            color: $blackhighlight;
+            font-size: 80px;
+            line-height: 1;
+            position: absolute;
+            z-index: -1;
+            visibility: hidden;
+        }
+    }
+}
+
+.container {
+    padding: 0 1.25rem;
+    margin: 0;
+    min-width: 100%;
+}
+
+.theme-element {
+    text-align: center;
+    background: $red;
+    color: #fff;
+    text-transform: uppercase;
+    border: 2px solid #EB1616;
+    font-family: $accentFont;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    display: inline-block;
+
+    &.btn {
+        padding: 12px 20px;
+
+        &:hover {
+            color: $red;
+        }
+        &--revert {
+            background: transparent;
+            &:hover, &:focus, &.current {
+                background: $red;
+                color: #fff;
+            }
+        }
+    }
+
+    &.tag {
+        padding: 5px 10px;
+    }
+
+    &:hover, &:focus {
+        background: transparent;
+    }
+}
+
+.field {
+    padding: 11px 18px;
+    border: 2px solid $gray;
+    font-size: 14px;
+    line-height: 28px;
+    display: block;
+    &.error {
+        border-color: $red;
+    }
+    &--corner {
+        margin-bottom: 15px;
+        border-left: 1px solid $darkgray;
+        border-bottom: 1px solid $darkgray;
+        border-right: none;
+        border-top: none;
+    }
+
+    &::placeholder {
+        color: #fff;
+        transition: opacity .3s ease-in-out;
+    }
+
+    &:focus {
+        &::placeholder {
+            opacity: 0;
+        }
+    }
+
+    &:hover, &:focus {
+        border-color: #fff;
+    }
+}
+
+.highlight {
+    color: $red;
+}
+
+.link {
+    &--underline {
+        position: relative;
+        text-transform: uppercase;
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background: $red;
+            bottom: -2px;
+            left: 0;
+            transition: width .5s ease-in-out;
+        }
+
+        &:hover, &:focus {
+            &:after {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.linebreak {
+    display: block;
+}
+
+.text {
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: 500;
+}
+
+.brand-logo {
+    &_icon {
+        color: $red;
+        margin-right: 7px;
+    }
+
+    &_name {
+        color: #fff;
+        text-transform: uppercase;
+        font-family: $accentFont;
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 1;
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+
+    h1 {
+        font-size: 50px;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 40px;
+        line-height: 1.3;
+    }
+
+    .container {
+        padding: 0 1.875rem;
+    }
+
+    .section {
+        padding: 100px 0;
+
+        &--nopb {
+            padding: 100px 0 0;
+        }
+
+        &--nopt {
+            padding: 0 0 100px;
+        }
+
+        &_header {
+            &-subtitle {
+                visibility: visible;
+            }
+        }
+    }
+
+
+    .text {
+        font-size: 16px;
+    }
+
+}
+
+@media screen and (min-width: 991.98px) {
+
+    h1 {
+        font-size: 65px;
+    }
+
+    .section {
+        padding: 110px 0;
+
+        &--nopb {
+            padding: 110px 0 0;
+        }
+
+        &--nopt {
+            padding: 0 0 110px;
+        }
+    }
+
+    .text {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+}
+
+@media screen and (min-width: 1199.98px) {
+    .container {
+        margin: 0 auto;
+        min-width: unset;
+    }
+}
+
+// sweet alert 2 toast notification styles
+
+.alert {
+    &_popup {
+        background: #fff;
+        min-width: 280px;
+        max-width: 360px;
+        display: flex !important;
+        flex-direction: column;
+        padding: 20px;
+        &-close {
+            justify-content: flex-end;
+            transition: color .3s ease-in-out;
+            &:hover, &:focus {
+                color: $red;
+            }
+        }
+        &-title {
+            color: $red;
+            margin-bottom: 10px;
+        }
+    }
+}
+
