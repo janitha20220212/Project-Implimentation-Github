@@ -317,6 +317,27 @@ async function checkForSpoilers() {
             //const firstChild = article.firstElementChild;
             // hideSpoilerPosts(article);}
 
+            // Adds flag post button to Twitter
+            if (!article.getAttribute('data-testid').includes('tweets') && window.location.href.includes("twitter.com") && !window.location.href.includes('notification'))
+                {
+                const descendantsTwitter = article.querySelectorAll(
+                    '[data-testid="tweetText"], [data-testid="card.wrapper"], [aria-label="Image"], [data-testid="tweetPhoto"], [roll="link"], [data-testid="card.layoutLargemedia"], [alt="image"]'
+                );
+                
+                const parentElement = descendantsTwitter[0].parentElement.parentElement;
+                const siblingCount = parentElement.children.length;
+                const targetSibling = parentElement.children[siblingCount - 2];
+                let button = document.createElement("button")
+                button.innerText = "flag post"
+                button.className = "flag"
+                console.log("targettttt")
+                console.log(targetSibling)
+                targetSibling.appendChild(button)
+                article.setAttribute('data-testid', "tweets")
+    
+                article.classList.add("added-Flag")
+            }
+
             try {
                 const tweetTextElement = article.querySelector(
                     '[data-testid="tweetText"]'
@@ -565,32 +586,47 @@ function getData(et) {
     let button = et.target;
     let text;
     let heading;
-    let link;
-    try {
-        // Getting the content if it is part of the homepage
-        text = text = button.parentElement.children[5].textContent.trim();
-        heading = button.parentElement.children[3].textContent.trim();
-        link = button.parentElement.children[3].href;
-    } catch (error) {
-        // Getting the Content if it was an individual post
-        console.log("There was an error for heading button access");
-        text = document
-            .getElementsByTagName("h1")[0]
-            .parentElement.children[3].textContent.trim();
-        heading = document.getElementsByTagName("h1")[0].textContent.trim();
-        link = document
-            .getElementsByTagName("h1")[0]
-            .parentElement.getAttribute("content-href");
+    if (window.location.href.includes("twitter")){
+        text = button.parentElement.parentElement.parentElement.parentElement.parentElement.querySelectorAll('[data-testid=tweetText]')[0].textContent
+        console.log(text)
+        let links = document.getElementsByTagName('a')
+
+
+    
+        link = button.parentElement.querySelector('[href]').href
+            
+        post = {
+            TextContent: text.trim(),
+            label:1,
+            link: link
+        };
+        // document.querySelectorAll('article')[1].setAttribute('data-testid') = 'tweets'
+
+    }else{
+
+        try {
+            // Getting the content if it is part of the homepage
+            text = text = button.parentElement.children[5].textContent.trim();
+            heading = button.parentElement.children[3].textContent.trim();
+            link = button.parentElement.children[3].href;
+        } catch (error) {
+            // Getting the Content if it was an individual post
+            console.log("There was an error for heading button access");
+            text = document
+                .getElementsByTagName("h1")[0]
+                .parentElement.children[3].textContent.trim();
+            heading = document.getElementsByTagName("h1")[0].textContent.trim();
+            link = document
+                .getElementsByTagName("h1")[0]
+                .parentElement.getAttribute("content-href");
+        }
+        post = {
+            Heading: heading.trim(),
+            TextContent: text.trim(),
+            link: link,
+            label: 1,
+        };
     }
-
-    // setting the heading, text and link of the post into an object
-    let post = {
-        Heading: heading.trim(),
-        TextContent: text.trim(),
-        link: link,
-        label: 1,
-    };
-
     // let response = fetch("http://127.0.0.1:5000/flagpost/", {
     let response = fetch("https://nospoilerzone.azurewebsites.net/flagpost/", {
         method: "POST",
