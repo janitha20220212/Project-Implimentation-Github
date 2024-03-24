@@ -181,6 +181,22 @@ async function checkForSpoilers() {
     var currentURL = window.location.href;
 
     if (currentURL.includes("reddit.com")) {
+        let loadingScreen;
+        loadingScreen = document.createElement("div");
+        loadingScreen.id = "loading-screen";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.backgroundColor = "rgba(0, 0, 0)";
+        loadingScreen.style.justifyContent = "center";
+        loadingScreen.style.alignItems = "center";
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.zIndex =
+            "1000000000000000000000000000000000000000000000000000000000";
+        loadingScreen.innerHTML =
+            "<h1 style='font-size: 3rem; color: white; text-align: center;'>Your Spoiler are being detected</h1>";
         // console.log("Reddit page");
         const articles = document.querySelectorAll(
             "article.w-full, faceplate-tracker"
@@ -240,6 +256,8 @@ async function checkForSpoilers() {
             let postUniqueLink = "no-link";
             postUniqueLink = hrefAttribute;
 
+            article.appendChild(loadingScreen);
+
             containsSpoiler = await fetchModel(
                 totalContent,
                 postUniqueLink,
@@ -254,12 +272,14 @@ async function checkForSpoilers() {
                 hideSpoilerPosts(firstChild);
                 article.classList.add("contains-spoiler");
             }
+            article.removeChild(loadingScreen);
         }
     } else if (currentURL.includes("twitter.com")) {
         // console.log("Twitter page");
 
-        const loadingScreen = document.createElement("div");
-        loadingScreen.className = "loading-screen";
+        let loadingScreen;
+        loadingScreen = document.createElement("div");
+        loadingScreen.id = "loading-screen";
         loadingScreen.style.position = "fixed";
         loadingScreen.style.top = "0";
         loadingScreen.style.left = "0";
@@ -324,6 +344,8 @@ async function checkForSpoilers() {
                 console.log("Post Unique Link: ", postUniqueLink);
 
                 // addPostLoading(article, loadingScreen);
+                // article.classList.add("loading-screen");
+                article.appendChild(loadingScreen);
 
                 containsSpoiler = await fetchModel(
                     totalContent,
@@ -340,7 +362,7 @@ async function checkForSpoilers() {
                     hideSpoilerPosts(article);
                     article.classList.add("contains-spoiler");
                 }
-                // article.removeChild("#loadingScreen");
+                article.removeChild(loadingScreen);
             } catch (error) {
                 console.log("Error in the twitter page");
                 // article.removeChild("#loadingScreen");
