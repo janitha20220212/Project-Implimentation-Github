@@ -1,0 +1,228 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// services content
+
+.services {
+    &_text {
+        margin: 20px 0 30px;
+    }
+
+    &_list {
+        &-item {
+            margin-bottom: 80px;
+
+            &:nth-of-type(odd) {
+                .media {
+                    .services-img {
+                        filter: grayscale(1);
+                    }
+
+                }
+            }
+
+            &:hover {
+                &:nth-of-type(odd) {
+                    .media {
+                        .services-img {
+                            filter: grayscale(0);
+                        }
+
+                    }
+                }
+
+                &:nth-of-type(even) {
+                    .media {
+                        .services-img {
+                            filter: grayscale(1);
+                        }
+
+                    }
+                }
+            }
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            &_wrapper {
+
+                .media {
+                    margin-bottom: 20px;
+                    aspect-ratio: 19 / 15;
+                    overflow: hidden;
+
+                    .services-img {
+                        transition: all .3s ease-in-out;
+                    }
+                }
+
+                .main {
+                    .description {
+                        margin: 10px 0;
+                    }
+
+                    .pricing {
+                        text-transform: uppercase;
+                        font-family: $accentFont;
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 1.7;
+                        color: #fff;
+                        margin-bottom: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .services {
+        &_list {
+            &-item {
+                &_wrapper {
+                    .main {
+                        .pricing {
+                            &_price {
+                                &:first-of-type {
+                                    margin-right: 30px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .services {
+        &_header {
+            &-subtitle {
+                top: -33%;
+                left: -5%;
+            }
+        }
+
+        &_text {
+            margin: 30px 0 50px;
+            max-width: 570px;
+        }
+
+        &_list {
+            &-item {
+                margin-bottom: 100px;
+
+                &_wrapper {
+
+                    .media {
+                        margin-bottom: 30px;
+                        .services-img {
+                            height: 100%;
+                        }
+                    }
+
+                    .main {
+                        padding: 0 30px;
+                        .description {
+                            margin: 10px 0 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .services {
+        &_header {
+            max-width: 500px;
+        }
+
+        &_list {
+            &-item {
+
+                &_wrapper {
+
+                    .media {
+                        margin-bottom: 0;
+                        .services-img {
+                            height: unset;
+                        }
+                    }
+
+                    .main {
+                        padding: 0;
+                        .title {
+                            margin-top: 10px;
+                        }
+
+                        .pricing {
+                            margin-bottom: 50px;
+                        }
+                    }
+
+                    .media, .main {
+                        width: calc(50% - 15px);
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .services {
+        &_header {
+            margin-bottom: 110px;
+        }
+
+        &_text {
+            margin: 0;
+        }
+
+        &_header, &_text {
+            max-width: unset;
+            width: calc(50% - 15px);
+        }
+
+        &_list {
+            &-item {
+                margin-bottom: 110px;
+
+                &_wrapper {
+                    .media {
+                        max-height: 450px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1499.98px) {
+    .services {
+        &_header {
+
+            &-subtitle {
+                top: -45%;
+                left: -12%;
+            }
+        }
+    }
+}

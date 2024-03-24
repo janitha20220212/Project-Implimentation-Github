@@ -1,0 +1,146 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// about section
+
+.about {
+    &_info {
+        &-text {
+            margin: 15px 0 30px;
+        }
+
+        &-fact {
+            &_title {
+                margin-bottom: 5px;
+            }
+
+            &:first-of-type {
+                margin-bottom: 15px;
+            }
+        }
+
+        &-btn {
+            margin-top: 40px;
+            display: inline-block;
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 575.98px) {
+    .about {
+        &_info {
+            &-fact {
+                max-width: calc(50% - 7.5px);
+                flex-grow: 1;
+
+                &:first-of-type {
+                    margin-bottom: 0;
+                }
+
+                &_description {
+                    max-width: 270px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .about {
+        &_header {
+            &-subtitle {
+                top: -30%;
+                left: -5%;
+            }
+        }
+
+        &_info {
+            &-text {
+                margin: 15px 0 20px;
+                max-width: 570px;
+            }
+
+            &-fact {
+                width: unset;
+                max-width: 270px;
+
+                &:first-of-type {
+                    margin-right: 30px;
+                }
+
+                &_title {
+                    margin-bottom: 5px;
+                }
+
+            }
+        }
+    }
+
+}
+
+@media screen and (min-width: 1199.98px) {
+    .about {
+        &_header {
+            &-subtitle {
+                top: 25%;
+            }
+        }
+
+        &_info {
+            &-text {
+                margin: 0 0 30px;
+            }
+
+            &-fact {
+                max-width: calc(50% - 15px);
+
+                &_title {
+                    margin-bottom: 15px;
+                }
+
+                &_description {
+                    max-width: unset;
+                }
+            }
+
+            &-btn {
+                margin-top: 50px;
+            }
+        }
+
+        &_header, &_info {
+            max-width: unset;
+        }
+    }
+}
+
+@media screen and (min-width: 1499.98px) {
+    .about {
+        &_header {
+            &-subtitle {
+                left: -20%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1699.98px) {
+    .about {
+        &_header {
+            &-subtitle {
+                left: -34%;
+            }
+        }
+    }
+}

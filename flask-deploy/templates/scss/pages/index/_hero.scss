@@ -1,0 +1,136 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// hero section
+
+.hero {
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition: all .5s ease-in-out;
+    position: relative;
+    &_slider {
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        &-pagination {
+            top: unset !important;
+            bottom: 0;
+            height: 10px !important;
+            background: transparent !important;
+            .swiper-pagination-progressbar-fill {
+                background: $red;
+            }
+        }
+    }
+    &_content {
+        position: relative;
+        z-index: 10;
+        &-text {
+            margin: 20px 0 10px;
+        }
+        &-tel {
+            color: #fff;
+
+            &:hover {
+                color: $red;
+            }
+
+            .icon {
+                max-width: 40px;
+                max-height: 40px;
+                margin-right: 10px;
+                transition: all .3s ease-in-out;
+                font-size: 40px;
+            }
+
+            .link {
+                text-transform: uppercase;
+                font-size: 28px;
+                line-height: 1.5;
+                font-family: $accentFont;
+                font-weight: 500;
+            }
+        }
+    }
+    &_overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 50%;
+        width: 100%;
+        z-index: 1;
+        background: linear-gradient(178.13deg, rgba(32, 32, 32, 0) 37.89%, $black 82.56%);
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .hero {
+        &_content {
+            max-width: 570px;
+        }
+    }
+}
+
+@media screen and (min-width: 991.98px) {
+    .hero {
+        &_slider {
+            &-controls {
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                padding: 0 20px;
+                z-index: 999;
+            }
+            &-control {
+                color: #fff;
+                transition: color .5s ease-in-out;
+                font-size: 20px;
+                cursor: pointer;
+                &:hover, &:focus {
+                    color: $red;
+                }
+            }
+        }
+        &_content {
+            &-text {
+                margin: 35px 0 20px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .hero {
+        &_content {
+            max-width: unset;
+            margin-left: 30px;
+        }
+    }
+}
+
+@media screen and (min-width: 1699.98px) {
+    .hero {
+        &_slider {
+            &-controls {
+                padding: 0 120px;
+            }
+        }
+    }
+}

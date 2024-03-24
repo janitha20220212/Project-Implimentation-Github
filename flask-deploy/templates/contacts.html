@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Contacts | NOSPOILERZONE</title>
+    <link rel="stylesheet preload" as="style" href="css/preload.min.css" />
+    <link rel="stylesheet preload" as="style" href="css/icomoon.css" />
+    <link rel="stylesheet preload" as="style" href="css/libs.min.css" />
+
+    <link rel="stylesheet" href="css/contacts.min.css" />
+  </head>
+  <body>
+    <header class="header" data-page="contacts">
+      <div
+        class="container-fluid container-lg d-flex flex-wrap align-items-center justify-content-between"
+      >
+        <a
+          class="brand-logo d-flex align-items-center header_logo"
+          href="index.html"
+        >
+          <a
+            class="brand-logo d-flex align-items-center header_logo"
+            href="index.html"
+          >
+            <img src="npzlogo.png" alt="NPZ Logo" style="width: 100px" />
+          </a>
+        </a>
+        <nav class="header_nav">
+          <ul class="header_nav-list">
+            <li class="header_nav-list_item nav-item" data-page="about">
+              <a class="nav-link" href="about.html">Home</a>
+            </li>
+
+            <li class="header_nav-list_item nav-item" data-page="contacts">
+              <a class="nav-link" href="contacts.html">Contacts</a>
+            </li>
+          </ul>
+        </nav>
+        <a class="header_btn btn theme-element" href="#">Book now</a>
+        <span
+          class="header_trigger d-inline-flex d-lg-none flex-column justify-content-between"
+        >
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </span>
+      </div>
+    </header>
+    <!-- Contacts content start -->
+    <main>
+      <section class="contacts section">
+        <div class="container">
+          <div class="contacts_header section_header">
+            <h2
+              class="contacts_header-title section_header-title"
+              data-aos="fade-right"
+            >
+              Give us a feedback
+            </h2>
+            <span
+              class="contacts_header-subtitle section_header-subtitle"
+              data-aos="fade-right"
+              data-aos-delay="50"
+              data-aos-once="false"
+              >Contact</span
+            >
+          </div>
+          <div
+            class="contacts_main d-flex flex-column flex-lg-row justify-content-between"
+          >
+            <ul class="contacts_main-data">
+              <li class="contacts_main-data_item">
+                <h3 class="title">Email</h3>
+                <a
+                  class="data link link--underline"
+                  href="mailto:example@domain.com"
+                  >barbercrop@example.com</a
+                >
+              </li>
+              <li class="contacts_main-data_item">
+                <h3 class="title">Address</h3>
+                <span class="data"
+                  >3891 Ranchview Dr. Richardson,
+                  <span class="linebreak">California 62639</span></span
+                >
+              </li>
+              <li class="contacts_main-data_item contacts_main-data_item--tel">
+                <h3 class="title">Phone</h3>
+                <div class="wrapper d-flex flex-column flex-md-row">
+                  <a class="data link link--underline" href="tel:+1234567890"
+                    >+1 234 567 890</a
+                  >
+                  <a class="data link link--underline" href="tel:+1234567890"
+                    >+1 234 567 890</a
+                  >
+                </div>
+              </li>
+            </ul>
+            <form
+              class="contacts_main-form d-flex flex-column flex-md-row flex-wrap justify-content-between col-lg-8"
+              action="form.php"
+              method="post"
+              data-type="feedback"
+              autocomplete="off"
+            >
+              <div class="form-block">
+                <label class="contacts_main-form_label" for="contactsName"
+                  >Name and surname *</label
+                >
+                <input
+                  class="field field--corner required"
+                  type="text"
+                  id="contactsName"
+                  name="contactsName"
+                  placeholder="Your name here"
+                />
+              </div>
+              <div class="form-block">
+                <label class="contacts_main-form_label" for="contactsService"
+                  >Your email *</label
+                >
+                <div class="field-wrapper_block">
+                  <select name="contactsService" id="contactsService">
+                    <option value="haircut" selected>Haircut</option>
+                    <option value="dyeing">Hair dyeing</option>
+                    <option value="trim">Beard trim</option>
+                    <option value="stacking">Stacking</option>
+                    <option value="shave">Shave</option>
+                    <option value="mustache">Mustache</option>
+                  </select>
+                </div>
+                <input type="hidden" id="contactsServiceValue" />
+              </div>
+              <div class="form-block">
+                <label class="contacts_main-form_label" for="contactsTel"
+                  >Your phone number *</label
+                >
+                <input
+                  class="field field--corner required"
+                  data-type="tel"
+                  type="text"
+                  name="contactsTel"
+                  id="contactsTel"
+                  placeholder="Your phone here"
+                />
+              </div>
+              <div class="form-block">
+                <label class="contacts_main-form_label" for="contactsDate"
+                  >date</label
+                >
+                <input
+                  class="field field--corner optional"
+                  data-type="date"
+                  type="text"
+                  id="contactsDate"
+                  name="contactsDate"
+                  placeholder="dd/mm/yyyy"
+                />
+                <input type="hidden" id="contactsDateValue" />
+              </div>
+              <div class="form-block">
+                <label class="contacts_main-form_label" for="contactsMessage"
+                  >feedback</label
+                >
+                <textarea
+                  class="field field--corner optional"
+                  id="contactsMessage"
+                  name="contactsMessage"
+                  placeholder="Your message here"
+                  data-type="message"
+                ></textarea>
+              </div>
+              <button class="btn theme-element" type="submit">Book now</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Contacts content end -->
+    <footer class="footer section-nopb">
+      <div
+        class="container d-flex flex-column flex-md-row flex-md-wrap justify-content-between"
+      >
+        <div class="footer_logo footer_block col-lg-3">
+          <a class="brand-logo d-flex align-items-center" href="index.html">
+            <svg
+              class="brand-logo_icon"
+              width="40"
+              height="34"
+              viewBox="0 0 40 34"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M38.9052 0.3026C38.2043 1.3906 37.0306 2.04 35.7668 2.04H34.8331C34.8403 1.9312 34.8495 1.8224 34.8495 1.71224C34.8495 0.76636 34.1085 0 33.1938 0C32.5922 0 32.0385 0.33728 31.7466 0.8806C31.5539 1.23964 31.3435 1.58848 31.1443 1.94412L27.5357 1.11452C26.2785 0.82552 24.9943 0.68 23.7062 0.68C22.8074 0.68 21.9105 0.75072 21.0221 0.89216L21.0149 0.89352C16.2175 1.65648 11.3708 2.04 6.51686 2.04H0V4.08H0.657538V6.8C0.657538 7.5514 1.24603 8.16 1.97261 8.16H5.03542C10.8652 8.16 16.6758 7.47592 22.3563 6.12V6.8L23.4294 6.43008C23.9666 6.24512 24.3289 5.72492 24.3289 5.13944V2.72C26.0779 2.72 27.8231 2.89884 29.5379 3.25312L30.2467 3.4L30.3112 3.41428C28.7877 5.9738 27.0965 8.42452 25.2475 10.7467C21.5758 15.3571 17.4649 19.5738 12.9759 23.3315L7.02579 28.3125C6.32486 28.8993 5.91784 29.782 5.91784 30.7142V30.9101C5.91784 32.6169 7.25527 34 8.90569 34C9.52838 34 10.1353 33.7987 10.6422 33.4247L13.6603 31.195C17.2544 28.5403 20.5494 25.4769 23.484 22.0626C27.5298 17.3556 30.8477 12.0306 33.3214 6.27572L34.4537 3.64072C34.4872 3.56184 34.5135 3.48024 34.5431 3.4H35.7668C37.4718 3.4 39.0538 2.52416 40 1.0574L38.9052 0.3026ZM9.20553 31.96C8.48027 31.96 7.89045 31.35 7.89045 30.6C7.89045 29.85 8.48027 29.24 9.20553 29.24C9.93079 29.24 10.5206 29.85 10.5206 30.6C10.5206 31.35 9.93079 31.96 9.20553 31.96ZM32.8769 3.4C32.5139 3.4 32.2194 3.09536 32.2194 2.72C32.2194 2.34464 32.5139 2.04 32.8769 2.04C33.2399 2.04 33.5344 2.34464 33.5344 2.72C33.5344 3.09536 33.2399 3.4 32.8769 3.4Z"
+                fill="currentColor"
+              />
+            </svg>
+
+            <span class="brand-logo_name">NOSPOILERZONE</span>
+          </a>
+        </div>
+        <div
+          class="wrapper d-flex flex-column flex-md-row flex-grow-1 justify-content-lg-between"
+        >
+          <div class="footer_contacts footer_block col-xl-4">
+            <span class="footer_contacts-tel d-flex align-items-center">
+              <span class="icon">
+                <i class="icon-phone"></i>
+              </span>
+              <a class="link" href="tel:+1234567890">+1 234 567 890</a>
+            </span>
+            <p class="footer_contacts-address">
+              <span class="linebreak">3891 Ranchview Dr. Richardson,</span>
+              <span class="linebreak">California 62639</span>
+            </p>
+            <a class="footer_contacts-mail" href="mailto:example@domain.com"
+              >barbercrop@example.com</a
+            >
+            <ul class="footer_contacts-socials d-flex align-items-center">
+              <li class="list-item">
+                <a
+                  class="link"
+                  href="#"
+                  target="_blank"
+                  rel="noopener norefferer"
+                >
+                  <i class="icon-facebook"></i>
+                </a>
+              </li>
+              <li class="list-item">
+                <a
+                  class="link"
+                  href="#"
+                  target="_blank"
+                  rel="noopener norefferer"
+                >
+                  <i class="icon-twitter"></i>
+                </a>
+              </li>
+              <li class="list-item">
+                <a
+                  class="link"
+                  href="#"
+                  target="_blank"
+                  rel="noopener norefferer"
+                >
+                  <i class="icon-instagram"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer_newsletter footer_block">
+            <h3 class="footer_newsletter-header">Subscribe our newsletter</h3>
+            <p class="footer_newsletter-text text">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Luctus
+              interdum volutpat urna neque varius congue.
+            </p>
+            <form
+              class="footer_newsletter-form d-flex flex-wrap flex-sm-nowrap"
+              action="#"
+              method="post"
+              data-type="newsletter"
+            >
+              <input
+                class="field required"
+                data-type="email"
+                type="text"
+                placeholder="Your email address"
+              />
+              <button class="btn theme-element" type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+        <div class="offset col-lg-3 d-none d-lg-flex"></div>
+        <p class="footer_copyright flex-grow-1">
+          <span class="linebreak">Merkulove &copy; Barbercrop Template</span>
+          <span class="linebreak"
+            >All rights reserved <span id="currentYear"></span
+          ></span>
+        </p>
+      </div>
+    </footer>
+    <script src="js/common.min.js"></script>
+    <script src="js/contacts.min.js"></script>
+  </body>
+</html>

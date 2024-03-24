@@ -1,0 +1,78 @@
+/**
+ * Barbercrop
+ * Barbercrop is a full featured barber shop template
+ * Exclusively on https://1.envato.market/barbercrop-html
+ *
+ * @encoding        UTF-8
+ * @version         1.0.4
+ * @copyright       (C) 2018 - 2022 Merkulove ( https://merkulov.design/ ). All rights reserved.
+ * @license         Envato License https://1.envato.market/KYbje
+ * @contributors    Lamber Lilith (winter.rituel@gmail.com)
+ * @support         help@merkulov.design
+ **/
+// gallery section
+
+.gallery {
+    &_header {
+        margin-bottom: 20px;
+    }
+    &_list {
+        padding: 0 1.25rem;
+        &-item {
+            aspect-ratio: 48 / 43;
+            overflow: hidden;
+            margin-bottom: 20px;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+            &_img {
+                filter: grayscale(1);
+                transition: all .5s ease-in-out;
+                &:hover {
+                    filter: grayscale(0);
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+// media queries
+
+@media screen and (min-width: 767.98px) {
+    .gallery {
+        &_header {
+            text-align: center;
+            margin-bottom: 30px;
+            &-subtitle {
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: 76%;
+            }
+        }
+        &_list {
+            padding: 0 1.875rem;
+            margin: 0 -15px;
+            &-item {
+                margin-bottom: 30px;
+                padding: 0 15px;
+                &:nth-of-type(3) {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1199.98px) {
+    .gallery {
+        &_header {
+            margin-bottom: 50px;
+        }
+        &_list, &_list-item {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
