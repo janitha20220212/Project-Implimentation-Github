@@ -175,8 +175,10 @@ async function fetchModel(totalContent, postUniqueLink, article) {
 // const marvelWords = ["Iron Man", "Kang", "Captain America", "Thor", "Spider-Man", "Avengers", "Hulk", "No Way Home", "Deadpool", "Godzilla", "Marvel", "Madame", "X-Men", "Fantastic", "This", "The", "it"];
 // const spoilerKeywords = ["dies", "Dynasty", "killed", "death", "ending", "spoiler", "plot twist", "reveals", "appears", "ends", "cameo", "spoilers", "leak", "spoiler", "Wolverine", "Kong", "Cast", "Web", "97", "Four", "Sony", "a", "is"];
 
+spoilerCount = 0
+
 async function checkForSpoilers() {
-    spoilerCount = 0; // Reset the counter
+
 
     var currentURL = window.location.href;
 
@@ -271,6 +273,7 @@ async function checkForSpoilers() {
             console.log("Contains spoiler: " + containsSpoiler);
 
             if (containsSpoiler) {
+                spoilerCount++
                 hideSpoilerPosts(firstChild);
                 article.classList.add("contains-spoiler");
             }
@@ -384,6 +387,7 @@ async function checkForSpoilers() {
                 console.log("Contains spoiler: " + containsSpoiler);
 
                 if (containsSpoiler) {
+                    spoilerCount++
                     hideSpoilerPosts(article);
                     article.classList.add("contains-spoiler");
                 }
@@ -397,8 +401,13 @@ async function checkForSpoilers() {
 }
 
 function hideSpoilerPosts(article) {
+    console.log(spoilerCount)
+    chrome.runtime.sendMessage({action: spoilerCount}, (response)=> {
+        console.log(response)
+    });
+    
     containsSpoiler = true;
-    spoilerCount++; // Increment counter
+    // spoilerCount++; // Increment counter
 
     if (article && !article.classList.contains("spoiler-viewed")) {
         const descendantsReddit = article.querySelectorAll(
@@ -707,7 +716,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("Recieved another Message: " + message.msg);
     console.log("From Content Script");
 
-    alert(message.msg);
+    if (message.msg == "Post has been flagged" || message.msg == "Post is already available in flagged list"){
+        alert(message.msg);
+    
+        }
 });
 
 function addLoadingScreen() {
@@ -739,3 +751,17 @@ function removeLoadingScreen() {
 // addLoadingScreen();
 
 // setTimeout(removeLoadingScreen, 5000);
+
+// Recieves empty message from popup js and sends the spoiler count as a response
+chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
+    if(request.type=="aew"){
+        console.log("on message")
+        sendResponse(spoilerCount)
+    }
+
+
+    
+
+    
+    return true;
+})

@@ -84,23 +84,27 @@
 // Get the span element by its id
 const spoilerCount = document.getElementById("spoilerCount");
 
+// Counter to keep track of the number of spoilers blocked
+var counter = 0
+
 // Function to update the spoiler count
 function updateSpoilerCount(count) {
     spoilerCount.textContent = count;
 }
 
 // Example usage: Call the updateSpoilerCount function with the desired count
-updateSpoilerCount(500); // Replace 5 with the actual count of detected spoilers
+ // Replace 5 with the actual count of detected spoilers
 
-document.addEventListener("DOMContentLoaded", function () {
-    chrome.runtime.sendMessage(
-        { action: "getSpoilerCount" },
-        function (response) {
-            document.getElementById("spoilerCount").textContent =
-                response.count;
-        }
-    );
-});
+// Sends a message to the Content Script and recieves the spoiler count
+document.addEventListener('DOMContentLoaded', function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {type:"aew"}, function(response){
+        counter += response
+        console.log("counter: " + counter)
+        updateSpoilerCount(response)
+        });
+    });
+})
 
 // document.addEventListener("click", async function () {
 //     try {

@@ -202,6 +202,7 @@ try {
         console.log("Recieved Message: " + message);
         console.log("From Content Script");
 
+        
         try {
             // If the message was not the intented one (earlier message from other functionalities)
             if (message.action.includes("updateBadge")) {
@@ -209,7 +210,11 @@ try {
             }
         } catch (error) {
             // If the message is relevant for flag post
-            addPost(message);
+            if (message.TextContent != undefined){
+                console.log(message)
+                addPost(message);
+
+            }
         }
 
         sendResponse("Got it - Background Script");
