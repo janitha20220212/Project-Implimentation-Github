@@ -18,6 +18,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; // This ensures the sendResponse callback is kept alive for asynchronous use
 });
 
+function updateIcon() {
+    if (isExtensionEnabled()) {
+        chrome.browserAction.setIcon({path: 'npznew_enabled.png'});
+    } else {
+        chrome.browserAction.setIcon({path: 'npznew.png'});
+    }
+}
+
 // FLAG POST Background Script Code
 
 try {
@@ -151,6 +159,7 @@ try {
         for (let i = 0; i < dataContent.length; i++) {
             if (dataContent[i].includes(data.TextContent) === true) {
                 isAvailable = true;
+                // updateIcon();
             }
         }
 
@@ -233,3 +242,4 @@ function sendDatabaseResult(message){
     })
 })
 }
+

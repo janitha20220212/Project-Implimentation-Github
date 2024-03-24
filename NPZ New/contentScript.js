@@ -208,6 +208,8 @@ async function checkForSpoilers() {
         for (const article of articles) {
             if (article.classList.contains("already-checked")) {
                 console.log("Already checked");
+                // updateIcon();
+
                 continue;
             } else {
                 article.classList.add("already-checked");
