@@ -35,10 +35,10 @@ postLinks.forEach((postLink, index) => {
             votes[postLink].upvotes++;
 
             // Send the updated votes object to the Flask app
-            fetch('/upvote', {
-                method: 'POST',
+            fetch("https://nospoilerzone.azurewebsites.net/vote", {
+                method: "POST",
                 body: JSON.stringify({ postLink: postLink, votes: votes }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { "Content-Type": "application/json" },
             });
 
             logVoteCounts();
@@ -51,10 +51,10 @@ postLinks.forEach((postLink, index) => {
             votes[postLink].downvotes++;
 
             // Send the updated votes object to the Flask app
-            fetch('/downvote', {
-                method: 'POST',
+            fetch("https://nospoilerzone.azurewebsites.net/vote", {
+                method: "POST",
                 body: JSON.stringify({ postLink: postLink, votes: votes }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { "Content-Type": "application/json" },
             });
 
             logVoteCounts();
@@ -83,10 +83,10 @@ postLinks.forEach((postLink, index) => {
                 votes[postLink].upvotes++;
 
                 // Send the updated votes object to the Flask app
-                fetch('/upvote', {
-                    method: 'POST',
+                fetch("https://nospoilerzone.azurewebsites.net/vote", {
+                    method: "POST",
                     body: JSON.stringify({ postLink: postLink, votes: votes }),
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { "Content-Type": "application/json" },
                 });
 
                 logVoteCounts();
@@ -99,10 +99,10 @@ postLinks.forEach((postLink, index) => {
                 votes[postLink].downvotes++;
 
                 // Send the updated votes object to the Flask app
-                fetch('/downvote', {
-                    method: 'POST',
+                fetch("https://nospoilerzone.azurewebsites.net/vote", {
+                    method: "POST",
                     body: JSON.stringify({ postLink: postLink, votes: votes }),
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { "Content-Type": "application/json" },
                 });
 
                 logVoteCounts();
