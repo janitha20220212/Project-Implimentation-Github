@@ -1,9 +1,9 @@
 {
     "manifest_version": 3,
-    "name": "Reddit Spoiler Blocker",
+    "name": "No Spoiler Zone",
     "version": "1.0",
-    "description": "Blocks movie spoilers on Reddit.",
-    "permissions": ["activeTab", "storage", "tabs", "scripting"],
+    "description": "Blocks movie spoilers on Reddit and Twitter.",
+    "permissions": ["activeTab", "storage"],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -25,6 +25,5 @@
             "matches": ["https://www.reddit.com/*", "https://twitter.com/*"],
             "js": ["contentScript.js"]
         }
-    ],
-    "host_permissions": ["https://www.reddit.com/*"]
+    ]
 }
