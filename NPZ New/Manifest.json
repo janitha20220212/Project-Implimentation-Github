@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "𝗡𝗣𝗭 | Spolier Blocker",
+    "name": "𝙉𝙊 𝙎𝙋𝙊𝙄𝙇𝙀𝙍 𝙕𝙊𝙉𝙀 | Spolier Blocker",
     "version": "1.0",
     "description": "Stay spoiler-free with NPZ Spoiler Blocker. Block spoilers effortlessly on Reddit and Twitter with advanced text analysis.",
     "permissions": ["activeTab", "storage"],
@@ -15,10 +15,8 @@
     "icons": {
         "16": "npznew.png",
         "48": "npznew.png",
-        "128": "npznew.png",
-        "16_enabled": "npznew_enabled.png",
-        "48_enabled": "npznew_enabled.png",
-        "128_enabled": "npznew_enabled.png"
+        "128": "npznew.png"
+       
     },
     "background": {
         "service_worker": "background.js"
